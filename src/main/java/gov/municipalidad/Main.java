@@ -1,21 +1,20 @@
 package gov.municipalidad;
 
+import java.io.IOException;
+
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     @Override
-    public void start(Stage primaryStage) {
-        Label label = new Label("HOLA MUNDO!");
-        StackPane root = new StackPane();
-        root.getChildren().add(label);
-        Scene scene = new Scene(root, 300, 200);
-        primaryStage.setTitle("Hola mundo");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/gov/municipalidad/view/main-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 300, 200);
+        stage.setTitle("Hola Mundo JavaFX");
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static void main(String[] args) {
