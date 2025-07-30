@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class HelloWorld extends Application {
+public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         Label label = new Label("HOLA MUNDO!");
