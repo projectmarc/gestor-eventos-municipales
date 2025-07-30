@@ -1,4 +1,4 @@
-package gov.municipalidad;
+package gov.municipio;
 
 import java.io.IOException;
 

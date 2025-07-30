@@ -1,4 +1,4 @@
-package gov.municipalidad.domain.model;
+package gov.municipio.domain.model;
 
 public class Pelicula {
     /* private String titulo;

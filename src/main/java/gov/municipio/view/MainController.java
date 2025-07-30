@@ -1,4 +1,4 @@
-package gov.municipalidad.view;
+package gov.municipio.view;
 
 public class MainController {
 

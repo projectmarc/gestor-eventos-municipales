@@ -1,4 +1,4 @@
-package gov.municipalidad.domain.model;
+package gov.municipio.domain.model;
 
 public class Persona {
     private String nombre;
