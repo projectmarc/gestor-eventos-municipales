@@ -1,7 +1,7 @@
-package gov.municipalidad.domain.model.evento;
+package gov.municipio.domain.model.evento;
 
 
-import gov.municipalidad.domain.model.*;
+import gov.municipio.domain.model.*;
 import java.time.LocalDate;
 
 public class Evento {
