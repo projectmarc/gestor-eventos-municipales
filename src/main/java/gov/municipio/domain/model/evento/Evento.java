@@ -41,4 +41,8 @@ public abstract class Evento {
         return true;
     }
 
+    public List<Participacion> getParticipaciones() {
+        return participaciones;
+    }
+
 }
