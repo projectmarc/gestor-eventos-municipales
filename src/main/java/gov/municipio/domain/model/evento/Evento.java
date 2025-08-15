@@ -46,6 +46,9 @@ public abstract class Evento {
     }
 
     public void cambiarEstado(EstadoEvento nuevoEstado) {
+        if(nuevoEstado == null){
+            throw new IllegalArgumentException("El nuevo estado no puede ser nulo");
+        }
         this.estado = nuevoEstado;
     }
 }
