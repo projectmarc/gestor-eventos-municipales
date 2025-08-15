@@ -29,7 +29,7 @@ public abstract class Evento {
         this.estado = EstadoEvento.PLANIFICACION;
     }
 
-    void inscribirPersona(Persona persona, Rol rol) {
+    public Participacion inscribirPersona(Persona persona, Rol rol) {
         if(rol == null){
             throw new IllegalArgumentException("El rol no puede ser nulo");
         }
