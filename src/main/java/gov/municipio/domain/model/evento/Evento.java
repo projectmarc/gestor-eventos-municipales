@@ -4,7 +4,10 @@ package gov.municipio.domain.model.evento;
 import gov.municipio.domain.model.*;
 import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.domain.model.enums.Rol;
+
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Evento {
     private String nombre;
@@ -12,6 +15,7 @@ public abstract class Evento {
     private int duracionEstimada;
     private EstadoEvento estado;
     private boolean requiereInscripcion;
+    private List<Participacion> participaciones = new ArrayList<>();
 
     public Evento(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion) {
         this.nombre = nombre;
