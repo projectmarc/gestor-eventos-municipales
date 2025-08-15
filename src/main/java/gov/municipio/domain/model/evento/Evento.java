@@ -39,8 +39,13 @@ public abstract class Evento {
         if(estado != EstadoEvento.CONFIRMADO){
             throw new IllegalArgumentException("El evento debe estar confirmado para inscribir personas");
         }
-    }
 
+        Participacion participacion = new Participacion(persona, this, rol){
+            participaciones.add(participacion);
+            return participacion;
+        };
+    }
+    
     public boolean validarRol(Rol rol) {
         return true;
     }
