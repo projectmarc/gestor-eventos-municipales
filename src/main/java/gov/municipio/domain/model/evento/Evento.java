@@ -45,4 +45,7 @@ public abstract class Evento {
         return participaciones;
     }
 
+    public void cambiarEstado(EstadoEvento nuevoEstado) {
+        this.estado = nuevoEstado;
+    }
 }
