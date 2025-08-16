@@ -70,4 +70,24 @@ public abstract class Evento {
             .map(Participacion::getPersona)
             .toList();
     }
+    //Getters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public int getDuracionEstimada() {
+        return duracionEstimada;
+    }
+
+    public EstadoEvento getEstado() {
+        return estado;
+    }
+
+    public boolean isRequiereInscripcion() {
+        return requiereInscripcion;
+    }
 }
