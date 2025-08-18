@@ -1,7 +1,7 @@
 package gov.municipio.domain.model.evento;
 import gov.municipio.domain.model.enums.TipoLugar;
 
-public class Feria {
+public class Feria extends Evento{
     private int cantidadStands;
     private TipoLugar tipoLocacion;
 
