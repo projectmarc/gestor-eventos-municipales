@@ -90,4 +90,13 @@ public abstract class Evento {
     public boolean isRequiereInscripcion() {
         return requiereInscripcion;
     }
+    //Setters
+    public String setNombre(String nombre) {
+        return this.nombre = nombre;
+    }
+
+    public LocalDate setFechaInicio(LocalDate fechaInicio) {
+        return this.fechaInicio = fechaInicio;
+    }
+
 }
