@@ -1,5 +1,8 @@
 package gov.municipio.domain.model.evento;
+
+import gov.municipio.domain.model.enums.Rol;
 import java.time.LocalDate;
+
 public class Concierto extends Evento {
     private String artistaPrincipal;
     private String generoMusical;
@@ -10,6 +13,10 @@ public class Concierto extends Evento {
         this.artistaPrincipal = artistaPrincipal;
         this.generoMusical = generoMusical;
         this.capacidadMaxima = capacidadMaxima;
+    }
+    @Override
+    public boolean validarRol(Rol rol){
+        return rol == Rol.PARTICIPANTE || rol == Rol.ORGANIZADOR || rol == Rol.ORGANIZADOR;
     }
 
 }
