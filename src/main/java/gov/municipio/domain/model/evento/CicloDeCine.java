@@ -1,6 +1,7 @@
 package gov.municipio.domain.model.evento;
 
 import gov.municipio.domain.model.Pelicula;
+import gov.municipio.domain.model.enums.Rol;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -16,6 +17,10 @@ public class CicloDeCine extends Evento {
         this.incluyeCharlaPosteriores = incluyeCharlaPosteriores;
     }
 
+    public boolean validarRol(Rol rol){
+        return rol == Rol.ORGANIZADOR || rol == Rol.PARTICIPANTE;
+    }
+
     public List<Pelicula> getPeliculas() {
         return peliculas;
     }
@@ -27,5 +32,6 @@ public class CicloDeCine extends Evento {
     public boolean isIncluyeCharlaPosteriores() {
         return incluyeCharlaPosteriores;
     }
+
 
 }
