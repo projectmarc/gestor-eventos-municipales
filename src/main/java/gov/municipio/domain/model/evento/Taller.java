@@ -1,10 +1,11 @@
 package gov.municipio.domain.model.evento;
 
 import gov.municipio.domain.model.enums.ModalidadTaller;
+import gov.municipio.domain.model.enums.Rol;
 import java.time.LocalDate;
 
 public class Taller extends Evento{
-        private ModalidadTaller modalidad;
+    private ModalidadTaller modalidad;
     private int cupoMaximo;
 
     public Taller(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, ModalidadTaller modalidad, int cupoMaximo) {
