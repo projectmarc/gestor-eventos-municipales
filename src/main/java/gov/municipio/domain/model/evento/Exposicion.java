@@ -15,6 +15,6 @@ public class Exposicion extends Evento{
     }
 
     public boolean validarRol(Rol rol) {
-        return rol == Rol.ORGANIZADOR || rol == Rol.PARTICIPANTE;
+        return rol == Rol.CURADOR || rol == Rol.PARTICIPANTE;
     }
 }
