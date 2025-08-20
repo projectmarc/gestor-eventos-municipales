@@ -7,13 +7,13 @@ import java.time.LocalDate;
 public class CicloDeCine extends Evento {
     private List<Pelicula> peliculas;
     private String ordenProyeccion;
-    private boolean incluyeCharlaPosterior;
+    private boolean incluyeCharlaPosteriores;
 
-    public CicloDeCine(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, List<Pelicula> peliculas, String ordenProyeccion, boolean incluyeCharlaPosterior) {
+    public CicloDeCine(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, List<Pelicula> peliculas, String ordenProyeccion, boolean incluyeCharlaPosteriores) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
         this.peliculas = peliculas;
         this.ordenProyeccion = ordenProyeccion;
-        this.incluyeCharlaPosterior = incluyeCharlaPosterior;
+        this.incluyeCharlaPosteriores = incluyeCharlaPosteriores;
     }
 
     public List<Pelicula> getPeliculas() {
@@ -24,8 +24,8 @@ public class CicloDeCine extends Evento {
         return ordenProyeccion;
     }
 
-    public boolean isIncluyeCharlaPosterior() {
-        return incluyeCharlaPosterior;
+    public boolean isIncluyeCharlaPosteriores() {
+        return incluyeCharlaPosteriores;
     }
 
 }
