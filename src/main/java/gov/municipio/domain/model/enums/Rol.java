@@ -5,5 +5,5 @@ public enum Rol {
     ARTISTA,
     CURADOR,
     INSTRUCTOR,
-    PARTICIPANTE
+    ASISTENTE
 }
