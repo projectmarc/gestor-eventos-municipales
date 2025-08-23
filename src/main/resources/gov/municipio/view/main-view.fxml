@@ -1,54 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
-  All rights reserved. Use is subject to license terms.
-
-  This file is available and licensed under the following license:
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
-
-  - Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in
-    the documentation and/or other materials provided with the distribution.
-  - Neither the name of Oracle Corporation nor the names of its
-    contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <VBox prefHeight="400.0" prefWidth="130.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Inicio" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nueva Persona" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo Evento" />
-         </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+           prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" 
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.municipio.view.MainController">
+   
+   <center>
+      <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE">
+         
+         <!-- Tab Personas -->
+         <Tab text="Gestión de Personas">
+            <VBox spacing="10.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               
+               <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Personas" />
+               
+               <GridPane hgap="10.0" vgap="10.0">
+                  <columnConstraints>
+                     <ColumnConstraints minWidth="100.0" />
+                     <ColumnConstraints minWidth="200.0" />
+                     <ColumnConstraints minWidth="100.0" />
+                     <ColumnConstraints minWidth="200.0" />
+                  </columnConstraints>
+                  
+                  <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <TextField fx:id="nombrePersona" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  
+                  <Label text="Apellido:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                  <TextField fx:id="apellidoPersona" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                  
+                  <Label text="DNI:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <TextField fx:id="dniPersona" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  
+                  <Label text="Teléfono:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <TextField fx:id="telefonoPersona" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  
+                  <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  <TextField fx:id="emailPersona" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="3" />
+               </GridPane>
+               
+               <HBox spacing="10.0">
+                  <Button onAction="#guardarPersona" text="Guardar Persona" />
+               </HBox>
+               
+               <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Lista de Personas" />
+               
+               <TableView fx:id="tablaPersonas" prefHeight="400.0">
+                  <columns>
+                     <TableColumn fx:id="colNombrePersona" prefWidth="150.0" text="Nombre" />
+                     <TableColumn fx:id="colApellidoPersona" prefWidth="150.0" text="Apellido" />
+                     <TableColumn fx:id="colDniPersona" prefWidth="100.0" text="DNI" />
+                     <TableColumn fx:id="colTelefonoPersona" prefWidth="150.0" text="Teléfono" />
+                     <TableColumn fx:id="colEmailPersona" prefWidth="200.0" text="Email" />
+                  </columns>
+               </TableView>
+            </VBox>
+         </Tab>
+         
+         <!-- Tab Eventos -->
+         <Tab text="Gestión de Eventos">
+            <VBox spacing="10.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               
+               <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registro de Eventos" />
+               
+               <GridPane hgap="10.0" vgap="10.0">
+                  <columnConstraints>
+                     <ColumnConstraints minWidth="120.0" />
+                     <ColumnConstraints minWidth="200.0" />
+                     <ColumnConstraints minWidth="120.0" />
+                     <ColumnConstraints minWidth="200.0" />
+                  </columnConstraints>
+                  
+                  <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <TextField fx:id="nombreEvento" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  
+                  <Label text="Fecha de Inicio:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                  <DatePicker fx:id="fechaEvento" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                  
+                  <Label text="Duración (horas):" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <TextField fx:id="duracionEvento" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  
+                  <Label text="Tipo de Evento:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="tipoEvento" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  
+                  <CheckBox fx:id="requiereInscripcionEvento" text="Requiere Inscripción" 
+                           GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2" />
+               </GridPane>
+               
+               <VBox fx:id="camposEspecificos" spacing="10.0" />
+               
+               <HBox spacing="10.0">
+                  <Button onAction="#guardarEvento" text="Guardar Evento" />
+                  <Button onAction="#cambiarEstadoEvento" text="Cambiar Estado" />
+               </HBox>
+               
+               <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Lista de Eventos" />
+               
+               <TableView fx:id="tablaEventos" prefHeight="400.0">
+                  <columns>
+                     <TableColumn fx:id="colNombreEvento" prefWidth="200.0" text="Nombre" />
+                     <TableColumn fx:id="colFechaEvento" prefWidth="120.0" text="Fecha" />
+                     <TableColumn fx:id="colDuracionEvento" prefWidth="100.0" text="Duración" />
+                     <TableColumn fx:id="colEstadoEvento" prefWidth="120.0" text="Estado" />
+                     <TableColumn fx:id="colTipoEvento" prefWidth="150.0" text="Tipo" />
+                  </columns>
+               </TableView>
+            </VBox>
+         </Tab>
+         
+         <!-- Tab Participaciones -->
+         <Tab text="Gestión de Participaciones">
+            <VBox spacing="10.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               
+               <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Inscripción de Participantes" />
+               
+               <GridPane hgap="10.0" vgap="10.0">
+                  <columnConstraints>
+                     <ColumnConstraints minWidth="100.0" />
+                     <ColumnConstraints minWidth="250.0" />
+                     <ColumnConstraints minWidth="100.0" />
+                     <ColumnConstraints minWidth="200.0" />
+                  </columnConstraints>
+                  
+                  <Label text="Evento:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                  <ComboBox fx:id="comboEventos" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  
+                  <Label text="Persona:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="comboPersonas" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  
+                  <Label text="Rol:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="comboRoles" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               </GridPane>
+               
+               <HBox spacing="10.0">
+                  <Button onAction="#inscribirPersona" text="Inscribir Persona" />
+               </HBox>
+               
+               <Label fx:id="infoEvento" style="-fx-font-size: 14px;" />
+               
+               <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Eventos con Participaciones" />
+               
+               <TableView fx:id="tablaEventosParticipacion" prefHeight="400.0">
+                  <columns>
+                     <TableColumn fx:id="colNombreEventoParticipacion" prefWidth="200.0" text="Evento" />
+                     <TableColumn fx:id="colFechaEventoParticipacion" prefWidth="120.0" text="Fecha" />
+                     <TableColumn fx:id="colEstadoEventoParticipacion" prefWidth="120.0" text="Estado" />
+                     <TableColumn fx:id="colParticipantesEventoParticipacion" prefWidth="100.0" text="Participantes" />
+                  </columns>
+               </TableView>
+            </VBox>
+         </Tab>
+         
+      </TabPane>
+   </center>
+   
+   <top>
+      <VBox>
+         <MenuBar>
+            <Menu text="Archivo">
+               <MenuItem text="Salir" />
+            </Menu>
+            <Menu text="Ayuda">
+               <MenuItem text="Acerca de" />
+            </Menu>
+         </MenuBar>
+         
+         <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 20px;" 
+                text="Sistema de Gestión de Eventos Municipales" />
       </VBox>
-   </left>
+   </top>
+   
 </BorderPane>

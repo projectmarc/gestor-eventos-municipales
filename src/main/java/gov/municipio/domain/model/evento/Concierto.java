@@ -1,26 +1,98 @@
 package gov.municipio.domain.model.evento;
 
 import gov.municipio.domain.model.enums.Rol;
-import java.time.LocalDate;
+import gov.municipio.domain.model.enums.TipoEntrada;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "conciertos")
 public class Concierto extends Evento {
-    private String artistaPrincipal;
+    @ElementCollection
+    @CollectionTable(name = "concierto_artistas", joinColumns = @JoinColumn(name = "concierto_id"))
+    @Column(name = "artista")
+    private List<String> artistas = new ArrayList<>();
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoEntrada tipoEntrada;
+    
     private String generoMusical;
     private int capacidadMaxima;
 
-    public Concierto(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requierInscripcion, String artistaPrincipal, String generoMusical, int capacidadMaxima) {
-        super(nombre, fechaInicio, duracionEstimadaHoras, requierInscripcion);
-        this.artistaPrincipal = artistaPrincipal;
+    public Concierto() {}
+
+    public Concierto(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, 
+                     List<String> artistas, TipoEntrada tipoEntrada, String generoMusical, int capacidadMaxima) {
+        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
+        this.artistas = artistas != null ? artistas : new ArrayList<>();
+        this.tipoEntrada = tipoEntrada;
         this.generoMusical = generoMusical;
         this.capacidadMaxima = capacidadMaxima;
     }
+
     @Override
-    public boolean validarRol(Rol rol){
+    public boolean validarRol(Rol rol) {
         return rol == Rol.ASISTENTE || rol == Rol.ORGANIZADOR || rol == Rol.ARTISTA;
     }
 
-    public String getArtistaPrincipal(){return artistaPrincipal;}
-    public String getGeneroMusical(){return generoMusical;}
-    public int getCapacidadMaxima(){return capacidadMaxima;}
+    @Override
+    public boolean validarCupo() {
+        if (capacidadMaxima <= 0) return true; // Sin límite si es 0 o negativo
+        return getAsistentesInscritos() < capacidadMaxima;
+    }
 
+    public void agregarArtista(String artista) {
+        if (artista != null && !artista.trim().isEmpty()) {
+            artistas.add(artista.trim());
+        }
+    }
+
+    public void removerArtista(String artista) {
+        artistas.remove(artista);
+    }
+
+    // Getters y Setters
+    public List<String> getArtistas() {
+        return artistas;
+    }
+
+    public void setArtistas(List<String> artistas) {
+        this.artistas = artistas != null ? artistas : new ArrayList<>();
+    }
+
+    public TipoEntrada getTipoEntrada() {
+        return tipoEntrada;
+    }
+
+    public void setTipoEntrada(TipoEntrada tipoEntrada) {
+        this.tipoEntrada = tipoEntrada;
+    }
+
+    public String getGeneroMusical() {
+        return generoMusical;
+    }
+
+    public void setGeneroMusical(String generoMusical) {
+        this.generoMusical = generoMusical;
+    }
+
+    public int getCapacidadMaxima() {
+        return capacidadMaxima;
+    }
+
+    public void setCapacidadMaxima(int capacidadMaxima) {
+        this.capacidadMaxima = capacidadMaxima;
+    }
+
+    public String getArtistaPrincipal() {
+        return artistas.isEmpty() ? null : artistas.get(0);
+    }
+
+    public int getCapacidadDisponible() {
+        return capacidadMaxima - getAsistentesInscritos();
+    }
 }
