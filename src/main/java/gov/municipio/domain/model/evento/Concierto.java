@@ -46,13 +46,52 @@ public class Concierto extends Evento {
     }
 
     public void agregarArtista(String artista) {
-        if (artista != null && !artista.trim().isEmpty()) {
-            artistas.add(artista.trim());
+        if (artista == null || artista.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del artista no puede estar vacío");
         }
+        if (artistas.contains(artista.trim())) {
+            throw new IllegalArgumentException("El artista ya está en la lista");
+        }
+        artistas.add(artista.trim());
     }
 
     public void removerArtista(String artista) {
-        artistas.remove(artista);
+        if (!artistas.remove(artista)) {
+            throw new IllegalArgumentException("El artista no está en la lista");
+        }
+    }
+
+    public boolean tieneArtista(String artista) {
+        return artistas.contains(artista);
+    }
+
+    public int getCantidadArtistas() {
+        return artistas.size();
+    }
+
+    public boolean esConciertoPago() {
+        return tipoEntrada == TipoEntrada.DE_PAGO;
+    }
+
+    public boolean esConciertoGratuito() {
+        return tipoEntrada == TipoEntrada.GRATUITA;
+    }
+
+    public boolean tieneCapacidadLimitada() {
+        return capacidadMaxima > 0;
+    }
+
+    public double getPorcentajeOcupacion() {
+        if (capacidadMaxima <= 0) return 0.0;
+        return (getAsistentesInscritos() * 100.0) / capacidadMaxima;
+    }
+
+    public boolean estaCompleto() {
+        return capacidadMaxima > 0 && getAsistentesInscritos() >= capacidadMaxima;
+    }
+
+    public boolean estaCasiCompleto() {
+        return getPorcentajeOcupacion() >= 90.0;
     }
 
     // Getters y Setters
