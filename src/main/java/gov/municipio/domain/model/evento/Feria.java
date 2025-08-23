@@ -15,7 +15,7 @@ public class Feria extends Evento{
     }
     @Override
     public boolean validarRol(Rol rol) {
-        return rol == Rol.ORGANIZADOR || rol == Rol.PARTICIPANTE;
+        return rol == Rol.ORGANIZADOR || rol == Rol.ASISTENTE;
     }
 
     public int getCantidadStands() {

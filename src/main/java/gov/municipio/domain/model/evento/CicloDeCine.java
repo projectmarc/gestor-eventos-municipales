@@ -20,7 +20,7 @@ public class CicloDeCine extends Evento {
     }
 
     public boolean validarRol(Rol rol){
-        return rol == Rol.ORGANIZADOR || rol == Rol.PARTICIPANTE;
+        return rol == Rol.ORGANIZADOR || rol == Rol.ASISTENTE;
     }
 
     public List<Pelicula> getPeliculas() {

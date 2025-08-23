@@ -61,7 +61,7 @@ public abstract class Evento {
         this.estado = nuevoEstado;
     }
 
-    public List<Persona> getParticipantesPorRol(Rol rol){
+    public List<Persona> getPersonasPorRol(Rol rol){
         if(rol == null){
             throw new IllegalArgumentException("El rol no puede ser nulo");
         }

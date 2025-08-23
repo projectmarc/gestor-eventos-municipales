@@ -16,7 +16,7 @@ public class Concierto extends Evento {
     }
     @Override
     public boolean validarRol(Rol rol){
-        return rol == Rol.PARTICIPANTE || rol == Rol.ORGANIZADOR || rol == Rol.ARTISTA;
+        return rol == Rol.ASISTENTE || rol == Rol.ORGANIZADOR || rol == Rol.ARTISTA;
     }
 
     public String getArtistaPrincipal(){return artistaPrincipal;}

@@ -23,7 +23,7 @@ public class Taller extends Evento{
     }
     @Override
     public boolean validarRol(Rol rol) {
-        return rol == Rol.INSTRUCTOR || rol == Rol.PARTICIPANTE;
+        return rol == Rol.INSTRUCTOR || rol == Rol.ASISTENTE;
     }
 
 }
