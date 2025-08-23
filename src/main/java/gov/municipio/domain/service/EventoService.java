@@ -68,7 +68,7 @@ public class EventoService {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Evento> query = em.createQuery(
-                "SELECT e FROM Evento e ORDER BY e.fechaInicio DESC", Evento.class);
+                "SELECT DISTINCT e FROM Evento e LEFT JOIN FETCH e.participaciones p LEFT JOIN FETCH p.persona ORDER BY e.fechaInicio DESC", Evento.class);
             return query.getResultList();
         } finally {
             em.close();
@@ -222,6 +222,17 @@ public class EventoService {
     public void cerrar() {
         if (emf != null && emf.isOpen()) {
             emf.close();
+        }
+    }
+
+    public List<Evento> listarEventosConParticipaciones() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Evento> query = em.createQuery(
+                "SELECT DISTINCT e FROM Evento e JOIN FETCH e.participaciones p JOIN FETCH p.persona ORDER BY e.fechaInicio DESC", Evento.class);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
     }
 }

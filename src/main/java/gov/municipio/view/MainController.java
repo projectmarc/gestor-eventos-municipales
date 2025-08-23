@@ -52,6 +52,10 @@ public class MainController {
     @FXML private ComboBox<Persona> comboPersonas;
     @FXML private ComboBox<Rol> comboRoles;
     @FXML private TableView<Evento> tablaEventosParticipacion;
+    @FXML private TableColumn<Evento, String> colNombreEventoParticipacion;
+    @FXML private TableColumn<Evento, LocalDate> colFechaEventoParticipacion;
+    @FXML private TableColumn<Evento, EstadoEvento> colEstadoEventoParticipacion;
+    @FXML private TableColumn<Evento, Integer> colParticipantesEventoParticipacion;
     @FXML private Label infoEvento;
     
     private PersonaService personaService;
@@ -66,6 +70,7 @@ public class MainController {
         
         inicializarTablaPersonas();
         inicializarTablaEventos();
+        inicializarTablaEventosParticipacion();
         inicializarComboBoxes();
         cargarDatos();
     }
@@ -100,7 +105,18 @@ public class MainController {
         
         listaEventos = FXCollections.observableArrayList();
         tablaEventos.setItems(listaEventos);
-        tablaEventosParticipacion.setItems(listaEventos);
+    }
+
+    private void inicializarTablaEventosParticipacion() {
+        colNombreEventoParticipacion.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colFechaEventoParticipacion.setCellValueFactory(new PropertyValueFactory<>("fechaInicio"));
+        colEstadoEventoParticipacion.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        
+        // Configurar columna para mostrar número de participantes
+        colParticipantesEventoParticipacion.setCellValueFactory(data -> {
+            int participantes = data.getValue().getParticipaciones().size();
+            return new javafx.beans.property.SimpleIntegerProperty(participantes).asObject();
+        });
     }
 
     private void inicializarComboBoxes() {
@@ -114,6 +130,7 @@ public class MainController {
     private void cargarDatos() {
         cargarPersonas();
         cargarEventos();
+        cargarEventosConParticipaciones();
     }
 
     private void cargarPersonas() {
@@ -126,6 +143,14 @@ public class MainController {
         listaEventos.clear();
         listaEventos.addAll(eventoService.listarTodos());
         comboEventos.setItems(listaEventos);
+    }
+
+    private void cargarEventosConParticipaciones() {
+        // Usar el método optimizado del servicio
+        List<Evento> eventosConParticipaciones = eventoService.listarEventosConParticipaciones();
+        
+        ObservableList<Evento> listaEventosConParticipaciones = FXCollections.observableArrayList(eventosConParticipaciones);
+        tablaEventosParticipacion.setItems(listaEventosConParticipaciones);
     }
 
     @FXML
@@ -215,6 +240,7 @@ public class MainController {
             eventoService.inscribirPersona(evento.getId(), persona.getId(), rol);
             mostrarInfo("Persona inscrita exitosamente");
             cargarEventos();
+            cargarEventosConParticipaciones();
             
         } catch (Exception e) {
             mostrarError("Error al inscribir persona: " + e.getMessage());
