@@ -108,7 +108,7 @@
                   <columns>
                      <TableColumn fx:id="colNombreEvento" prefWidth="200.0" text="Nombre" />
                      <TableColumn fx:id="colFechaEvento" prefWidth="120.0" text="Fecha" />
-                     <TableColumn fx:id="colDuracionEvento" prefWidth="100.0" text="Duración" />
+                     <TableColumn fx:id="colDuracionEvento" prefWidth="120.0" text="Duración (hrs)" />
                      <TableColumn fx:id="colEstadoEvento" prefWidth="120.0" text="Estado" />
                      <TableColumn fx:id="colTipoEvento" prefWidth="150.0" text="Tipo" />
                   </columns>

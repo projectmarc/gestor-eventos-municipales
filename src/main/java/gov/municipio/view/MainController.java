@@ -43,7 +43,7 @@ public class MainController {
     @FXML private TableView<Evento> tablaEventos;
     @FXML private TableColumn<Evento, String> colNombreEvento;
     @FXML private TableColumn<Evento, LocalDate> colFechaEvento;
-    @FXML private TableColumn<Evento, Integer> colDuracionEvento;
+    @FXML private TableColumn<Evento, String> colDuracionEvento;
     @FXML private TableColumn<Evento, EstadoEvento> colEstadoEvento;
     @FXML private TableColumn<Evento, String> colTipoEvento;
     
@@ -84,7 +84,14 @@ public class MainController {
     private void inicializarTablaEventos() {
         colNombreEvento.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colFechaEvento.setCellValueFactory(new PropertyValueFactory<>("fechaInicio"));
-        colDuracionEvento.setCellValueFactory(new PropertyValueFactory<>("duracionEstimada"));
+        
+        // Formatear la duración para mostrar "X horas"
+        colDuracionEvento.setCellValueFactory(data -> {
+            int duracion = data.getValue().getDuracionEstimada();
+            String textoFormateado = duracion + (duracion == 1 ? " hora" : " horas");
+            return new javafx.beans.property.SimpleStringProperty(textoFormateado);
+        });
+        
         colEstadoEvento.setCellValueFactory(new PropertyValueFactory<>("estado"));
         colTipoEvento.setCellValueFactory(data -> {
             String tipo = data.getValue().getClass().getSimpleName();
