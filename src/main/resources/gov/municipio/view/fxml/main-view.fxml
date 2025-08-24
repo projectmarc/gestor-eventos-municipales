@@ -13,7 +13,7 @@
     
     <!-- Barra de navegación superior (puede tener su propio controlador o ser “tonta”) -->
     <top>
-        
+        <fx:include source="navbar.fxml"/>
     </top>
 
     <!-- Contenedor central donde se “montan” las diferentes pantallas -->

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1">
+      <!-- fx:controller="gov.municipio.controller.NavBarController"> -->
+    <!-- Contenido de la barra de navegación -->
+
+    <children>
+        <Label text="Sistema de Gestión de Eventos Culturales"/>
+    </children>
+</HBox>
