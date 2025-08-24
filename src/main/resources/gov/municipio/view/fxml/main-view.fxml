@@ -16,7 +16,7 @@
         <fx:include source="navbar.fxml"/>
     </top>
 
-    <!-- Contenedor central donde se “montan” las diferentes pantallas -->
+    <!-- Pantalla de inicio -->
     <center>
         
     </center>
