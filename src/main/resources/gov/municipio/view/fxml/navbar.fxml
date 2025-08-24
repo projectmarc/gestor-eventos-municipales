@@ -2,6 +2,7 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
 
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1">
@@ -10,5 +11,9 @@
 
     <children>
         <Label text="Sistema de Gestión de Eventos Culturales"/>
+        <Button fx:id="btnInicio" text="Inicio"/>
+        <Button fx:id="btnEventos" text="Eventos"/>
+        <Button fx:id="btnPersonas" text="Personas"/>
+        <Button fx:id="btnCalendario" text="Calendario"/>
     </children>
 </HBox>
