@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="calendarioRoot" prefWidth="300.0" spacing="15.0" styleClass="calendario-panel" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.municipio.controller.CalendarioController">
+   <children>
+      <!-- Header del calendario con navegación -->
+      <HBox fx:id="calendarioHeader" alignment="CENTER" spacing="10.0" styleClass="calendario-header-nav">
+         <children>
+            <Button fx:id="prevMonthButton" mnemonicParsing="false" onAction="#previousMonth" styleClass="calendario-nav-button" text="‹">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="mesAnoLabel" styleClass="calendario-title" text="Agosto 2025">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="nextMonthButton" mnemonicParsing="false" onAction="#nextMonth" styleClass="calendario-nav-button" text="›">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      
+      <!-- Grid del calendario -->
+      <GridPane fx:id="calendarioGrid" styleClass="calendario-grid">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="35.0" prefWidth="35.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <!-- Fila de encabezados -->
+          <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <!-- Filas de días -->
+          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <!-- Encabezados de días de la semana -->
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="calendario-header-dia" text="Dom" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="calendario-header-dia" text="Lun" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="calendario-header-dia" text="Mar" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="calendario-header-dia" text="Mié" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="calendario-header-dia" text="Jue" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="calendario-header-dia" text="Vie" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="calendario-header-dia" text="Sáb" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+         </children>
+      </GridPane>
+      
+      <!-- Información adicional -->
+      <VBox spacing="5.0" styleClass="calendario-info-panel">
+         <children>
+            <Label fx:id="calendarioInfo" styleClass="calendario-info" text="Haz clic en un día para ver eventos" />
+            <Label fx:id="eventoCountLabel" styleClass="calendario-evento-count" text="3 eventos este mes" />
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</VBox>

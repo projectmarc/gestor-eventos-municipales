@@ -1,54 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
-  All rights reserved. Use is subject to license terms.
-
-  This file is available and licensed under the following license:
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions
-  are met:
-
-  - Redistributions of source code must retain the above copyright
-    notice, this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-    notice, this list of conditions and the following disclaimer in
-    the documentation and/or other materials provided with the distribution.
-  - Neither the name of Oracle Corporation nor the names of its
-    contributors may be used to endorse or promote products derived
-    from this software without specific prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <VBox prefHeight="400.0" prefWidth="130.0" spacing="10.0" BorderPane.alignment="CENTER">
+<BorderPane fx:id="dashboardRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" styleClass="dashboard-root" stylesheets="@dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.municipio.controller.MainController">
+   <top>
+      <!-- Barra de navegación superior -->
+      <HBox fx:id="navigationBar" alignment="CENTER_LEFT" prefHeight="60.0" spacing="20.0" styleClass="navigation-bar" BorderPane.alignment="CENTER">
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Inicio" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nueva Persona" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo Evento" />
+            <Label fx:id="titleLabel" styleClass="app-title" text="Sistema de Gestión de Eventos Culturales">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="dashboardNavButton" mnemonicParsing="false" styleClass="nav-button" text="Dashboard" />
+            <Button fx:id="eventosNavButton" mnemonicParsing="false" styleClass="nav-button" text="Eventos" />
+            <Button fx:id="personasNavButton" mnemonicParsing="false" styleClass="nav-button" text="Personas" />
+            <Button fx:id="calendarioNavButton" mnemonicParsing="false" styleClass="nav-button" text="Calendario" />
+            <Button fx:id="crearEventoNavButton" mnemonicParsing="false" styleClass="primary-button" text="+ Crear Evento" />
          </children>
          <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
+   <left>
+      <!-- Panel de acciones rápidas -->
+      <VBox fx:id="quickActionsPanel" prefWidth="250.0" spacing="15.0" styleClass="quick-actions-panel" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="panel-title" text="Acciones Rápidas">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="crearEventoButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="quick-action-button" text="Crear Nuevo Evento" />
+            <Button fx:id="anadirPersonaButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="quick-action-button" text="Añadir Nueva Persona" />
+            <Button fx:id="verEventosButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="quick-action-button" text="Ver todos los Eventos" />
+            <Button fx:id="verPersonasButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="50.0" styleClass="quick-action-button" text="Ver todas las Personas" />
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </VBox>
    </left>
+   <center>
+      <!-- Panel central con próximos eventos -->
+      <VBox fx:id="eventosPanel" spacing="15.0" styleClass="eventos-panel" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="panel-title" text="Próximos Eventos Confirmados">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <ScrollPane fx:id="eventosScrollPane" fitToWidth="true" styleClass="eventos-scroll">
+               <content>
+                  <VBox fx:id="eventosContainer" spacing="10.0">
+                     <children>
+                        <!-- Tarjeta de evento ejemplo 1 -->
+                        <HBox alignment="CENTER_LEFT" styleClass="evento-card">
+                           <children>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="evento-nombre" text="Exposición de Arte Contemporáneo">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="evento-fecha" text="Fecha: 28 de Agosto, 2025" />
+                                    <Label styleClass="evento-duracion" text="Duración: 3 días" />
+                                    <Label styleClass="evento-organizador" text="Organizador: María González" />
+                                 </children>
+                              </VBox>
+                              <Label styleClass="evento-tipo-exposicion" text="Exposición" />
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </HBox>
+                        <!-- Tarjeta de evento ejemplo 2 -->
+                        <HBox alignment="CENTER_LEFT" styleClass="evento-card">
+                           <children>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="evento-nombre" text="Concierto de Jazz en el Parque">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="evento-fecha" text="Fecha: 2 de Septiembre, 2025" />
+                                    <Label styleClass="evento-duracion" text="Duración: 2 horas" />
+                                    <Label styleClass="evento-organizador" text="Organizador: Carlos Mendoza" />
+                                 </children>
+                              </VBox>
+                              <Label styleClass="evento-tipo-concierto" text="Concierto" />
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </HBox>
+                        <!-- Tarjeta de evento ejemplo 3 -->
+                        <HBox alignment="CENTER_LEFT" styleClass="evento-card">
+                           <children>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label styleClass="evento-nombre" text="Taller de Fotografía Digital">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label styleClass="evento-fecha" text="Fecha: 5 de Septiembre, 2025" />
+                                    <Label styleClass="evento-duracion" text="Duración: 4 horas" />
+                                    <Label styleClass="evento-organizador" text="Organizador: Ana López" />
+                                 </children>
+                              </VBox>
+                              <Label styleClass="evento-tipo-taller" text="Taller" />
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </center>
+   <right>
+      <!-- Panel del calendario reutilizable -->
+      <fx:include fx:id="calendario" source="calendario-view.fxml" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <!-- Barra de estado -->
+      <HBox fx:id="statusBar" alignment="CENTER_LEFT" prefHeight="30.0" styleClass="status-bar" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="statusLabel" styleClass="status-text" text="Listo" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+         </padding>
+      </HBox>
+   </bottom>
 </BorderPane>
