@@ -31,7 +31,7 @@ public class Persona {
         this.apellido = apellido;
     }
 
-   public int getDni() {
+    public int getDni() {
         return dni;
     }
 
