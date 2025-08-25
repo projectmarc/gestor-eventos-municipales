@@ -24,24 +24,27 @@
             <HBox layoutX="4.0" layoutY="112.0" prefHeight="30.0" prefWidth="456.0">
                <children>
                   <TextField fx:id="txtBuscar" promptText="Buscar eventos..." />
-                  <ComboBox editable="true" prefWidth="150.0" />
-                  <ComboBox editable="true" prefWidth="150.0" />
+                  <ComboBox fx:id="cbEstado" editable="true" prefWidth="150.0" promptText="Filtrar por estado..." />
+                  <ComboBox fx:id="cdTipo" editable="true" prefWidth="150.0" promptText="Filtrar por tipo..." />
                </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </HBox>
             <Label layoutX="22.0" layoutY="61.0" text="Administre los eventos del sistema" />
-            <Button layoutX="321.0" layoutY="48.0" mnemonicParsing="false" text="+ Nuevo Evento">
+            <Button fx:id="btnNuevo" layoutX="321.0" layoutY="48.0" mnemonicParsing="false" text="+ Nuevo Evento">
                <font>
                   <Font name="Arial" size="14.0" />
                </font>
             </Button>
-            <TableView layoutX="13.0" layoutY="161.0" prefHeight="312.0" prefWidth="434.0">
+            <TableView fx:id="tblEventos" layoutX="13.0" layoutY="161.0" prefHeight="312.0" prefWidth="434.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre" />
+                <TableColumn fx:id="colFecha" editable="false" prefWidth="75.0" sortable="false" text="Fecha" />
               </columns>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </TableView>
          </children>
       </AnchorPane>
