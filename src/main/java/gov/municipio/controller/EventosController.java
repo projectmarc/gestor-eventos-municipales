@@ -1,6 +1,7 @@
 package gov.municipio.controller;
 
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -37,8 +38,10 @@ public class EventosController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Inicialización de componentes y carga de datos
         cbEstado.getItems().setAll(EstadoEvento.values());
-
         cbTipo.getItems().addAll("Concierto", "Ciclo de cine","Exposición", "Taller", "Feria");
+        // Configurar columnas
+        colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombre()));
+        colFecha.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFechaInicio().toString()));
 
     }
 
