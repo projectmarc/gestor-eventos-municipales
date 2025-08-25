@@ -32,7 +32,7 @@ public class CicloDeCine extends Evento {
         return ordenProyeccion;
     }
 
-    public boolean isIncluyeCharlaPosteriores() {
+    public boolean incluyeCharlaPosteriores() {
         return incluyeCharlaPosteriores;
     }
 }
