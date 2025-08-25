@@ -42,7 +42,7 @@ public class Concierto extends Evento {
     @Override
     public boolean validarCupo() {
         if (capacidadMaxima <= 0) return true; // Sin límite si es 0 o negativo
-        return getAsistentesInscritos() < capacidadMaxima;
+        return getAsistentesInscriptos() < capacidadMaxima;
     }
 
     public void agregarArtista(String artista) {
@@ -83,11 +83,11 @@ public class Concierto extends Evento {
 
     public double getPorcentajeOcupacion() {
         if (capacidadMaxima <= 0) return 0.0;
-        return (getAsistentesInscritos() * 100.0) / capacidadMaxima;
+        return (getAsistentesInscriptos() * 100.0) / capacidadMaxima;
     }
 
     public boolean estaCompleto() {
-        return capacidadMaxima > 0 && getAsistentesInscritos() >= capacidadMaxima;
+        return capacidadMaxima > 0 && getAsistentesInscriptos() >= capacidadMaxima;
     }
 
     public boolean estaCasiCompleto() {
@@ -132,6 +132,6 @@ public class Concierto extends Evento {
     }
 
     public int getCapacidadDisponible() {
-        return capacidadMaxima - getAsistentesInscritos();
+        return capacidadMaxima - getAsistentesInscriptos();
     }
 }

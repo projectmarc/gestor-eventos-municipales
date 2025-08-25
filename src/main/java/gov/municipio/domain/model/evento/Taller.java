@@ -37,7 +37,7 @@ public class Taller extends Evento {
     @Override
     public boolean validarCupo() {
         if (cupoMaximo <= 0) return true; // Sin límite si es 0 o negativo
-        return getAsistentesInscritos() < cupoMaximo;
+        return getAsistentesInscriptos() < cupoMaximo;
     }
 
     public void asignarInstructor(Persona instructor) {
@@ -75,6 +75,6 @@ public class Taller extends Evento {
     }
 
     public int getCupoDisponible() {
-        return cupoMaximo - getAsistentesInscritos();
+        return cupoMaximo - getAsistentesInscriptos();
     }
 }

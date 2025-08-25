@@ -103,7 +103,7 @@ public abstract class Evento {
             .toList();
     }
 
-    public int getAsistentesInscritos() {
+    public int getAsistentesInscriptos() {
         return (int) participaciones.stream()
             .filter(p -> p.getRol() == Rol.ASISTENTE)
             .count();
