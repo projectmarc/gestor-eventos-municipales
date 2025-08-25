@@ -17,7 +17,7 @@ public class Router {
             Parent view = FXMLLoader.load(getClass().getResource(screen.getFxmlPath()));
             container.getChildren().setAll(view);
         } catch (IOException e) {
-            // En simpleza: re-lanzamos como unchecked para no propagar IOException
+            // re-lanzamos como unchecked para no propagar IOException
             throw new RuntimeException("No se pudo cargar la vista: " + screen, e);
         }
     }
