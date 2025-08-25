@@ -6,12 +6,12 @@ import java.time.LocalDate;
 
 public class Feria extends Evento {
     private int cantidadStands;
-    private TipoLugar tipoLocacion;
+    private TipoLugar tipoLugar;
 
-    public Feria(int cantidadStands, TipoLugar tipoLocacion, String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion) {
+    public Feria(int cantidadStands, TipoLugar tipoLugar, String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
         this.cantidadStands = cantidadStands;
-        this.tipoLocacion = tipoLocacion;
+        this.tipoLugar = tipoLugar;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Feria extends Evento {
         return cantidadStands;
     }
 
-    public TipoLugar getTipoLocacion() {
-        return tipoLocacion;
+    public TipoLugar getTipoLugar() {
+        return tipoLugar;
     }
 }
