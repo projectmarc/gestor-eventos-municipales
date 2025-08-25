@@ -4,7 +4,7 @@ import gov.municipio.domain.model.enums.ModalidadTaller;
 import gov.municipio.domain.model.enums.Rol;
 import java.time.LocalDate;
 
-public class Taller extends Evento{
+public class Taller extends Evento {
     private ModalidadTaller modalidad;
     private int cupoMaximo;
 
@@ -21,9 +21,9 @@ public class Taller extends Evento{
     public int getCupoMaximo() {
         return cupoMaximo;
     }
+
     @Override
     public boolean validarRol(Rol rol) {
         return rol == Rol.INSTRUCTOR || rol == Rol.ASISTENTE;
     }
-
 }

@@ -19,7 +19,8 @@ public class CicloDeCine extends Evento {
         this.incluyeCharlaPosteriores = incluyeCharlaPosteriores;
     }
 
-    public boolean validarRol(Rol rol){
+    @Override
+    public boolean validarRol(Rol rol) {
         return rol == Rol.ORGANIZADOR || rol == Rol.ASISTENTE;
     }
 
@@ -34,6 +35,4 @@ public class CicloDeCine extends Evento {
     public boolean isIncluyeCharlaPosteriores() {
         return incluyeCharlaPosteriores;
     }
-
-
 }

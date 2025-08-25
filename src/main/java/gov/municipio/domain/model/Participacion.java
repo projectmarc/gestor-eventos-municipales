@@ -9,7 +9,7 @@ public class Participacion {
     private Rol rol;
 
     public Participacion(Persona persona, Evento evento, Rol rol) {
-        if(persona == null || evento == null || rol == null) {
+        if (persona == null || evento == null || rol == null) {
             throw new IllegalArgumentException("Los parámetros no pueden ser nulos");
         }
         this.persona = persona;

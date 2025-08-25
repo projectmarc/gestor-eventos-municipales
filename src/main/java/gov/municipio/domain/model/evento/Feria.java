@@ -1,10 +1,10 @@
 package gov.municipio.domain.model.evento;
-import gov.municipio.domain.model.enums.TipoLugar;
 
 import gov.municipio.domain.model.enums.Rol;
-import java.time.LocalDate; 
+import gov.municipio.domain.model.enums.TipoLugar;
+import java.time.LocalDate;
 
-public class Feria extends Evento{
+public class Feria extends Evento {
     private int cantidadStands;
     private TipoLugar tipoLocacion;
 
@@ -13,6 +13,7 @@ public class Feria extends Evento{
         this.cantidadStands = cantidadStands;
         this.tipoLocacion = tipoLocacion;
     }
+
     @Override
     public boolean validarRol(Rol rol) {
         return rol == Rol.ORGANIZADOR || rol == Rol.ASISTENTE;

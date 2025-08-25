@@ -14,13 +14,21 @@ public class Concierto extends Evento {
         this.generoMusical = generoMusical;
         this.capacidadMaxima = capacidadMaxima;
     }
+
     @Override
-    public boolean validarRol(Rol rol){
+    public boolean validarRol(Rol rol) {
         return rol == Rol.ASISTENTE || rol == Rol.ORGANIZADOR || rol == Rol.ARTISTA;
     }
 
-    public String getArtistaPrincipal(){return artistaPrincipal;}
-    public String getGeneroMusical(){return generoMusical;}
-    public int getCapacidadMaxima(){return capacidadMaxima;}
+    public String getArtistaPrincipal() {
+        return artistaPrincipal;
+    }
 
+    public String getGeneroMusical() {
+        return generoMusical;
+    }
+
+    public int getCapacidadMaxima() {
+        return capacidadMaxima;
+    }
 }

@@ -21,7 +21,7 @@ public abstract class Evento {
         this.nombre = nombre;
         this.fechaInicio = fechaInicio;
         this.duracionEstimada = duracionEstimadaHoras;
-        this.estado = EstadoEvento.PLANIFICACION; // Estado inicial por defecto
+        this.estado = EstadoEvento.PLANIFICACION;
         this.requiereInscripcion = requiereInscripcion;
     }
 
@@ -30,20 +30,19 @@ public abstract class Evento {
     }
 
     public Participacion inscribirPersona(Persona persona, Rol rol) {
-        if(rol == null){
+        if (rol == null) {
             throw new IllegalArgumentException("El rol no puede ser nulo");
         }
-        if (!validarRol(rol)){
+        if (!validarRol(rol)) {
             throw new IllegalArgumentException("El rol " + rol + " no es válido para este tipo de evento");
         }
-        if(estado != EstadoEvento.CONFIRMADO){
+        if (estado != EstadoEvento.CONFIRMADO) {
             throw new IllegalArgumentException("El evento debe estar confirmado para inscribir personas");
         }
 
         Participacion participacion = new Participacion(persona, this, rol);
         participaciones.add(participacion);
         return participacion;
-        
     }
 
     public boolean validarRol(Rol rol) {
@@ -55,14 +54,14 @@ public abstract class Evento {
     }
 
     public void cambiarEstado(EstadoEvento nuevoEstado) {
-        if(nuevoEstado == null){
+        if (nuevoEstado == null) {
             throw new IllegalArgumentException("El nuevo estado no puede ser nulo");
         }
         this.estado = nuevoEstado;
     }
 
-    public List<Persona> getPersonasPorRol(Rol rol){
-        if(rol == null){
+    public List<Persona> getPersonasPorRol(Rol rol) {
+        if (rol == null) {
             throw new IllegalArgumentException("El rol no puede ser nulo");
         }
         return participaciones.stream()
@@ -70,7 +69,7 @@ public abstract class Evento {
             .map(Participacion::getPersona)
             .toList();
     }
-    //Getters
+
     public String getNombre() {
         return nombre;
     }
@@ -90,13 +89,13 @@ public abstract class Evento {
     public boolean isRequiereInscripcion() {
         return requiereInscripcion;
     }
-    //Setters
-    public String setNombre(String nombre) {
-        return this.nombre = nombre;
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public LocalDate setFechaInicio(LocalDate fechaInicio) {
-        return this.fechaInicio = fechaInicio;
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
 }

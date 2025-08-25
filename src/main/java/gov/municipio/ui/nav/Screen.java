@@ -1,7 +1,6 @@
 package gov.municipio.ui.nav;
 
 public enum Screen {
-    // Cuando uno quiere agregar una nueva dirección de navegación, solo hay que agregarla acá
     INICIO("/gov/municipio/view/fxml/inicio.fxml", "Inicio"),
     EVENTOS("/gov/municipio/view/fxml/eventos.fxml", "Eventos");
 
