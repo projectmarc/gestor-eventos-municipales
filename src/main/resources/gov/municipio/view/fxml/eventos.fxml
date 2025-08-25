@@ -1,9 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1">
-    <Label text="Eventos"/>
-</VBox>
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gov.municipio.controller.EventosController">
+    <!-- TOP: Buscador -->
+    <top>
+        <HBox spacing="8" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Buscar:"/>
+                <TextField fx:id="txtBuscar" promptText="Nombre del evento..."/>
+                <Button fx:id="btnBuscar" text="Buscar" />
+                <Button fx:id="btnLimpiar" text="Limpiar" />
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label text="Total:"/>
+                <Label fx:id="lblTotal" text="0"/>
+            </children>
+            <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
+        </HBox>
+    </top>
+
+    <!-- CENTER: Tabla -->
+    <center>
+        <TableView fx:id="tblEventos" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colNombre" text="Nombre" prefWidth="220"/>
+                <TableColumn fx:id="colFecha" text="Fecha" prefWidth="120"/>
+                <TableColumn fx:id="colDuracion" text="Duración (h)" prefWidth="110"/>
+                <TableColumn fx:id="colEstado" text="Estado" prefWidth="120"/>
+                <TableColumn fx:id="colInscripcion" text="Inscripción" prefWidth="110"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <!-- BOTTOM: Form + Acciones -->
+    <bottom>
+        <VBox spacing="8">
+            <children>
+                <GridPane hgap="10" vgap="8">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="20"/>
+                        <ColumnConstraints percentWidth="30"/>
+                        <ColumnConstraints percentWidth="20"/>
+                        <ColumnConstraints percentWidth="30"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+
+                    <children>
+                        <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtNombre" promptText="Ej: Feria de artesanos"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="Fecha:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                        <DatePicker fx:id="dpFecha" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+
+                        <Label text="Duración (h):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="txtDuracion" promptText="Ej: 2"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="Estado:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        <ComboBox fx:id="cmbEstado" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                    </children>
+                    <padding><Insets top="8" right="12" bottom="0" left="12"/></padding>
+                </GridPane>
+
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <children>
+                        <CheckBox fx:id="chkInscripcion" text="Requiere inscripción previa"/>
+                        <Pane HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="btnNuevo" text="Nuevo"/>
+                        <Button fx:id="btnGuardar" text="Guardar" defaultButton="true"/>
+                        <Button fx:id="btnEliminar" text="Eliminar" cancelButton="true"/>
+                    </children>
+                    <padding><Insets top="0" right="12" bottom="12" left="12"/></padding>
+                </HBox>
+            </children>
+        </VBox>
+    </bottom>
+</BorderPane>
