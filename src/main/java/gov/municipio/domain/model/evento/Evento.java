@@ -1,14 +1,13 @@
 package gov.municipio.domain.model.evento;
 
-
 import gov.municipio.domain.model.*;
 import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.domain.model.enums.Rol;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
-import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -17,40 +16,39 @@ public abstract class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @Column(nullable = false)
     private String nombre;
-
+    
     @Column(nullable = false)
     private LocalDate fechaInicio;
-
+    
     @Column(nullable = false)
     private int duracionEstimada;
-
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoEvento estado;
-
+    
     @Column(nullable = false)
     private boolean requiereInscripcion;
-
+    
     @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Participacion> participaciones = new ArrayList<>();
+
+    public Evento() {
+        this.estado = EstadoEvento.PLANIFICACION;
+    }
 
     public Evento(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion) {
         this();
         this.nombre = nombre;
         this.fechaInicio = fechaInicio;
         this.duracionEstimada = duracionEstimadaHoras;
-        this.estado = EstadoEvento.PLANIFICACION;
         this.requiereInscripcion = requiereInscripcion;
     }
 
-    public Evento() {
-        this.estado = EstadoEvento.PLANIFICACION;
-    }
-
-        public Participacion inscribirPersona(Persona persona, Rol rol) {
+    public Participacion inscribirPersona(Persona persona, Rol rol) {
         if(rol == null){
             throw new IllegalArgumentException("El rol no puede ser nulo");
         }
@@ -77,10 +75,8 @@ public abstract class Evento {
         return participacion;
     }
 
-    public boolean validarRol(Rol rol) {
-        return true;
-    }
-
+    public abstract boolean validarRol(Rol rol);
+    
     // Método para validar cupo - por defecto no hay límite
     public boolean validarCupo() {
         return true;
@@ -91,14 +87,14 @@ public abstract class Evento {
     }
 
     public void cambiarEstado(EstadoEvento nuevoEstado) {
-        if (nuevoEstado == null) {
+        if(nuevoEstado == null){
             throw new IllegalArgumentException("El nuevo estado no puede ser nulo");
         }
         this.estado = nuevoEstado;
     }
 
-    public List<Persona> getPersonasPorRol(Rol rol) {
-        if (rol == null) {
+    public List<Persona> getPersonasPorRol(Rol rol){
+        if(rol == null){
             throw new IllegalArgumentException("El rol no puede ser nulo");
         }
         return participaciones.stream()
@@ -107,16 +103,43 @@ public abstract class Evento {
             .toList();
     }
 
+    public int getAsistentesInscritos() {
+        return (int) participaciones.stream()
+            .filter(p -> p.getRol() == Rol.ASISTENTE)
+            .count();
+    }
+
+    // Getters y Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
     public int getDuracionEstimada() {
         return duracionEstimada;
+    }
+
+    public void setDuracionEstimada(int duracionEstimada) {
+        this.duracionEstimada = duracionEstimada;
     }
 
     public EstadoEvento getEstado() {
@@ -127,12 +150,12 @@ public abstract class Evento {
         return requiereInscripcion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setRequiereInscripcion(boolean requiereInscripcion) {
+        this.requiereInscripcion = requiereInscripcion;
     }
 
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    @Override
+    public String toString() {
+        return nombre + " (" + fechaInicio + ") - " + estado;
     }
-
 }
