@@ -1,13 +1,17 @@
 package gov.municipio.controller;
 
-import gov.municipio.domain.model.evento.Evento;
+
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import gov.municipio.domain.model.enums.EstadoEvento;
+ import gov.municipio.domain.model.evento.Evento;
 
 
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class EventosController {
+public class EventosController implements Initializable {
     @FXML
     private TextField txtBuscar;
 
@@ -28,4 +32,14 @@ public class EventosController {
 
     @FXML
     private TableColumn<Evento, String> colFecha;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Inicialización de componentes y carga de datos
+        cbEstado.getItems().setAll(EstadoEvento.values());
+
+        cbTipo.getItems().addAll("Concierto", "Ciclo de cine","Exposición", "Taller", "Feria");
+
+    }
+
 }
