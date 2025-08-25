@@ -14,7 +14,9 @@ public class MainController {
     @FXML
     private void initialize() {
         router = new Router(contentStack);
-        navbarController.setRouter(router);
+        if (navbarController != null) {
+            navbarController.setRouter(router);
+        }
         router.goTo(Screen.INICIO);
     }
 }

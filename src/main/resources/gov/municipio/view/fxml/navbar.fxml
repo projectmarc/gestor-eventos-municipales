@@ -5,15 +5,13 @@
 <?import javafx.scene.control.Button?>
 
 <HBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1">
-      <!-- fx:controller="gov.municipio.controller.NavBarController"> -->
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gov.municipio.controller.NavbarController">
     <!-- Contenido de la barra de navegación -->
 
     <children>
         <Label text="Sistema de Gestión de Eventos Culturales"/>
-        <Button fx:id="btnInicio" text="Inicio" onAction="onNavigate"/>
-        <Button fx:id="btnEventos" text="Eventos" onAction="onNavigate"/>
-        <Button fx:id="btnPersonas" text="Personas" onAction="onNavigate"/>
-        <Button fx:id="btnCalendario" text="Calendario" onAction="onNavigate"/>
+        <Button fx:id="btnInicio" text="Inicio" onAction="#onNavigate" userData="INICIO"/>
+        <Button fx:id="btnEventos" text="Eventos" onAction="#onNavigate" userData="EVENTOS"/>
     </children>
 </HBox>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.BorderPane?>
-
+<?import javafx.scene.layout.StackPane?>
 
 <BorderPane fx:id="main"
             xmlns="http://javafx.com/javafx/21"
@@ -11,14 +11,14 @@
             <!-- styleClass="main"
             stylesheets="@main.css"> -->
     
-    <!-- Barra de navegación superior (puede tener su propio controlador o ser “tonta”) -->
+    <!-- Barra de navegación superior -->
     <top>
-        <fx:include source="navbar.fxml"/>
+        <fx:include source="navbar.fxml" fx:id="navbar"/>
     </top>
 
-    <!-- Pantalla de inicio -->
+    <!-- Área de contenido dinámico -->
     <center>
-        <fx:include source="inicio.fxml"/>
+        <StackPane fx:id="contentStack"/>
     </center>
 
     <!-- Calendario reutilizable a la derecha -->
