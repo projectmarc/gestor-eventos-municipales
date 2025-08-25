@@ -1,9 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1">
-    <Label text="Bienvenido. Acá puede ver los eventos confirmados."/>
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gov.municipio.controller.inicioController"
+      spacing="16" padding="20">
+
+    <children>
+        <HBox spacing="12">
+            <children>
+                <Label fx:id="lblBienvenida" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnNuevoEvento" text="Nuevo Evento" onAction="#onNuevoEvento"/>
+                <Button fx:id="btnPersonas" text="Personas" onAction="#onPersonas"/>
+                <Button fx:id="btnCalendario" text="Calendario" onAction="#onCalendario"/>
+            </children>
+        </HBox>
+
+        <HBox spacing="12">
+            <children>
+                <VBox alignment="CENTER" spacing="6" style="-fx-background-color: #f5f7fa; -fx-padding: 12; -fx-background-radius: 8;">
+                    <children>
+                        <Label text="Total de eventos" style="-fx-text-fill:#555;"/>
+                        <Label fx:id="lblTotalEventos" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" spacing="6" style="-fx-background-color: #f5f7fa; -fx-padding: 12; -fx-background-radius: 8;">
+                    <children>
+                        <Label text="Hoy" style="-fx-text-fill:#555;"/>
+                        <Label fx:id="lblEventosHoy" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" spacing="6" style="-fx-background-color: #f5f7fa; -fx-padding: 12; -fx-background-radius: 8;">
+                    <children>
+                        <Label text="Próx. 7 días" style="-fx-text-fill:#555;"/>
+                        <Label fx:id="lblEventosSemana" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <VBox spacing="8" VBox.vgrow="ALWAYS">
+            <children>
+                <Label text="Eventos recientes" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                <TableView fx:id="tablaRecientes" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colNombre" text="Nombre" prefWidth="240"/>
+                        <TableColumn fx:id="colTipo" text="Tipo" prefWidth="160"/>
+                        <TableColumn fx:id="colFecha" text="Fecha" prefWidth="140"/>
+                        <TableColumn fx:id="colEstado" text="Estado" prefWidth="140"/>
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+    </children>
 </VBox>
