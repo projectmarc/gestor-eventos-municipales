@@ -11,9 +11,9 @@
 
     <children>
         <Label text="Sistema de Gestión de Eventos Culturales"/>
-        <Button fx:id="btnInicio" text="Inicio"/>
-        <Button fx:id="btnEventos" text="Eventos"/>
-        <Button fx:id="btnPersonas" text="Personas"/>
-        <Button fx:id="btnCalendario" text="Calendario"/>
+        <Button fx:id="btnInicio" text="Inicio" onAction="onNavigate"/>
+        <Button fx:id="btnEventos" text="Eventos" onAction="onNavigate"/>
+        <Button fx:id="btnPersonas" text="Personas" onAction="onNavigate"/>
+        <Button fx:id="btnCalendario" text="Calendario" onAction="onNavigate"/>
     </children>
 </HBox>
