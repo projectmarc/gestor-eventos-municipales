@@ -63,7 +63,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>gov.municipio.MainEventos</mainClass>
+                    <mainClass>gov.municipio.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
