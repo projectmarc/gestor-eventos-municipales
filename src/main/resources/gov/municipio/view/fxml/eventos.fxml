@@ -31,7 +31,7 @@
                   <Insets />
                </opaqueInsets>
             </HBox>
-            <Label layoutX="22.0" layoutY="61.0" text="Administre los eventos del sistema" />
+            <Label layoutX="22.0" layoutY="66.0" text="Administre los eventos del sistema" />
             <Button fx:id="btnNuevo" layoutX="321.0" layoutY="48.0" mnemonicParsing="false" text="+ Nuevo Evento">
                <font>
                   <Font name="Arial" size="14.0" />
