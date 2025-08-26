@@ -1,7 +1,6 @@
 package gov.municipio.controller;
 
 import gov.municipio.domain.model.evento.*;
-import gov.municipio.domain.model.evento.Evento;
 import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.domain.service.EventoService;
 
@@ -53,24 +52,58 @@ public class EventosController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        configurarCombos();
-        configurarTabla();
-        cargarDatos();
-        configurarFiltrado();
-        wiringBusquedaYFiltros();
+    configurarCombos();
+    configurarTabla();
+    cargarDatos();
+    configurarFiltrado();
+    wiringBusquedaYFiltros();
 
-        ObservableList<Evento> eventos = FXCollections.observableArrayList(
-            Arrays.asList(
-            new Concierto("Concierto Rock", LocalDate.now(), EstadoEvento.CONFIRMADO, true),
-            new CicloDeCine("Ciclo de Cine Independiente", LocalDate.now().plusDays(1), EstadoEvento.PLANIFICACION, false),
-            new Feria("Feria de Libros", LocalDate.now().plusWeeks(1), EstadoEvento.EN_EJECUCION, true),
-            new Exposicion("Exposición de Arte", LocalDate.now().plusMonths(1), EstadoEvento.FINALIZADO, false),
-            new Taller("Taller de Pintura", LocalDate.now().plusDays(10), EstadoEvento.CONFIRMADO, true),
-            new Feria("Feria de Ciencias", LocalDate.now().plusWeeks(2), EstadoEvento.PLANIFICACION, false)
-            )
-        );
-        backingData.setAll(eventos);
-    }
+    
+    tblEventos.setItems(eventos);
+}
+    //Método para testear
+    private ObservableList<Evento> crearEventosDummy() {
+    Concierto concierto = new Concierto();
+    concierto.setNombre("Concierto Rock");
+    concierto.setFechaInicio(LocalDate.now());
+    concierto.setEstado(EstadoEvento.CONFIRMADO);
+    concierto.setRequiereInscripcion(true);
+
+    CicloDeCine cine = new CicloDeCine();
+    cine.setNombre("Ciclo de Cine Independiente");
+    cine.setFechaInicio(LocalDate.now().plusDays(1));
+    cine.setEstado(EstadoEvento.PLANIFICACION);
+    cine.setRequiereInscripcion(false);
+
+    Feria feriaLibros = new Feria();
+    feriaLibros.setNombre("Feria de Libros");
+    feriaLibros.setFechaInicio(LocalDate.now().plusWeeks(1));
+    feriaLibros.setEstado(EstadoEvento.EN_EJECUCION);
+    feriaLibros.setRequiereInscripcion(true);
+
+    Exposicion expoArte = new Exposicion();
+    expoArte.setNombre("Exposición de Arte");
+    expoArte.setFechaInicio(LocalDate.now().plusMonths(1));
+    expoArte.setEstado(EstadoEvento.FINALIZADO);
+    expoArte.setRequiereInscripcion(false);
+
+    Taller tallerPintura = new Taller();
+    tallerPintura.setNombre("Taller de Pintura");
+    tallerPintura.setFechaInicio(LocalDate.now().plusDays(10));
+    tallerPintura.setEstado(EstadoEvento.CONFIRMADO);
+    tallerPintura.setRequiereInscripcion(true);
+
+    Feria feriaCiencias = new Feria();
+    feriaCiencias.setNombre("Feria de Ciencias");
+    feriaCiencias.setFechaInicio(LocalDate.now().plusWeeks(2));
+    feriaCiencias.setEstado(EstadoEvento.PLANIFICACION);
+    feriaCiencias.setRequiereInscripcion(false);
+
+    return FXCollections.observableArrayList(
+            concierto, cine, feriaLibros, expoArte, tallerPintura, feriaCiencias
+    );
+}
+
 
     // Combos
     private void configurarCombos() {
