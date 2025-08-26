@@ -217,6 +217,7 @@ public class EventosController implements Initializable {
         return s.toLowerCase(LOCALE_ES).trim();
     }
 
+    // Métodos FXML
     @FXML
     private void onBuscar(ActionEvent e) {
         aplicarFiltros();
@@ -226,6 +227,26 @@ public class EventosController implements Initializable {
     private void onFiltroChanged(ActionEvent e) {
         aplicarFiltros();
     }
+
+    private void onEditarEvento(Evento evento) {
+        System.out.println("Editar: " + evento.getNombre());
+        // Aquí iría la lógica para editar el evento
+        // Por ejemplo, abrir un diálogo con un formulario prellenado
+    }   
+
+    private void onEliminarEvento(Evento evento) {
+        var ok = alertConfirm("¿Eliminar el evento \"" + evento.getNombre() + "\"?");
+        if (ok) {
+            backingData.remove(evento);
+            // Aquí también se debería eliminar el evento del servicio/repositorio
+        }
+    }
+
+    private boolean alertConfirm(String msg) {
+        var res = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.OK, ButtonType.CANCEL).showAndWait();
+        return res.isPresent() && res.get() == ButtonType.OK;
+    }
+    
 
 }
 
