@@ -21,6 +21,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
+import javafx.event.ActionEvent;
+//import javafx.scene.input.MouseEvent;
+//import javafx.scene.input.KeyEvent;
+
 public class EventosController implements Initializable {
     @FXML private TextField txtBuscar;
     @FXML private ComboBox<EstadoEvento> cbEstado;
@@ -110,10 +114,7 @@ public class EventosController implements Initializable {
             try {
                 backingData.setAll(eventoService.listarEventosConParticipaciones());
             } catch (Exception ex) {
-                // Fallback: si hubiera otro método básico, podés agregarlo.
-                // backingData.setAll(eventoService.listarTodos());
-                // Por ahora, si falla dejamos la lista vacía y mostramos en consola.
-                System.err.println("No se pudieron cargar eventoss: " + ex.getMessage());
+                System.err.println("No se pudieron cargar eventos: " + ex.getMessage());
             }
         }
 
@@ -174,4 +175,16 @@ public class EventosController implements Initializable {
         if (s == null) return "";
         return s.toLowerCase(LOCALE_ES).trim();
     }
+
+    @FXML
+    private void onBuscar(ActionEvent e) {
+        aplicarFiltros();
+    }
+
+    @FXML
+    private void onFiltroChanged(ActionEvent e) {
+        aplicarFiltros();
+    }
+
 }
+
