@@ -13,6 +13,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -93,6 +94,44 @@ public class EventosController implements Initializable {
             String txt = cd.getValue().isRequiereInscripcion() ? "Requiere" : "No requiere";
             return new SimpleStringProperty(txt);
         });
+
+        // --- Columna Acciones ---
+        TableColumn<Evento, Void> colAcciones = new TableColumn<>("Acciones");
+        colAcciones.setSortable(false);
+
+        colAcciones.setCellFactory(col -> new TableCell<>() {
+            private final Button btnEditar = new Button("✏");
+            private final Button btnEliminar = new Button("🗑");
+
+            {
+                btnEditar.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                btnEliminar.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-text-fill: red;");
+                
+                btnEditar.setOnAction(e -> {
+                    Evento ev = getTableView().getItems().get(getIndex());
+                    onEditarEvento(ev);
+                });
+
+                btnEliminar.setOnAction(e -> {
+                    Evento ev = getTableView().getItems().get(getIndex());
+                    onEliminarEvento(ev);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    HBox box = new HBox(5, btnEditar, btnEliminar);
+                    setGraphic(box);
+                }
+            }
+        });
+
+        tblEventos.getColumns().add(colAcciones);
+
 
         if (!tblEventos.getColumns().contains(colEstado)) {
             tblEventos.getColumns().addAll(colEstado, colTipo, colRequiereInscripcion);
