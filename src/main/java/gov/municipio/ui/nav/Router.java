@@ -29,7 +29,7 @@ public class Router {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 
             loader.setControllerFactory(type -> {
-                // Reglas de inyección por tipo — agregá más según crezcan tus controladores
+                // Reglas de inyección por tipo — se agregan más según crezcan los controladores
                 if (type == PersonasController.class) {
                     return new PersonasController(services.personaService());
                 }
