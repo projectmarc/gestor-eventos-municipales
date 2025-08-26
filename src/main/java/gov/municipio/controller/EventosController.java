@@ -62,13 +62,14 @@ public class EventosController implements Initializable {
 
     // Tabla y columnas 
     private void configurarTabla() {
+        //Nombre
         colNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+        //Fecha
         colFecha.setCellValueFactory(cd -> {
             var e = cd.getValue();
             var f = e.getFechaInicio() != null ? FECHA_FMT.format(e.getFechaInicio()) : "";
             return new SimpleStringProperty(f);
         });
-
         // Estado
         colEstado = new TableColumn<>("Estado");
         colEstado.setSortable(false);
@@ -77,12 +78,10 @@ public class EventosController implements Initializable {
             var estado = e.getEstado() != null ? e.getEstado().name() : "";
             return new SimpleStringProperty(estado);
         });
-
-        // Tipo (sin atributo nuevo: usamos la clase concreta)
+        // Tipo
         colTipo = new TableColumn<>("Tipo");
         colTipo.setSortable(false);
         colTipo.setCellValueFactory(cd -> new SimpleStringProperty(tipoAmigable(cd.getValue())));
-
         // Requiere inscripción
         colRequiereInscripcion = new TableColumn<>("Requiere inscripción");
         colRequiereInscripcion.setSortable(false);
@@ -91,12 +90,11 @@ public class EventosController implements Initializable {
             return new SimpleStringProperty(txt);
         });
 
-        // Agregamos columnas nuevas al final (no están en el FXML)
         if (!tblEventos.getColumns().contains(colEstado)) {
             tblEventos.getColumns().addAll(colEstado, colTipo, colRequiereInscripcion);
         }
 
-        // Mensaje cuando no hay resultados
+        // Label cuando no hay resultados
         tblEventos.placeholderProperty().bind(
                 Bindings.createObjectBinding(
                         () -> new Label("Sin resultados"),
@@ -105,22 +103,22 @@ public class EventosController implements Initializable {
         );
     }
 
-    // Carga de datos desde el servicio
-    private void cargarDatos() {
-        // Si tu servicio expone otro método (p. ej. listarTodos()), podés usarlo.
-        // Aquí intentamos listar los eventos con sus participaciones si está disponible.
-        try {
-            backingData.setAll(eventoService.listarEventosConParticipaciones());
-        } catch (Exception ex) {
-            // Fallback: si hubiera otro método básico, podés agregarlo.
-            // backingData.setAll(eventoService.listarTodos());
-            // Por ahora, si falla dejamos la lista vacía y mostramos en consola.
-            System.err.println("No se pudieron cargar eventos: " + ex.getMessage());
+        // Carga de datos desde el servicio
+        private void cargarDatos() {
+            // Si tu servicio expone otro método (p. ej. listarTodos()), podés usarlo.
+            // Aquí intentamos listar los eventos con sus participaciones si está disponible.
+            try {
+                backingData.setAll(eventoService.listarEventosConParticipaciones());
+            } catch (Exception ex) {
+                // Fallback: si hubiera otro método básico, podés agregarlo.
+                // backingData.setAll(eventoService.listarTodos());
+                // Por ahora, si falla dejamos la lista vacía y mostramos en consola.
+                System.err.println("No se pudieron cargar eventoss: " + ex.getMessage());
+            }
         }
-    }
 
-    // Configura FilteredList/SortedList
-    private void configurarFiltrado() {
+    // Configuración de filtros
+        private void configurarFiltrado() {
         filtered = new FilteredList<>(backingData, e -> true);
         sorted = new SortedList<>(filtered);
         sorted.comparatorProperty().bind(tblEventos.comparatorProperty());
@@ -128,7 +126,7 @@ public class EventosController implements Initializable {
     }
 
     private void wiringBusquedaYFiltros() {
-        // Texto: búsqueda por nombre (case-insensitive, ignora tildes básicas)
+        // Texto: 
         txtBuscar.textProperty().addListener((obs, old, val) -> aplicarFiltros());
 
         // Estado
@@ -141,7 +139,7 @@ public class EventosController implements Initializable {
     private void aplicarFiltros() {
         final String texto = normalizar(txtBuscar.getText());
         final EstadoEvento estadoSel = cbEstado.getValue();
-        final String tipoSel = cbTipo.getValue(); // Puede ser null (“Todos”)
+        final String tipoSel = cbTipo.getValue(); 
 
         Predicate<Evento> pred = e -> true;
 
@@ -149,13 +147,11 @@ public class EventosController implements Initializable {
         if (texto != null && !texto.isBlank()) {
             pred = pred.and(e -> normalizar(e.getNombre()).contains(texto));
         }
-
         // Filtro por estado
         if (estadoSel != null) {
             pred = pred.and(e -> estadoSel.equals(e.getEstado()));
         }
-
-        // Filtro por tipo usando la clase concreta (sin atributo nuevo en Evento)
+        // Filtro por tipo
         if (tipoSel != null && !tipoSel.isBlank()) {
             pred = pred.and(e -> tipoAmigable(e).equalsIgnoreCase(tipoSel));
         }
@@ -163,18 +159,17 @@ public class EventosController implements Initializable {
         filtered.setPredicate(pred);
     }
 
-    // Traduce clase concreta → etiqueta para UI
+    // Convierte el nombre de la clase a un nombre legible en la UI
     private String tipoAmigable(Evento e) {
         if (e instanceof Concierto) return "Concierto";
         if (e instanceof CicloDeCine) return "Ciclo de Cine";
         if (e instanceof Exposicion) return "Exposición";
         if (e instanceof Taller) return "Taller";
         if (e instanceof Feria) return "Feria";
-        // default de seguridad
         return e.getClass().getSimpleName();
     }
 
-    // Normaliza básico para búsqueda (minúsculas y quita espacios extra)
+    // Normalización básica para búsqueda (minúsculas y quita espacios extra)
     private String normalizar(String s) {
         if (s == null) return "";
         return s.toLowerCase(LOCALE_ES).trim();
