@@ -1,24 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns="http://javafx.com/javafx/21"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="gov.municipio.controller.PersonasController">
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      spacing="20">
+    
+    <!-- Sección izquierda: formulario -->
     <VBox spacing="10">
-        <Label text="Gestión de Personas" fx:id="lblTitulo"/>
-        <HBox>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Añadir Persona" fx:id="btnAgregar"/>
-        </HBox>
-        <TextField promptText="Buscar..." fx:id="txtBuscar"/>
-        <ComboBox fx:id="cbRol" promptText="Filtrar por rol"/>
+        <Label text="Registrar persona"/>
+        
+        <Label text="Nombre"/>
+        <TextField fx:id="txtNombre"/>
+        
+        <Label text="Apellido"/>
+        <TextField fx:id="txtApellido"/>
+        
+        <Label text="DNI"/>
+        <TextField fx:id="txtDni"/>
+        
+        <Label text="Teléfono"/>
+        <TextField fx:id="txtTelefono"/>
+        
+        <Label text="Email"/>
+        <TextField fx:id="txtEmail"/>
+        
+        <Button text="Registrar" fx:id="btnRegistrar"/>
     </VBox>
-</StackPane>
+    
+    <!-- Sección derecha: listado -->
+    <VBox spacing="10">
+        <Label text="Personas registradas"/>
+        
+        <TableView fx:id="tblPersonas">
+            <columns>
+                <TableColumn text="Nombre" fx:id="colNombre"/>
+                <TableColumn text="Apellido" fx:id="colApellido"/>
+                <TableColumn text="DNI" fx:id="colDni"/>
+                <TableColumn text="Teléfono" fx:id="colTelefono"/>
+                <TableColumn text="Email" fx:id="colEmail"/>
+            </columns>
+        </TableView>
+    </VBox>
+    
+</HBox>
