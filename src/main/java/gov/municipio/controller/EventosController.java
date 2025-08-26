@@ -1,6 +1,7 @@
 package gov.municipio.controller;
 
 import gov.municipio.domain.model.evento.*;
+import gov.municipio.domain.model.evento.Evento;
 import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.domain.service.EventoService;
 
@@ -16,7 +17,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -55,6 +58,18 @@ public class EventosController implements Initializable {
         cargarDatos();
         configurarFiltrado();
         wiringBusquedaYFiltros();
+
+        ObservableList<Evento> eventos = FXCollections.observableArrayList(
+            Arrays.asList(
+            new Concierto("Concierto Rock", LocalDate.now(), EstadoEvento.CONFIRMADO, true),
+            new CicloDeCine("Ciclo de Cine Independiente", LocalDate.now().plusDays(1), EstadoEvento.PLANIFICACION, false),
+            new Feria("Feria de Libros", LocalDate.now().plusWeeks(1), EstadoEvento.EN_EJECUCION, true),
+            new Exposicion("Exposición de Arte", LocalDate.now().plusMonths(1), EstadoEvento.FINALIZADO, false),
+            new Taller("Taller de Pintura", LocalDate.now().plusDays(10), EstadoEvento.CONFIRMADO, true),
+            new Feria("Feria de Ciencias", LocalDate.now().plusWeeks(2), EstadoEvento.PLANIFICACION, false)
+            )
+        );
+        backingData.setAll(eventos);
     }
 
     // Combos
