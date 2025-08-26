@@ -22,7 +22,7 @@ public class PersonasController {
     }
 
     @FXML
-    private void onPresionarBotonRegistrar() {
+    private void onRegistrarPersona() {
         // Limpiar los campos
         limpiarCampos();
     }
