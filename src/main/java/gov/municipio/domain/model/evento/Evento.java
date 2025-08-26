@@ -146,6 +146,11 @@ public abstract class Evento {
         return estado;
     }
 
+    public void setEstado(EstadoEvento estado) {
+    this.estado = estado;
+    }
+
+
     public boolean isRequiereInscripcion() {
         return requiereInscripcion;
     }
