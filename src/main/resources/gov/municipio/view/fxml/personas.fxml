@@ -10,6 +10,7 @@
 
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gov.municipio.controller.PersonasController"
       spacing="20">
     
     <!-- Sección izquierda: formulario -->
@@ -31,7 +32,7 @@
         <Label text="Email"/>
         <TextField fx:id="txtEmail"/>
         
-        <Button text="Registrar" fx:id="btnRegistrar"/>
+        <Button text="Registrar" fx:id="btnRegistrar" onAction="#onPresionarBotonRegistrar"/>
     </VBox>
     
     <!-- Sección derecha: listado -->

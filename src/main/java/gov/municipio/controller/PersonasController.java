@@ -20,4 +20,20 @@ public class PersonasController {
     private void initialize() {
         // Inicialización del controlador
     }
+
+    @FXML
+    private void onPresionarBotonRegistrar() {
+        // Limpiar los campos
+        limpiarCampos();
+    }
+
+    public void limpiarCampos() {
+        txtNombre.clear();
+        txtApellido.clear();
+        txtDni.clear();
+        txtTelefono.clear();
+        txtEmail.clear();
+    }
+
+
 }
