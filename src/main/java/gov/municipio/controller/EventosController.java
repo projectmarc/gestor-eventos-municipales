@@ -69,12 +69,14 @@ public class EventosController implements Initializable {
     private void configurarTabla() {
         //Nombre
         colNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
+
         //Fecha
         colFecha.setCellValueFactory(cd -> {
             var e = cd.getValue();
             var f = e.getFechaInicio() != null ? FECHA_FMT.format(e.getFechaInicio()) : "";
             return new SimpleStringProperty(f);
         });
+
         // Estado
         colEstado = new TableColumn<>("Estado");
         colEstado.setSortable(false);
@@ -83,10 +85,12 @@ public class EventosController implements Initializable {
             var estado = e.getEstado() != null ? e.getEstado().name() : "";
             return new SimpleStringProperty(estado);
         });
+
         // Tipo
         colTipo = new TableColumn<>("Tipo");
         colTipo.setSortable(false);
         colTipo.setCellValueFactory(cd -> new SimpleStringProperty(tipoAmigable(cd.getValue())));
+
         // Requiere inscripción
         colRequiereInscripcion = new TableColumn<>("Requiere inscripción");
         colRequiereInscripcion.setSortable(false);
@@ -95,13 +99,13 @@ public class EventosController implements Initializable {
             return new SimpleStringProperty(txt);
         });
 
-        // --- Columna Acciones ---
+        //Acciones
         TableColumn<Evento, Void> colAcciones = new TableColumn<>("Acciones");
         colAcciones.setSortable(false);
 
         colAcciones.setCellFactory(col -> new TableCell<>() {
-            private final Button btnEditar = new Button("✏");
-            private final Button btnEliminar = new Button("🗑");
+            private final Button btnEditar = new Button("Editar");
+            private final Button btnEliminar = new Button("Borrar");
 
             {
                 btnEditar.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
@@ -132,7 +136,6 @@ public class EventosController implements Initializable {
 
         tblEventos.getColumns().add(colAcciones);
 
-
         if (!tblEventos.getColumns().contains(colEstado)) {
             tblEventos.getColumns().addAll(colEstado, colTipo, colRequiereInscripcion);
         }
@@ -146,23 +149,22 @@ public class EventosController implements Initializable {
         );
     }
 
-        // Carga de datos desde el servicio
-        private void cargarDatos() {
-            // Si tu servicio expone otro método (p. ej. listarTodos()), podés usarlo.
-            // Aquí intentamos listar los eventos con sus participaciones si está disponible.
-            try {
-                backingData.setAll(eventoService.listarEventosConParticipaciones());
-            } catch (Exception ex) {
-                System.err.println("No se pudieron cargar eventos: " + ex.getMessage());
-            }
+    // Carga de datos desde el servicio
+    private void cargarDatos() {
+        // Aquí intentamos listar los eventos con sus participaciones si está disponible.
+        try {
+            backingData.setAll(eventoService.listarEventosConParticipaciones());
+        } catch (Exception ex) {
+            System.err.println("No se pudieron cargar eventos: " + ex.getMessage());
         }
+    }     
 
     // Configuración de filtros
-        private void configurarFiltrado() {
-        filtered = new FilteredList<>(backingData, e -> true);
-        sorted = new SortedList<>(filtered);
-        sorted.comparatorProperty().bind(tblEventos.comparatorProperty());
-        tblEventos.setItems(sorted);
+    private void configurarFiltrado() {
+    filtered = new FilteredList<>(backingData, e -> true);
+    sorted = new SortedList<>(filtered);
+    sorted.comparatorProperty().bind(tblEventos.comparatorProperty());
+    tblEventos.setItems(sorted);
     }
 
     private void wiringBusquedaYFiltros() {
