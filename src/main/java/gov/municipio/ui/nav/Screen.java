@@ -1,6 +1,7 @@
 package gov.municipio.ui.nav;
 
 public enum Screen {
+    MAIN("/gov/municipio/view/fxml/main-view.fxml", "Principal"),
     INICIO("/gov/municipio/view/fxml/inicio.fxml", "Inicio"),
     EVENTOS("/gov/municipio/view/fxml/eventos.fxml", "Eventos"),
     PERSONAS("/gov/municipio/view/fxml/personas.fxml", "Personas");

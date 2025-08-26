@@ -15,8 +15,13 @@ public class NavbarController {
         if (router == null) return;
         Object src = e.getSource();
         if (src instanceof Button b && b.getUserData() != null) {
-            Screen screen = Screen.valueOf(b.getUserData().toString());
-            router.goTo(screen);
+            try {
+                Screen screen = Screen.valueOf(b.getUserData().toString());
+                router.goTo(screen);
+            } catch (IllegalArgumentException ex) {
+                System.err.println("Screen no encontrado: " + b.getUserData());
+                // Opcional: mostrar una alerta al usuario
+            }
         }
     }
 }

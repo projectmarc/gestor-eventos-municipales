@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 
 public class PersonasController {
 
+    private final PersonaService personaService; // ✅ final + obligatorio
+
     @FXML private TextField txtNombre;
     @FXML private TextField txtApellido;
     @FXML private TextField txtDni;
@@ -14,15 +16,11 @@ public class PersonasController {
     @FXML private TextField txtEmail;
     @FXML private Button btnRegistrar;
 
-    // (Podés eliminar el TableView del FXML o dejarlo, pero no lo usamos)
-    // @FXML private TableView<Persona> tblPersonas;
-
-    private PersonaService personaService;
-
-    /** Llamado desde el bootstrap (Main) */
-    public void setPersonaService(PersonaService service){
-        this.personaService = service;
+    // 👇 JavaFX NO llama este constructor por defecto; se lo indicamos con controllerFactory
+    public PersonasController(PersonaService personaService) {
+        this.personaService = personaService;
     }
+
 
     @FXML
     private void initialize() {

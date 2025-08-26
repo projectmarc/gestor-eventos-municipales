@@ -1,23 +1,56 @@
 package gov.municipio.ui.nav;
 
-import java.io.IOException;
+import gov.municipio.config.ServiceContainer;
+import gov.municipio.controller.MainController;
+import gov.municipio.controller.PersonasController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+
 public class Router {
     private final StackPane container;
+    private final ServiceContainer services;
 
-    public Router(StackPane container) {
+    public Router(StackPane container, ServiceContainer services) {
         this.container = container;
+        this.services = services;
     }
 
     public void goTo(Screen screen) {
+        Parent view = loadView(screen.getFxmlPath());
+        container.getChildren().setAll(view);
+    }
+
+    private Parent loadView(String fxmlPath) {
         try {
-            Parent view = FXMLLoader.load(getClass().getResource(screen.getFxmlPath()));
-            container.getChildren().setAll(view);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+
+            loader.setControllerFactory(type -> {
+                // Reglas de inyección por tipo — agregá más según crezcan tus controladores
+                if (type == PersonasController.class) {
+                    return new PersonasController(services.personaService());
+                }
+                if (type == MainController.class) {
+                    return new MainController(services);
+                }
+
+                // Fallback: intentar constructor sin args (para pantallas que no necesiten servicios)
+                try {
+                    Constructor<?> ctor = type.getDeclaredConstructor();
+                    ctor.setAccessible(true);
+                    return ctor.newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException("No se pudo crear el controlador: " + type, e);
+                }
+            });
+
+            return loader.load();
         } catch (IOException e) {
-            throw new RuntimeException("No se pudo cargar la vista: " + screen, e);
+            throw new RuntimeException("No se pudo cargar " + fxmlPath, e);
         }
     }
 }
+
