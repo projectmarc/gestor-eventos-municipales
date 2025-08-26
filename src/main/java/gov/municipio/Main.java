@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/gov/municipio/view/fxml/main-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 300, 200);
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/gov/municipio/view/fxml/eventos.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Gestor de Eventos Municipales");
         stage.setScene(scene);
         stage.show();
