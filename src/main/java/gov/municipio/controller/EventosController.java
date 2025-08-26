@@ -169,7 +169,7 @@ public class EventosController implements Initializable {
         return e.getClass().getSimpleName();
     }
 
-    // Normalización básica para búsqueda (minúsculas y quita espacios extra)
+    // Normalización para búsqueda (minúsculas y quita espacios extra)
     private String normalizar(String s) {
         if (s == null) return "";
         return s.toLowerCase(LOCALE_ES).trim();
