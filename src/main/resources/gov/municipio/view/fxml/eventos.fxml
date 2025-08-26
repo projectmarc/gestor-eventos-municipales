@@ -37,7 +37,7 @@
                   <Font name="Arial" size="14.0" />
                </font>
             </Button>
-            <TableView fx:id="tblEventos" layoutX="13.0" layoutY="161.0" onSort="#onTablaMouseClicked" prefHeight="312.0" prefWidth="541.0">
+            <TableView fx:id="tblEventos" layoutX="13.0" layoutY="161.0"  prefHeight="312.0" prefWidth="541.0">
               <columns>
                 <TableColumn fx:id="colNombre" prefWidth="75.0" sortable="false" text="Nombre" />
                 <TableColumn fx:id="colFecha" editable="false" prefWidth="75.0" sortable="false" text="Fecha" />
