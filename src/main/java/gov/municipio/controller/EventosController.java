@@ -37,6 +37,8 @@ public class EventosController implements Initializable {
     @FXML private TableColumn<Evento, String> colEstado;
     @FXML private TableColumn<Evento, String> colTipo;
     @FXML private TableColumn<Evento, String> colRequiereInscripcion;
+    @FXML private TableColumn<Evento, Void> colAcciones;
+
 
     private final ObservableList<Evento> backingData = FXCollections.observableArrayList();
     private FilteredList<Evento> filtered;
@@ -77,9 +79,7 @@ public class EventosController implements Initializable {
             return new SimpleStringProperty(f);
         });
 
-        // Estado
-        colEstado = new TableColumn<>("Estado");
-        colEstado.setSortable(false);
+        // Estado   
         colEstado.setCellValueFactory(cd -> {
             var e = cd.getValue();
             var estado = e.getEstado() != null ? e.getEstado().name() : "";
@@ -92,17 +92,12 @@ public class EventosController implements Initializable {
         colTipo.setCellValueFactory(cd -> new SimpleStringProperty(tipoAmigable(cd.getValue())));
 
         // Requiere inscripción
-        colRequiereInscripcion = new TableColumn<>("Requiere inscripción");
-        colRequiereInscripcion.setSortable(false);
         colRequiereInscripcion.setCellValueFactory(cd -> {
             String txt = cd.getValue().isRequiereInscripcion() ? "Requiere" : "No requiere";
             return new SimpleStringProperty(txt);
         });
 
         //Acciones
-        TableColumn<Evento, Void> colAcciones = new TableColumn<>("Acciones");
-        colAcciones.setSortable(false);
-
         colAcciones.setCellFactory(col -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");
             private final Button btnEliminar = new Button("Borrar");
