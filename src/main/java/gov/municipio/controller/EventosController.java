@@ -132,7 +132,9 @@ public class EventosController implements Initializable {
         tblEventos.getColumns().add(colAcciones);
 
         if (!tblEventos.getColumns().contains(colEstado)) {
-            tblEventos.getColumns().addAll(colEstado, colTipo, colRequiereInscripcion);
+            tblEventos.getColumns().add(colEstado);
+            tblEventos.getColumns().add(colTipo);
+            tblEventos.getColumns().add(colRequiereInscripcion);
         }
 
         // Label cuando no hay resultados
