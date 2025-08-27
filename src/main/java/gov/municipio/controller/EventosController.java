@@ -88,6 +88,8 @@ public class EventosController implements Initializable {
                 }
             }
         });
+        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
+        cbTipo.setPromptText("Todos los tipos");
     }
 
     // Tabla y columnas
