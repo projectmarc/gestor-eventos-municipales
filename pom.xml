@@ -20,15 +20,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
-            <classifier>${os.detected.classifier}</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
-            <classifier>${os.detected.classifier}</classifier>
         </dependency>
-
+        
         <!-- JPA / Hibernate -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
@@ -57,20 +55,6 @@
                 <configuration>
                     <release>21</release>
                 </configuration>
-            </plugin>
-
-            <!-- Detecta el sistema operativo (para JavaFX) -->
-            <plugin>
-                <groupId>kr.motd.maven</groupId>
-                <artifactId>os-maven-plugin</artifactId>
-                <version>1.7.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>detect</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 
             <!-- JavaFX -->
