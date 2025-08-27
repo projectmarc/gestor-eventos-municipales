@@ -62,6 +62,7 @@ public class EventosController implements Initializable {
     @FXML private TextField txtInstructor;
     @FXML private ComboBox<String> cbModalidad;
     //Concierto
+    @FXML private AnchorPane conciertoPane;
     @FXML private TextField txtArtistas;
     @FXML private ComboBox<TipoEntrada> cbTipoEntrada;
     @FXML private TextField txtGeneroMusical;
@@ -346,6 +347,9 @@ public class EventosController implements Initializable {
         tallerPane.setVisible(false);
         tallerPane.setManaged(false);
 
+        conciertoPane.setVisible(false);
+        conciertoPane.setManaged(false);
+
         cbTipoEvento.valueProperty().addListener((obs, old, nuevo) -> {
             if ("Feria".equals(nuevo)){
                 feriaPane.setVisible(true);
@@ -353,13 +357,20 @@ public class EventosController implements Initializable {
 
                 tallerPane.setVisible(false);
                 tallerPane.setManaged(false);
+                conciertoPane.setVisible(false);
+                conciertoPane.setManaged(false);
             }else if("Taller".equals(nuevo)){
                 tallerPane.setVisible(true);
                 tallerPane.setManaged(true);
 
                 feriaPane.setVisible(false);
                 feriaPane.setManaged(false);
-            }else{
+                conciertoPane.setVisible(false);
+                conciertoPane.setManaged(false);
+            }else if("Concierto".equals(nuevo)){
+                conciertoPane.setVisible(true);
+                conciertoPane.setManaged(true);
+
                 feriaPane.setVisible(false);
                 feriaPane.setManaged(false);
                 tallerPane.setVisible(false);
