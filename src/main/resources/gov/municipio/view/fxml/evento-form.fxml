@@ -52,9 +52,9 @@
       <ComboBox fx:id="cbTipoEvento" layoutX="14.0" layoutY="210.0" prefHeight="25.0" prefWidth="174.0" />
       <ComboBox fx:id="cbEstadoEvento" layoutX="208.0" layoutY="210.0" prefWidth="150.0" />
       <DatePicker fx:id="dpFechaInicio" layoutX="13.0" layoutY="162.0" />
-      <Button layoutX="298.0" layoutY="74.0" mnemonicParsing="false" text="Cancelar" />
+      <Button fx:id="btnCancelar" layoutX="298.0" layoutY="74.0" mnemonicParsing="false" onAction="#onCancelar" text="Cancelar" />
       <Spinner fx:id="spDuracion" layoutX="209.0" layoutY="162.0" />
-      <Button layoutX="208.0" layoutY="74.0" mnemonicParsing="false" text="Crear Evento" />
+      <Button fx:id="btnCrearEvento" layoutX="208.0" layoutY="74.0" mnemonicParsing="false" onAction="#onCrearEvento" text="Crear Evento" />
       <AnchorPane fx:id="feriaPane" layoutY="312.0" prefHeight="198.0" prefWidth="374.0" style="-fx-background-color: white;">
          <children>
             <ComboBox fx:id="cbTipoLugar" layoutX="22.0" layoutY="123.0" prefHeight="25.0" prefWidth="345.0" />
