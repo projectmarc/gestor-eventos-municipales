@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import javafx.event.ActionEvent;
 import java.util.stream.Collectors;
@@ -65,8 +66,28 @@ public class EventosFormController {
     @FXML private TextField txtDisciplinaArtistica;
     //Ciclo de cine
     @FXML private AnchorPane cicloCinePane;
-    @FXML private TextField txtPelicula;
-    @FXML private CheckBox chkRequiereInscripcionCine;
+    @FXML private TextField txtPeliculas;
+    @FXML private CheckBox chkCharlaPosterior;  
+
+    private Evento eventoEdicion;               
+    private Consumer<Evento> onSave;            
+
+    public void setOnSave(Consumer<Evento> onSave) {
+        this.onSave = onSave;
+    }
+
+    @FXML
+    public void initialize() {
+        cbEstadoEvento.getItems().setAll(EstadoEvento.values());
+        cbTipoEvento.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
+        cbEstadoEvento.setEditable(false);
+        cbTipoEvento.setEditable(false);
+
+        configurarCombosFormulario();
+        configurarVisibilidadFormularios();
+        configurarSpinners();
+    }
+
 
     // Formulario de creación de Evento
     @FXML
@@ -87,6 +108,16 @@ public class EventosFormController {
         cbTipoLugar.getItems().setAll(EnumSet.allOf(TipoLugar.class));
         cbModalidad.getItems().setAll(EnumSet.allOf(ModalidadTaller.class));
     }
+
+    public void cargarEvento(Evento evento) {
+        if (evento != null) {
+            txtNombre.setText(evento.getNombre());
+            dpFechaInicio.setValue(evento.getFechaInicio());
+            cbEstadoEvento.setValue(evento.getEstado());
+            
+        }
+    }
+
     
     private void configurarVisibilidadFormularios(){
         feriaPane.setVisible(false);
@@ -196,6 +227,11 @@ public class EventosFormController {
 
         Evento nuevo = null;
 
+        if (nombre == null || nombre.isBlank()) { alertError("El nombre es obligatorio."); return; }
+        if (fechaInicio == null) { alertError("La fecha de inicio es obligatoria."); return; }
+        if (tipo == null) { alertError("Seleccione un tipo de evento."); return; }
+        if (estado == null) { alertError("Seleccione un estado."); return; }
+
         switch(tipo){
             case "Concierto" ->{              
                 List<String> artistas = Arrays.asList(txtArtistas.getText().split(",")); 
@@ -209,13 +245,13 @@ public class EventosFormController {
                 nuevo = new Exposicion(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, disciplinaArtistica);
             }
             case "Ciclo de Cine" -> {
-                List<Pelicula> peliculas = Arrays.stream(txtPelicula.getText().split(","))
+                List<Pelicula> peliculas = Arrays.stream(txtPeliculas.getText().split(","))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .map(title -> new Pelicula(title, 0f))  
                 .collect(Collectors.toList());
 
-                boolean incluyeCharlaPosteriores = chkRequiereInscripcionCine.isSelected();
+                boolean incluyeCharlaPosteriores = chkCharlaPosterior.isSelected();
                 nuevo = new CicloDeCine(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, peliculas, incluyeCharlaPosteriores);
             }
             case "Feria" -> {
