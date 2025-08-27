@@ -46,8 +46,8 @@
                 <TableColumn fx:id="colFecha" editable="false" prefWidth="78.0" sortable="false" text="Fecha" />
                   <TableColumn fx:id="colEstado" prefWidth="85.0" sortable="false" text="Estado" />
                   <TableColumn fx:id="colTipo" prefWidth="66.0" sortable="false" text="Tipo" />
-                  <TableColumn fx:id="colRequiereInscripcion" prefWidth="142.0" sortable="false" text="Requiere Inscripción" />
-                  <TableColumn fx:id="colAcciones" prefWidth="178.0" sortable="false" text="Acciones" />
+                  <TableColumn fx:id="colRequiereInscripcion" editable="false" prefWidth="180.0" sortable="false" text="Requiere Inscripción" />
+                  <TableColumn fx:id="colAcciones" prefWidth="140.0" sortable="false" text="Acciones" />
               </columns>
                <opaqueInsets>
                   <Insets />
