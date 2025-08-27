@@ -1,7 +1,10 @@
 package gov.municipio.controller;
 
 import gov.municipio.domain.model.evento.*;
+import gov.municipio.domain.model.Pelicula;
 import gov.municipio.domain.model.enums.EstadoEvento;
+import gov.municipio.domain.model.enums.TipoEntrada;
+import gov.municipio.domain.model.enums.TipoLugar;
 import gov.municipio.domain.service.EventoService;
 
 import javafx.beans.binding.Bindings;
@@ -148,12 +151,28 @@ public class EventosController implements Initializable {
 
     // Carga de datos desde el servicio
     private void cargarDatos() {
-        // Aquí intentamos listar los eventos con sus participaciones si está disponible.
-        try {
-            backingData.setAll(eventoService.listarEventosConParticipaciones());
-        } catch (Exception ex) {
-            System.err.println("No se pudieron cargar eventos: " + ex.getMessage());
-        }
+            backingData.clear(); // limpiar cualquier resto
+    
+            var hoy = java.time.LocalDate.now();
+
+            var e1 = new Concierto("Rock en la Plaza", hoy.plusDays(7), 4, true,
+                        java.util.List.of("La Renga", "Los Redondos"), TipoEntrada.GRATUITA, "Rock", 500);
+            e1.setEstado(EstadoEvento.CONFIRMADO);
+
+            var e2 = new Exposicion("Arte Local", hoy.plusDays(15), 6, false, "Pintura");
+            e2.setEstado(EstadoEvento.PLANIFICACION);
+
+            var e3 = new Feria("Feria de Emprendedores", hoy.plusDays(30), 10, true,
+                    60, TipoLugar.AIRE_LIBRE);
+            e3.setEstado(EstadoEvento.EN_EJECUCION);
+
+            var p1 = new Pelicula("Relatos Salvajes", 122f);
+            var p2 = new Pelicula("Nueve Reinas", 114f);
+            var e4 = new CicloDeCine("Clásicos", hoy.plusDays(20), 3, true,
+                    java.util.List.of(p1, p2), false);
+            e4.setEstado(EstadoEvento.FINALIZADO);
+
+            backingData.addAll(e1, e2, e3, e4);
     }     
 
     // Configuración de filtros
