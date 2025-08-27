@@ -76,6 +76,7 @@ public class EventosController implements Initializable {
         cargarDatos();
         configurarFiltrado();
         wiringBusquedaYFiltros();
+        configurarCombosFormulario();
 
         btnLimpiar.disableProperty().bind(
             txtBuscar.textProperty().isEmpty()
@@ -331,6 +332,30 @@ public class EventosController implements Initializable {
         cbModalidad.getItems().setAll(EnumSet.allOf(ModalidadTaller.class).stream()
             .map(Enum::name)
             .toList());
+    }
+    
+    private void configurarVisibilidadFormularios(){
+        feriaPane.setVisible(false);
+        feriaPane.setManaged(false);
+
+        tallerPane.setVisible(false);
+        tallerPane.setManaged(false);
+
+        cbTipoEvento.valueProperty().addListener((obs, old, nuevo) -> {
+            if ("Feria".equals(nuevo)){
+                feriaPane.setVisible(true);
+                feriaPane.setManaged(true);
+
+                tallerPane.setVisible(false);
+                tallerPane.setManaged(false);
+            }else if("Taller".equals(nuevo)){
+                tallerPane.setVisible(true);
+                tallerPane.setManaged(true);
+
+                feriaPane.setVisible(false);
+                feriaPane.setManaged(false);
+            }
+        });
     }
 
 
