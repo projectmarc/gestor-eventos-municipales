@@ -14,43 +14,46 @@
 
 <VBox xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.municipio.controller.EventosController">
    <children>
-      <AnchorPane prefHeight="491.0" prefWidth="570.0">
+      <AnchorPane prefHeight="482.0" prefWidth="734.0">
          <children>
             <Label layoutX="22.0" layoutY="31.0" text="Gestión de Eventos">
                <font>
-                  <Font name="Calibri" size="25.0" />
+                  <Font name="Calibri" size="35.0" />
                </font>
             </Label>
-            <HBox layoutX="4.0" layoutY="112.0" prefHeight="30.0" prefWidth="456.0">
+            <HBox layoutX="23.0" layoutY="112.0" prefHeight="30.0" prefWidth="555.0">
                <children>
-                  <TextField fx:id="txtBuscar" onAction="#onBuscar" promptText="Buscar eventos..." />
-                  <ComboBox fx:id="cbEstado" editable="true" onAction="#onBuscar" prefWidth="150.0" promptText="Filtrar por estado..." />
-                  <ComboBox fx:id="cbTipo" editable="true" onAction="#onFiltroChanged" prefWidth="150.0" promptText="Filtrar por tipo..." />
+                  <TextField fx:id="txtBuscar" onAction="#onBuscar" prefHeight="25.0" prefWidth="183.0" promptText="Buscar eventos..." />
+                  <ComboBox fx:id="cbEstado" editable="true" onAction="#onBuscar" prefHeight="25.0" prefWidth="182.0" promptText="Filtrar por estado..." />
+                  <ComboBox fx:id="cbTipo" editable="true" onAction="#onFiltroChanged" prefHeight="25.0" prefWidth="184.0" promptText="Filtrar por tipo..." />
                </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </HBox>
-            <Label layoutX="22.0" layoutY="66.0" text="Administre los eventos del sistema" />
-            <Button fx:id="btnNuevo" layoutX="430.0" layoutY="48.0" mnemonicParsing="false" text="+ Nuevo Evento">
+            <Label layoutX="23.0" layoutY="69.0" text="Administre los eventos del sistema">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Button fx:id="btnNuevo" layoutX="592.0" layoutY="53.0" mnemonicParsing="false" text="+ Nuevo Evento">
                <font>
                   <Font name="Arial" size="14.0" />
                </font>
             </Button>
-            <TableView fx:id="tblEventos" layoutX="13.0" layoutY="161.0" prefHeight="312.0" prefWidth="541.0">
+            <TableView fx:id="tblEventos" layoutX="13.0" layoutY="161.0" prefHeight="312.0" prefWidth="706.0">
               <columns>
-                <TableColumn fx:id="colNombre" prefWidth="75.0" sortable="false" text="Nombre" />
-                <TableColumn fx:id="colFecha" editable="false" prefWidth="75.0" sortable="false" text="Fecha" />
-                  <TableColumn fx:id="colEstado" prefWidth="75.0" sortable="false" text="Estado" />
-                  <TableColumn fx:id="colTipo" prefWidth="75.0" sortable="false" text="Tipo" />
-                  <TableColumn fx:id="colRequiereInscripcion" prefWidth="133.0" sortable="false" text="Requiere Inscripción" />
-                  <TableColumn fx:id="colAcciones" prefWidth="133.0" sortable="false" text="Acciones" />
+                <TableColumn fx:id="colNombre" prefWidth="196.0" sortable="false" text="Nombre" />
+                <TableColumn fx:id="colFecha" editable="false" prefWidth="85.0" sortable="false" text="Fecha" />
+                  <TableColumn fx:id="colEstado" prefWidth="95.0" sortable="false" text="Estado" />
+                  <TableColumn fx:id="colTipo" prefWidth="99.0" sortable="false" text="Tipo" />
+                  <TableColumn fx:id="colRequiereInscripcion" prefWidth="132.0" sortable="false" text="Requiere Inscripción" />
+                  <TableColumn fx:id="colAcciones" prefWidth="98.0" sortable="false" text="Acciones" />
               </columns>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </TableView>
-            <Button fx:id="btnLimpiar" layoutX="460.0" layoutY="112.0" mnemonicParsing="false" text="Limpiar filtros" />
+            <Button fx:id="btnLimpiar" layoutX="622.0" layoutY="112.0" mnemonicParsing="false" text="Limpiar filtros" />
          </children>
       </AnchorPane>
    </children>
