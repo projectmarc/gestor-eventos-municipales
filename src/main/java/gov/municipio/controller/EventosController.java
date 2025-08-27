@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -25,7 +26,6 @@ import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
-
 import javafx.event.ActionEvent;
 //import javafx.scene.input.MouseEvent;
 //import javafx.scene.input.KeyEvent;
@@ -51,9 +51,11 @@ public class EventosController implements Initializable {
     @FXML private ComboBox<EstadoEvento> cbEstadoEvento;
     @FXML private CheckBox chkRequiereInscripcion;
     //Feria
+    @FXML private AnchorPane feriaPane;
     @FXML private ComboBox<TipoLugar> cbTipoLugar;
     @FXML private Spinner<Integer> spStands;
     //Taller
+    @FXML private AnchorPane tallerPane;
     @FXML private Spinner<Integer> spCupoMaximo;
     @FXML private TextField txtInstructor;
     @FXML private ComboBox<String> cbModalidad;
@@ -320,7 +322,17 @@ public class EventosController implements Initializable {
         var res = new Alert(Alert.AlertType.CONFIRMATION, msg, ButtonType.OK, ButtonType.CANCEL).showAndWait();
         return res.isPresent() && res.get() == ButtonType.OK;
     }
-    
+
+    // Formulario de creación de Evento
+    private void configurarCombosFormulario(){
+        cbTipoEvento.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
+        cbEstadoEvento.getItems().setAll(EnumSet.allOf(EstadoEvento.class));
+        cbTipoLugar.getItems().setAll(EnumSet.allOf(TipoLugar.class));
+        cbModalidad.getItems().setAll(EnumSet.allOf(ModalidadTaller.class).stream()
+            .map(Enum::name)
+            .toList());
+    }
+
 
 }
 
