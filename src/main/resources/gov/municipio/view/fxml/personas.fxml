@@ -41,6 +41,7 @@
         
         <TableView fx:id="tblPersonas">
             <columns>
+                <TableColumn text="ID" fx:id="colId"/>
                 <TableColumn text="Nombre" fx:id="colNombre"/>
                 <TableColumn text="Apellido" fx:id="colApellido"/>
                 <TableColumn text="DNI" fx:id="colDni"/>
