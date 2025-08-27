@@ -21,11 +21,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -510,7 +508,7 @@ public class EventosController implements Initializable {
         conciertoPane.setVisible(false); conciertoPane.setManaged(false);
         exposicionPane.setVisible(false); exposicionPane.setManaged(false);
         cicloCinePane.setVisible(false); cicloCinePane.setManaged(false);
-        
+
 }
 
 }
