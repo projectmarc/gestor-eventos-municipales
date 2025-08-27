@@ -31,6 +31,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import javafx.event.ActionEvent;
+import java.util.stream.Collectors;
+
 //import javafx.scene.input.MouseEvent;
 //import javafx.scene.input.KeyEvent;
 
@@ -62,7 +64,7 @@ public class EventosController implements Initializable {
     @FXML private AnchorPane tallerPane;
     @FXML private Spinner<Integer> spCupoMaximo;
     @FXML private TextField txtInstructor;
-    @FXML private ComboBox<String> cbModalidad;
+    @FXML private ComboBox<ModalidadTaller> cbModalidad;
     //Concierto
     @FXML private AnchorPane conciertoPane;
     @FXML private TextField txtArtistas;
@@ -72,6 +74,10 @@ public class EventosController implements Initializable {
     //Exposicion
     @FXML private AnchorPane exposicionPane;
     @FXML private TextField txtDisciplinaArtistica;
+    //Ciclo de cine
+    @FXML private AnchorPane cicloCinePane;
+    @FXML private TextField txtPelicula;
+    @FXML private CheckBox chkRequiereInscripcionCine;
 
     private final ObservableList<Evento> backingData = FXCollections.observableArrayList();
     private FilteredList<Evento> filtered;
@@ -89,6 +95,8 @@ public class EventosController implements Initializable {
         configurarFiltrado();
         wiringBusquedaYFiltros();
         configurarCombosFormulario();
+        configurarVisibilidadFormularios();
+        configurarSpinners();
 
         btnLimpiar.disableProperty().bind(
             txtBuscar.textProperty().isEmpty()
@@ -116,7 +124,7 @@ public class EventosController implements Initializable {
                 }
             }
         });
-        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
+        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposicion", "Taller", "Feria");
         cbTipo.setPromptText("Todos los tipos");
     }
 
@@ -340,9 +348,7 @@ public class EventosController implements Initializable {
         cbTipoEvento.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
         cbEstadoEvento.getItems().setAll(EnumSet.allOf(EstadoEvento.class));
         cbTipoLugar.getItems().setAll(EnumSet.allOf(TipoLugar.class));
-        cbModalidad.getItems().setAll(EnumSet.allOf(ModalidadTaller.class).stream()
-            .map(Enum::name)
-            .toList());
+        cbModalidad.getItems().setAll(EnumSet.allOf(ModalidadTaller.class));
     }
     
     private void configurarVisibilidadFormularios(){
@@ -364,6 +370,10 @@ public class EventosController implements Initializable {
                 tallerPane.setManaged(false);
                 conciertoPane.setVisible(false);
                 conciertoPane.setManaged(false);
+                exposicionPane.setVisible(false);
+                exposicionPane.setManaged(false);
+                cicloCinePane.setVisible(false);
+                cicloCinePane.setManaged(false);
             }else if("Taller".equals(nuevo)){
                 tallerPane.setVisible(true);
                 tallerPane.setManaged(true);
@@ -372,6 +382,10 @@ public class EventosController implements Initializable {
                 feriaPane.setManaged(false);
                 conciertoPane.setVisible(false);
                 conciertoPane.setManaged(false);
+                exposicionPane.setVisible(false);
+                exposicionPane.setManaged(false);
+                cicloCinePane.setVisible(false);
+                cicloCinePane.setManaged(false);
             }else if("Concierto".equals(nuevo)){
                 conciertoPane.setVisible(true);
                 conciertoPane.setManaged(true);
@@ -380,6 +394,10 @@ public class EventosController implements Initializable {
                 feriaPane.setManaged(false);
                 tallerPane.setVisible(false);
                 tallerPane.setManaged(false);
+                exposicionPane.setVisible(false);
+                exposicionPane.setManaged(false);
+                cicloCinePane.setVisible(false);
+                cicloCinePane.setManaged(false);
             }else if("Exposicion".equals(nuevo)){
                 exposicionPane.setVisible(true);
                 exposicionPane.setManaged(true);
@@ -390,6 +408,20 @@ public class EventosController implements Initializable {
                 tallerPane.setManaged(false);
                 conciertoPane.setVisible(false);
                 conciertoPane.setManaged(false);
+                cicloCinePane.setVisible(false);
+                cicloCinePane.setManaged(false);
+            }else if("Ciclo de Cine".equals(nuevo)){
+                cicloCinePane.setVisible(true);
+                cicloCinePane.setManaged(true);
+
+                feriaPane.setVisible(false);
+                feriaPane.setManaged(false);
+                tallerPane.setVisible(false);
+                tallerPane.setManaged(false);
+                conciertoPane.setVisible(false);
+                conciertoPane.setManaged(false);
+                exposicionPane.setVisible(false);
+                exposicionPane.setManaged(false);
             }else{
                 feriaPane.setVisible(false);
                 feriaPane.setManaged(false);
@@ -399,6 +431,8 @@ public class EventosController implements Initializable {
                 conciertoPane.setManaged(false);
                 exposicionPane.setVisible(false);
                 exposicionPane.setManaged(false);
+                cicloCinePane.setVisible(false);
+                cicloCinePane.setManaged(false);
             }
         });
 
@@ -438,18 +472,24 @@ public class EventosController implements Initializable {
                 nuevo = new Exposicion(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, disciplinaArtistica);
             }
             case "Ciclo de Cine" -> {
-                nuevo = new CicloDeCine(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado);
+                List<Pelicula> peliculas = Arrays.stream(txtPelicula.getText().split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(title -> new Pelicula(title, 0f))  
+                .collect(Collectors.toList());
+
+                boolean incluyeCharlaPosteriores = chkRequiereInscripcionCine.isSelected();
+                nuevo = new CicloDeCine(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, peliculas, incluyeCharlaPosteriores);
             }
             case "Feria" -> {
                 int cantidadStands = spStands.getValue();
                 TipoLugar tipoLocacion = cbTipoLugar.getValue();
-                nuevo = new Feria(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado, cantidadStands, tipoLocacion);
+                nuevo = new Feria(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cantidadStands, tipoLocacion);
             }
             case "Taller" -> {
-                int cupo = spCupoMaximo.getValue();
-                String instructor = txtInstructor.getText();
+                int cupoMaximo = spCupoMaximo.getValue();
                 ModalidadTaller modalidad = cbModalidad.getValue();
-                nuevo = new Taller(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado, cupo, instructor, modalidad);
+                nuevo = new Taller(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, modalidad, cupoMaximo);
             }
         }
         if (nuevo != null) {
@@ -465,10 +505,12 @@ public class EventosController implements Initializable {
         cbTipoEvento.getSelectionModel().clearSelection();
         cbEstadoEvento.getSelectionModel().clearSelection();
         chkRequiereInscripcion.setSelected(false);
-        feriaPane.setVisible(false);
-        feriaPane.setManaged(false);
-        tallerPane.setVisible(false);
-        tallerPane.setManaged(false);
+        feriaPane.setVisible(false); feriaPane.setManaged(false);
+        tallerPane.setVisible(false); tallerPane.setManaged(false);
+        conciertoPane.setVisible(false); conciertoPane.setManaged(false);
+        exposicionPane.setVisible(false); exposicionPane.setManaged(false);
+        cicloCinePane.setVisible(false); cicloCinePane.setManaged(false);
+        
 }
 
 }
