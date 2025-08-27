@@ -9,6 +9,9 @@ public class Exposicion extends Evento {
     public Exposicion(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, String disciplinaArtistica) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
         this.disciplinaArtistica = disciplinaArtistica;
+        
+        // Validar datos específicos después de inicializar los atributos
+        validarDatosEspecificos();
     }
 
     public String getDisciplinaArtistica() {
@@ -17,6 +20,18 @@ public class Exposicion extends Evento {
 
     @Override
     public boolean validarRol(Rol rol) {
-        return rol == Rol.CURADOR || rol == Rol.ASISTENTE;
+        return rol == Rol.CURADOR || rol == Rol.ASISTENTE || rol == Rol.ORGANIZADOR;
+    }
+
+    @Override
+    protected void validarDatosEspecificos() {
+        super.validarDatosEspecificos();
+        
+        if (disciplinaArtistica == null || disciplinaArtistica.trim().isEmpty()) {
+            throw new IllegalArgumentException("La disciplina artística no puede ser nula ni vacía");
+        }
+        if (disciplinaArtistica.trim().length() > 50) {
+            throw new IllegalArgumentException("La disciplina artística no puede exceder 50 caracteres");
+        }
     }
 }
