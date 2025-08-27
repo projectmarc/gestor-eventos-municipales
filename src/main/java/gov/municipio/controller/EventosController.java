@@ -149,20 +149,17 @@ public class EventosController implements Initializable {
 
     // Configuración de filtros
     private void configurarFiltrado() {
-    filtered = new FilteredList<>(backingData, e -> true);
-    sorted = new SortedList<>(filtered);
-    sorted.comparatorProperty().bind(tblEventos.comparatorProperty());
-    tblEventos.setItems(sorted);
-
+        filtered = new FilteredList<>(backingData, e -> true);
+        sorted = new SortedList<>(filtered);
+        sorted.comparatorProperty().bind(tblEventos.comparatorProperty());
+        tblEventos.setItems(sorted);
     }
 
     private void wiringBusquedaYFiltros() {
         // Texto: 
         txtBuscar.textProperty().addListener((obs, old, val) -> aplicarFiltros());
-
         // Estado
         cbEstado.valueProperty().addListener((obs, old, val) -> aplicarFiltros());
-
         // Tipo
         cbTipo.valueProperty().addListener((obs, old, val) -> aplicarFiltros());
     }
@@ -189,24 +186,52 @@ public class EventosController implements Initializable {
 
         filtered.setPredicate(pred);
     }
-
-    // Convierte el nombre de la clase a un nombre legible en la UI
-    private String tipoAmigable(Evento e) {
-        if (e instanceof Concierto) return "Concierto";
-        if (e instanceof CicloDeCine) return "Ciclo de Cine";
-        if (e instanceof Exposicion) return "Exposición";
-        if (e instanceof Taller) return "Taller";
-        if (e instanceof Feria) return "Feria";
-        return e.getClass().getSimpleName();
+    // Acciones
+    private void onNuevo(ActionEvent e) {
+        abrirFormulario(null);
     }
 
-    // Normalización para búsqueda (minúsculas y quita espacios extra)
-    private String normalizar(String s) {
-        if (s == null) return "";
-        return s.toLowerCase(LOCALE_ES).trim();
+    private void onEditarEvento(Evento evento) {
+        abrirFormulario(evento);
     }
+    
+    private void abrirFormulario(Evento eventoAEditar) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gov/municipio/view/fxml/evento-form.fxml"));
+            Parent root = loader.load();
+            EventosFormController formCtrl = loader.getController();
 
-    // Métodos FXML
+            // modo edición/creación
+            if (eventoAEditar != null) {
+                formCtrl.cargarEvento(eventoAEditar);
+            }
+
+            // callback para que el form nos notifique
+            formCtrl.setOnSave(evGuardado -> {
+                // Persistimos
+                Evento guardado = eventoService.guardar(evGuardado);
+
+                if (eventoAEditar == null) {
+                    backingData.add(guardado);
+                } else {
+                    int idx = backingData.indexOf(eventoAEditar);
+                    if (idx >= 0) backingData.set(idx, guardado);
+                }
+                aplicarFiltros();
+            });
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(tblEventos.getScene().getWindow());
+            stage.setTitle(eventoAEditar == null ? "Nuevo Evento" : "Editar Evento");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            alertError("No se pudo abrir el formulario:\n" + ex.getMessage());
+        }
+    }
+    
     @FXML
     private void onBuscar(ActionEvent e) {
         aplicarFiltros();
@@ -227,18 +252,47 @@ public class EventosController implements Initializable {
         aplicarFiltros();
     }
 
-    private void onEditarEvento(Evento evento) {
-        System.out.println("Editar: " + evento.getNombre());
-        // Aquí iría la lógica para editar el evento
-        // Por ejemplo, abrir un diálogo con un formulario prellenado
-    }   
 
     private void onEliminarEvento(Evento evento) {
         var ok = alertConfirm("¿Eliminar el evento \"" + evento.getNombre() + "\"?");
         if (ok) {
-            backingData.remove(evento);
-            // Aquí también se debería eliminar el evento del servicio/repositorio
+            try {
+                if (evento.getId() != null) {
+                    eventoService.eliminar(evento.getId());
+                }
+                backingData.remove(evento);
+            } catch (Exception ex) {
+                alertError("No se pudo eliminar: " + ex.getMessage());
+            }
         }
+    }
+
+    // Convierte el nombre de la clase a un nombre legible en la UI
+    private String tipoAmigable(Evento e) {
+        if (e instanceof Concierto) return "Concierto";
+        if (e instanceof CicloDeCine) return "Ciclo de Cine";
+        if (e instanceof Exposicion) return "Exposición";
+        if (e instanceof Taller) return "Taller";
+        if (e instanceof Feria) return "Feria";
+        return e.getClass().getSimpleName();
+    }
+    //Convierte el estado del evento a un nombre legible en la UI
+    private String estadoAmigable(EstadoEvento estado) {
+        if (estado == null) return "";
+        switch (estado) {
+            case PLANIFICACION: return "Planificación";
+            case CONFIRMADO: return "Confirmado";
+            case EN_EJECUCION: return "En Ejecución";
+            case FINALIZADO: return "Finalizado";
+            default: return estado.name();
+        }
+    }
+
+
+    // Normalización para búsqueda (minúsculas y quita espacios extra)
+    private String normalizar(String s) {
+        if (s == null) return "";
+        return s.toLowerCase(LOCALE_ES).trim();
     }
 
     private boolean alertConfirm(String msg) {
@@ -246,5 +300,7 @@ public class EventosController implements Initializable {
         return res.isPresent() && res.get() == ButtonType.OK;
     }
 
-
+    private void alertError(String msg) {
+        new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK).showAndWait();
+    }
 }
