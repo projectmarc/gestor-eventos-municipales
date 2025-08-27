@@ -21,7 +21,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -59,7 +61,11 @@ public class EventosController implements Initializable {
     @FXML private Spinner<Integer> spCupoMaximo;
     @FXML private TextField txtInstructor;
     @FXML private ComboBox<String> cbModalidad;
-
+    //Concierto
+    @FXML private TextField txtArtistas;
+    @FXML private ComboBox<TipoEntrada> cbTipoEntrada;
+    @FXML private TextField txtGeneroMusical;
+    @FXML private Spinner<Integer> spCapacidadMaxima;
 
     private final ObservableList<Evento> backingData = FXCollections.observableArrayList();
     private FilteredList<Evento> filtered;
@@ -376,8 +382,8 @@ public class EventosController implements Initializable {
     @FXML
     private void onCrearEvento(ActionEvent e) {
         String nombre = txtNombre.getText();
-        var fecha = dpFechaInicio.getValue();
-        int duracion = spDuracion.getValue();
+        var fechaInicio = dpFechaInicio.getValue();
+        int duracionEstimadaHoras = spDuracion.getValue();
         boolean requiereInscripcion = chkRequiereInscripcion.isSelected();
         EstadoEvento estado = cbEstadoEvento.getValue();
         String tipo = cbTipoEvento.getValue();
@@ -386,24 +392,33 @@ public class EventosController implements Initializable {
 
         switch(tipo){
             case "Concierto" ->{
-                nuevo = new Concierto(nombre, fecha, duracion, requiereInscripcion, estado);
+                String nombre = txtNombre.getText();
+                LocalDate fecha = datePickerFecha.getValue();
+                int duracion = Integer.parseInt(txtDuracion.getText());
+                boolean requiereInscripcion = chkInscripcion.isSelected();
+                
+                List<String> artistas = Arrays.asList(txtArtistas.getText().split(",")); 
+                TipoEntrada tipoEntrada = cbTipoEntrada.getValue();
+                String generoMusical = txtGeneroMusical.getText();
+                int capacidadMaxima = Integer.parseInt(txtCapacidad.getText());
+                nuevo = new Concierto(nombre, fecha, duracion, requiereInscripcion, estado, artistas, tipoEntrada, generoMusical, capacidadMaxima);
             }
             case "Exposicion" -> {
-                nuevo = new Exposicion(nombre, fecha, duracion, requiereInscripcion, estado);
+                nuevo = new Exposicion(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado);
             }
             case "Ciclo de Cine" -> {
-                nuevo = new CicloDeCine(nombre, fecha, duracion, requiereInscripcion, estado);
+                nuevo = new CicloDeCine(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado);
             }
             case "Feria" -> {
-                int stands = spStands.getValue();
-                TipoLugar lugar = cbTipoLugar.getValue();
-                nuevo = new Feria(nombre, fecha, duracion, requiereInscripcion, estado, stands, lugar);
+                int cantidadStands = spStands.getValue();
+                TipoLugar tipoLocacion = cbTipoLugar.getValue();
+                nuevo = new Feria(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado, cantidadStands, tipoLocacion);
             }
             case "Taller" -> {
                 int cupo = spCupoMaximo.getValue();
                 String instructor = txtInstructor.getText();
                 ModalidadTaller modalidad = cbModalidad.getValue();
-                nuevo = new Taller(nombre, fecha, duracion, requiereInscripcion, estado, cupo, instructor, modalidad);
+                nuevo = new Taller(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado, cupo, instructor, modalidad);
             }
         }
         if (nuevo != null) {
@@ -412,4 +427,17 @@ public class EventosController implements Initializable {
             limpiarFormulario();
         }
     }
+    private void limpiarFormulario() {
+        txtNombre.clear();
+        dpFechaInicio.setValue(null);
+        spDuracion.getValueFactory().setValue(2);
+        cbTipoEvento.getSelectionModel().clearSelection();
+        cbEstadoEvento.getSelectionModel().clearSelection();
+        chkRequiereInscripcion.setSelected(false);
+        feriaPane.setVisible(false);
+        feriaPane.setManaged(false);
+        tallerPane.setVisible(false);
+        tallerPane.setManaged(false);
+}
+
 }
