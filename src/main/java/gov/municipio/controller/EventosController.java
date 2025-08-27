@@ -82,8 +82,7 @@ public class EventosController implements Initializable {
             txtBuscar.textProperty().isEmpty()
                 .and(cbEstado.valueProperty().isNull())
                 .and(cbTipo.valueProperty().isNull())
-);
-
+        );
     }
 
     // Combos
@@ -354,10 +353,21 @@ public class EventosController implements Initializable {
 
                 feriaPane.setVisible(false);
                 feriaPane.setManaged(false);
+            }else{
+                feriaPane.setVisible(false);
+                feriaPane.setManaged(false);
+                tallerPane.setVisible(false);
+                tallerPane.setManaged(false);      
             }
         });
+
     }
 
+    //Valores iniciales para los spinner
+    private void configurarSpinners() {
+        spDuracion.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 2));
+        spStands.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 10));
+        spCupoMaximo.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 200, 20));
+    }
 
 }
-
