@@ -1,6 +1,7 @@
 package gov.municipio.ui.nav;
 
 import gov.municipio.config.ServiceContainer;
+import gov.municipio.controller.InicioController;
 import gov.municipio.controller.MainController;
 import gov.municipio.controller.PersonasController;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,9 @@ public class Router {
                 }
                 if (type == MainController.class) {
                     return new MainController(services);
+                }
+                if (type == InicioController.class) {
+                    return new InicioController(services.personaService());
                 }
 
                 // Fallback: intentar constructor sin args (para pantallas que no necesiten servicios)

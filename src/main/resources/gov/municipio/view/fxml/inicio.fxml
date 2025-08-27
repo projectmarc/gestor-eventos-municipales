@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
-           xmlns:fx="http://javafx.com/fxml/1">
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="gov.municipio.controller.InicioController">
            
     <!-- Sección Superior: Título y Subtítulo -->
     <top>
@@ -38,7 +39,7 @@
                 <!-- Card Personas -->
                 <StackPane fx:id="cardPersonas">
                     <VBox alignment="CENTER" spacing="5">
-                        <Label text="347" />
+                        <Label fx:id="lblCantidadPersonas" text="0" />
                         <Label text="Personas Registradas" />
                     </VBox>
                 </StackPane>
