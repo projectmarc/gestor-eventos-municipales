@@ -279,8 +279,10 @@ public class EventosController implements Initializable {
     @FXML
     private void onLimpiarFiltros(ActionEvent e) {
         txtBuscar.clear();
-        cbEstado.getSelectionModel().clearSelection();
+        cbEstado.setValue(null);
         cbTipo.getSelectionModel().clearSelection();
+        cbTipo.setValue(null);
+        tblEventos.getSortOrder().clear();
         aplicarFiltros();
     }
 
