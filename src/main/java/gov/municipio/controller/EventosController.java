@@ -6,6 +6,7 @@ import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.domain.model.enums.TipoEntrada;
 import gov.municipio.domain.model.enums.TipoLugar;
 import gov.municipio.domain.service.EventoService;
+import gov.municipio.domain.model.enums.ModalidadTaller;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -172,8 +173,19 @@ public class EventosController implements Initializable {
                     java.util.List.of(p1, p2), false);
             e4.setEstado(EstadoEvento.FINALIZADO);
 
-            backingData.addAll(e1, e2, e3, e4);
-    }     
+            var e5 = new Taller("Taller de Cerámica", hoy.plusDays(10), 5, true, ModalidadTaller.PRESENCIAL, 40);
+            e5.setEstado(EstadoEvento.CONFIRMADO);
+
+            var e6 = new Concierto("RockAndROLL", hoy.plusDays(7), 4, true,
+            java.util.List.of("AIRBAG", "Soda Stereo"), TipoEntrada.GRATUITA, "Rock", 500);
+            e6.setEstado(EstadoEvento.CONFIRMADO);
+
+            var e7 = new Concierto("Cumbia Loca", hoy.plusDays(7), 4, true,
+            java.util.List.of("Christian Warner", "Viejas Locas"), TipoEntrada.GRATUITA, "Rock", 500);
+            e7.setEstado(EstadoEvento.FINALIZADO);
+
+            backingData.addAll(e1, e2, e3, e4, e5, e6, e7);
+    }
 
     // Configuración de filtros
     private void configurarFiltrado() {
@@ -181,6 +193,7 @@ public class EventosController implements Initializable {
     sorted = new SortedList<>(filtered);
     sorted.comparatorProperty().bind(tblEventos.comparatorProperty());
     tblEventos.setItems(sorted);
+
     }
 
     private void wiringBusquedaYFiltros() {
