@@ -35,6 +35,7 @@ public class EventosController implements Initializable {
     @FXML private ComboBox<EstadoEvento> cbEstado;
     @FXML private ComboBox<String> cbTipo;
     @FXML private Button btnNuevo;
+    @FXML private Button btnLimpiar;
     @FXML private TableView<Evento> tblEventos;
     @FXML private TableColumn<Evento, String> colNombre;
     @FXML private TableColumn<Evento, String> colFecha;
@@ -59,6 +60,13 @@ public class EventosController implements Initializable {
         cargarDatos();
         configurarFiltrado();
         wiringBusquedaYFiltros();
+
+        btnLimpiar.disableProperty().bind(
+            txtBuscar.textProperty().isEmpty()
+                .and(cbEstado.valueProperty().isNull())
+                .and(cbTipo.valueProperty().isNull())
+);
+
     }
 
     // Combos
@@ -67,7 +75,7 @@ public class EventosController implements Initializable {
         cbEstado.setPromptText("Todos los estados");
 
         // Tipos de evento
-        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposicion", "Taller", "Feria");
+        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
         cbTipo.setPromptText("Todos los tipos");
     }
 
@@ -177,7 +185,7 @@ public class EventosController implements Initializable {
             e5.setEstado(EstadoEvento.CONFIRMADO);
 
             var e6 = new Concierto("RockAndROLL", hoy.plusDays(7), 4, true,
-            java.util.List.of("AIRBAG", "Soda Stereo"), TipoEntrada.GRATUITA, "Rock", 500);
+            java.util.List.of("AIRBAG", "Soda Stereo"), TipoEntrada.GRATUITA,   "Rock", 500);
             e6.setEstado(EstadoEvento.CONFIRMADO);
 
             var e7 = new Concierto("Cumbia Loca", hoy.plusDays(7), 4, true,
@@ -254,6 +262,14 @@ public class EventosController implements Initializable {
 
     @FXML
     private void onFiltroChanged(ActionEvent e) {
+        aplicarFiltros();
+    }
+
+    @FXML
+    private void onLimpiarFiltros(ActionEvent e) {
+        txtBuscar.clear();
+        cbEstado.getSelectionModel().clearSelection();
+        cbTipo.getSelectionModel().clearSelection();
         aplicarFiltros();
     }
 
