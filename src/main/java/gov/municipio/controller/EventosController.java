@@ -16,9 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -52,58 +50,12 @@ public class EventosController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    configurarCombos();
-    configurarTabla();
-    cargarDatos();
-    configurarFiltrado();
-    wiringBusquedaYFiltros();
-
-    
-    tblEventos.setItems(eventos);
-}
-    //Método para testear
-    private ObservableList<Evento> crearEventosDummy() {
-    Concierto concierto = new Concierto();
-    concierto.setNombre("Concierto Rock");
-    concierto.setFechaInicio(LocalDate.now());
-    concierto.setEstado(EstadoEvento.CONFIRMADO);
-    concierto.setRequiereInscripcion(true);
-
-    CicloDeCine cine = new CicloDeCine();
-    cine.setNombre("Ciclo de Cine Independiente");
-    cine.setFechaInicio(LocalDate.now().plusDays(1));
-    cine.setEstado(EstadoEvento.PLANIFICACION);
-    cine.setRequiereInscripcion(false);
-
-    Feria feriaLibros = new Feria();
-    feriaLibros.setNombre("Feria de Libros");
-    feriaLibros.setFechaInicio(LocalDate.now().plusWeeks(1));
-    feriaLibros.setEstado(EstadoEvento.EN_EJECUCION);
-    feriaLibros.setRequiereInscripcion(true);
-
-    Exposicion expoArte = new Exposicion();
-    expoArte.setNombre("Exposición de Arte");
-    expoArte.setFechaInicio(LocalDate.now().plusMonths(1));
-    expoArte.setEstado(EstadoEvento.FINALIZADO);
-    expoArte.setRequiereInscripcion(false);
-
-    Taller tallerPintura = new Taller();
-    tallerPintura.setNombre("Taller de Pintura");
-    tallerPintura.setFechaInicio(LocalDate.now().plusDays(10));
-    tallerPintura.setEstado(EstadoEvento.CONFIRMADO);
-    tallerPintura.setRequiereInscripcion(true);
-
-    Feria feriaCiencias = new Feria();
-    feriaCiencias.setNombre("Feria de Ciencias");
-    feriaCiencias.setFechaInicio(LocalDate.now().plusWeeks(2));
-    feriaCiencias.setEstado(EstadoEvento.PLANIFICACION);
-    feriaCiencias.setRequiereInscripcion(false);
-
-    return FXCollections.observableArrayList(
-            concierto, cine, feriaLibros, expoArte, tallerPintura, feriaCiencias
-    );
-}
-
+        configurarCombos();
+        configurarTabla();
+        cargarDatos();
+        configurarFiltrado();
+        wiringBusquedaYFiltros();
+    }
 
     // Combos
     private void configurarCombos() {
