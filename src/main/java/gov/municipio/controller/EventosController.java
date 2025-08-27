@@ -43,6 +43,20 @@ public class EventosController implements Initializable {
     @FXML private TableColumn<Evento, String> colTipo;
     @FXML private TableColumn<Evento, String> colRequiereInscripcion;
     @FXML private TableColumn<Evento, Void> colAcciones;
+    //Sección de creación de eventos
+    @FXML private TextField txtnombre;
+    @FXML private DatePicker dpFechaInicio;
+    @FXML private Spinner<Integer> spDuracion;
+    @FXML private ComboBox<String> cbTipoEvento;
+    @FXML private ComboBox<EstadoEvento> cbEstadoEvento;
+    @FXML private CheckBox chkRequiereInscripcion;
+    //Feria
+    @FXML private ComboBox<TipoLugar> cbTipoLugar;
+    @FXML private Spinner<Integer> spStands;
+    //Taller
+    @FXML private Spinner<Integer> spCupoMaximo;
+    @FXML private TextField txtInstructor;
+    @FXML private ComboBox<String> cbModalidad;
 
 
     private final ObservableList<Evento> backingData = FXCollections.observableArrayList();
