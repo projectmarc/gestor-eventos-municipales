@@ -71,15 +71,26 @@ public class EventosController implements Initializable {
 
     // Combos
     private void configurarCombos() {
-        cbEstado.getItems().setAll(EnumSet.allOf(EstadoEvento.class));
-        cbEstado.setPromptText("Todos los estados");
+        cbEstado.getItems().clear();
+        cbEstado.getItems().add(null);
+        cbEstado.getItems().addAll(EnumSet.allOf(EstadoEvento.class));
 
-        // Tipos de evento
-        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
-        cbTipo.setPromptText("Todos los tipos");
+        cbEstado.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(EstadoEvento item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else if (item == null) {
+                    setText("Todos los estados");
+                } else {
+                    setText(item.name());
+                }
+            }
+        });
     }
 
-    // Tabla y columnas 
+    // Tabla y columnas
     private void configurarTabla() {
         //Nombre
         colNombre.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNombre()));
