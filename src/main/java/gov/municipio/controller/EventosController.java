@@ -44,7 +44,7 @@ public class EventosController implements Initializable {
     @FXML private TableColumn<Evento, String> colRequiereInscripcion;
     @FXML private TableColumn<Evento, Void> colAcciones;
     //Sección de creación de eventos
-    @FXML private TextField txtnombre;
+    @FXML private TextField txtNombre;
     @FXML private DatePicker dpFechaInicio;
     @FXML private Spinner<Integer> spDuracion;
     @FXML private ComboBox<String> cbTipoEvento;
@@ -369,5 +369,47 @@ public class EventosController implements Initializable {
         spStands.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 500, 10));
         spCupoMaximo.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 200, 20));
     }
+    @FXML
+    private void onCancelar(ActionEvent e) {
+        limpiarFormulario();
+    }
+    @FXML
+    private void onCrearEvento(ActionEvent e) {
+        String nombre = txtNombre.getText();
+        var fecha = dpFechaInicio.getValue();
+        int duracion = spDuracion.getValue();
+        boolean requiereInscripcion = chkRequiereInscripcion.isSelected();
+        EstadoEvento estado = cbEstadoEvento.getValue();
+        String tipo = cbTipoEvento.getValue();
 
+        Evento nuevo = null;
+
+        switch(tipo){
+            case "Concierto" ->{
+                nuevo = new Concierto(nombre, fecha, duracion, requiereInscripcion, estado);
+            }
+            case "Exposicion" -> {
+                nuevo = new Exposicion(nombre, fecha, duracion, requiereInscripcion, estado);
+            }
+            case "Ciclo de Cine" -> {
+                nuevo = new CicloDeCine(nombre, fecha, duracion, requiereInscripcion, estado);
+            }
+            case "Feria" -> {
+                int stands = spStands.getValue();
+                TipoLugar lugar = cbTipoLugar.getValue();
+                nuevo = new Feria(nombre, fecha, duracion, requiereInscripcion, estado, stands, lugar);
+            }
+            case "Taller" -> {
+                int cupo = spCupoMaximo.getValue();
+                String instructor = txtInstructor.getText();
+                ModalidadTaller modalidad = cbModalidad.getValue();
+                nuevo = new Taller(nombre, fecha, duracion, requiereInscripcion, estado, cupo, instructor, modalidad);
+            }
+        }
+        if (nuevo != null) {
+            nuevo.setEstado(estado);
+            backingData.add(nuevo);
+            limpiarFormulario();
+        }
+    }
 }
