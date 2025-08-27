@@ -103,7 +103,7 @@ public class EventosFormController {
             txtNombre.setText(evento.getNombre());
             dpFechaInicio.setValue(evento.getFechaInicio());
             cbEstadoEvento.setValue(evento.getEstado());
-            
+            spDuracion.getValueFactory().setValue(evento.getDuracionEstimada());
         }
     }
 
