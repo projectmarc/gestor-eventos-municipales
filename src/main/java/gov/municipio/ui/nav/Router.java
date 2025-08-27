@@ -1,9 +1,7 @@
 package gov.municipio.ui.nav;
 
 import gov.municipio.config.ServiceContainer;
-import gov.municipio.controller.InicioController;
-import gov.municipio.controller.MainController;
-import gov.municipio.controller.PersonasController;
+import gov.municipio.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
@@ -39,6 +37,16 @@ public class Router {
                 }
                 if (type == InicioController.class) {
                     return new InicioController(services.personaService());
+                }
+                if (type == EventosController.class) {
+                    EventosController controller = new EventosController();
+                    controller.setRouter(this);
+                    return controller;
+                }
+                if (type == CrearEventoController.class) {
+                    CrearEventoController controller = new CrearEventoController();
+                    controller.setRouter(this);
+                    return controller;
                 }
 
                 // Fallback: intentar constructor sin args (para pantallas que no necesiten servicios)
