@@ -15,11 +15,16 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -342,6 +347,18 @@ public class EventosController implements Initializable {
     }
 
     // Formulario de creación de Evento
+    @FXML
+    private void onNuevoEvento(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gov/municipio/view/fxml/evento-form.fxml"));
+        Scene scene = new Scene(loader.load());
+
+        Stage stage = new Stage();
+        stage.setTitle("Crear Nuevo Evento");
+        stage.setScene(scene);
+        stage.initModality(Modality.APPLICATION_MODAL); // Bloquea hasta cerrar
+        stage.showAndWait();
+    }
+
     private void configurarCombosFormulario(){
         cbTipoEvento.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
         cbEstadoEvento.getItems().setAll(EnumSet.allOf(EstadoEvento.class));
