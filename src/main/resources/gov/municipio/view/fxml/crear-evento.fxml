@@ -1,18 +1,221 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="gov.municipio.controller.CrearEventoController"
-      spacing="20">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     
-    <Label text="Crear Nuevo Evento"/>
+    <!-- Header con título y breadcrumb -->
+    <top>
+        <VBox spacing="5">
+            <padding>
+                <Insets top="15" left="20" right="20" bottom="15"/>
+            </padding>
+            <Label text="Eventos > Crear Nuevo"/>
+        </VBox>
+    </top>
     
-    <Label text="Pantalla en desarrollo..."/>
+    <!-- Formulario principal -->
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+            <GridPane hgap="20" vgap="15" alignment="TOP_CENTER">
+                <padding>
+                    <Insets top="20" left="30" right="30" bottom="20"/>
+                </padding>
+                
+                <!-- Columna izquierda: Información básica -->
+                <VBox spacing="20" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="400">
+                    
+                    <!-- Card: Información básica -->
+                    <VBox spacing="15">
+                        <Label text="Información Básica"/>
+                        
+                        <VBox spacing="8">
+                            <Label text="Nombre del evento *"/>
+                            <TextField fx:id="txtNombre" promptText="Ingrese el nombre del evento"/>
+                        </VBox>
+                        
+                        <HBox spacing="15">
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                <Label text="Fecha de inicio *"/>
+                                <DatePicker fx:id="dpFechaInicio"/>
+                            </VBox>
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                <Label text="Duración (horas)"/>
+                                <TextField fx:id="txtDuracion" promptText="ej: 2"/>
+                            </VBox>
+                        </HBox>
+                        
+                        <VBox spacing="8">
+                            <Label text="Estado"/>
+                            <ComboBox fx:id="cbEstado" promptText="Seleccione un estado" maxWidth="Infinity"/>
+                        </VBox>
+                    </VBox>
+                    
+                    <!-- Card: Inscripción y participantes -->
+                    <VBox spacing="15">
+                        <Label text="Inscripción y Participantes"/>
+                        
+                        <CheckBox fx:id="chkRequiereInscripcion" text="Requiere inscripción previa"/>
+                        
+                        <!-- Comentario: Campo habilitado solo si chkRequiereInscripcion está marcado -->
+                        <VBox spacing="8">
+                            <Label text="Cupo máximo"/>
+                            <TextField fx:id="txtCupoMaximo" promptText="Número máximo de participantes"/>
+                        </VBox>
+                    </VBox>
+                    
+                    <!-- Card: Organizadores -->
+                    <VBox spacing="15">
+                        <Label text="Organizadores"/>
+                        
+                        <ListView fx:id="lvOrganizadores" prefHeight="120"/>
+                        <HBox spacing="10">
+                            <Button fx:id="btnAgregarOrganizador" text="+ Agregar"/>
+                            <Button fx:id="btnQuitarOrganizador" text="- Quitar"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+                
+                <!-- Columna derecha: Tipo de evento y configuración específica -->
+                <VBox spacing="20" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="400">
+                    
+                    <!-- Card: Tipo de evento -->
+                    <VBox spacing="15">
+                        <Label text="Tipo de Evento"/>
+                        
+                        <VBox spacing="8">
+                            <Label text="Seleccione el tipo *"/>
+                            <!-- Comentario: Al cambiar cbTipoEvento se debe mostrar/ocultar la configuración específica correspondiente -->
+                            <ComboBox fx:id="cbTipoEvento" promptText="Seleccione un tipo de evento" maxWidth="Infinity"/>
+                        </VBox>
+                    </VBox>
+                    
+                    <!-- Card: Configuración específica -->
+                    <VBox spacing="15">
+                        <Label text="Configuración Específica"/>
+                        
+                        <!-- Comentario: Solo un VBox debe ser visible a la vez según cbTipoEvento -->
+                        
+                        <!-- Configuración Feria -->
+                        <!-- Comentario: Visible solo si cbTipoEvento = "Feria" -->
+                        <VBox fx:id="paneFeria" spacing="15" visible="false" managed="false">
+                            <VBox spacing="8">
+                                <Label text="Cantidad de stands"/>
+                                <TextField fx:id="txtCantidadStands" promptText="Número de stands"/>
+                            </VBox>
+                            
+                            <VBox spacing="8">
+                                <Label text="Ubicación"/>
+                                <HBox spacing="20">
+                                    <RadioButton fx:id="rbAireLibre" text="Al aire libre">
+                                        <toggleGroup>
+                                            <ToggleGroup fx:id="tgUbicacionFeria"/>
+                                        </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="rbTechada" text="Techada" toggleGroup="$tgUbicacionFeria"/>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                        
+                        <!-- Configuración Concierto -->
+                        <!-- Comentario: Visible solo si cbTipoEvento = "Concierto" -->
+                        <VBox fx:id="paneConcierto" spacing="15" visible="false" managed="false">
+                            <VBox spacing="8">
+                                <Label text="Artistas/Bandas"/>
+                                <ListView fx:id="lvArtistas" prefHeight="100"/>
+                                <HBox spacing="10">
+                                    <Button fx:id="btnAgregarArtista" text="+ Agregar"/>
+                                    <Button fx:id="btnQuitarArtista" text="- Quitar"/>
+                                </HBox>
+                            </VBox>
+                            
+                            <VBox spacing="8">
+                                <Label text="Tipo de entrada"/>
+                                <ComboBox fx:id="cbTipoEntrada" promptText="Seleccione tipo de entrada" maxWidth="Infinity"/>
+                            </VBox>
+                        </VBox>
+                        
+                        <!-- Configuración Exposición -->
+                        <!-- Comentario: Visible solo si cbTipoEvento = "Exposición" -->
+                        <VBox fx:id="paneExposicion" spacing="15" visible="false" managed="false">
+                            <VBox spacing="8">
+                                <Label text="Tipo de arte"/>
+                                <ComboBox fx:id="cbTipoArte" promptText="Seleccione tipo de arte" maxWidth="Infinity"/>
+                            </VBox>
+                            
+                            <VBox spacing="8">
+                                <Label text="Curador"/>
+                                <ComboBox fx:id="cbCurador" promptText="Seleccione uno o más curadores" maxWidth="Infinity"/>
+                            </VBox>
+                        </VBox>
+                        
+                        <!-- Configuración Taller -->
+                        <!-- Comentario: Visible solo si cbTipoEvento = "Taller" -->
+                        <VBox fx:id="paneTaller" spacing="15" visible="false" managed="false">
+                            <VBox spacing="8">
+                                <Label text="Cupo máximo *"/>
+                                <TextField fx:id="txtCupoTaller" promptText="Número máximo de participantes"/>
+                            </VBox>
+                            
+                            <VBox spacing="8">
+                                <Label text="Instructor"/>
+                                <ComboBox fx:id="cbInstructor" promptText="Seleccione uno o más instructores" maxWidth="Infinity"/>
+                            </VBox>
+                            
+                            <VBox spacing="8">
+                                <Label text="Modalidad"/>
+                                <HBox spacing="20">
+                                    <RadioButton fx:id="rbPresencial" text="Presencial">
+                                        <toggleGroup>
+                                            <ToggleGroup fx:id="tgModalidadTaller"/>
+                                        </toggleGroup>
+                                    </RadioButton>
+                                    <RadioButton fx:id="rbVirtual" text="Virtual" toggleGroup="$tgModalidadTaller"/>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                        
+                        <!-- Configuración Ciclo de cine -->
+                        <!-- Comentario: Visible solo si cbTipoEvento = "Ciclo de cine" -->
+                        <VBox fx:id="paneCicloCine" spacing="15" visible="false" managed="false">
+                            <VBox spacing="8">
+                                <Label text="Películas"/>
+                                <ListView fx:id="lvPeliculas" prefHeight="120"/>
+                                <HBox spacing="8">
+                                    <Button fx:id="btnAgregarPelicula" text="+ Agregar"/>
+                                    <Button fx:id="btnQuitarPelicula" text="- Quitar"/>
+                                    <Separator orientation="VERTICAL"/>
+                                    <Button fx:id="btnSubirPelicula" text="↑" prefWidth="30"/>
+                                    <Button fx:id="btnBajarPelicula" text="↓" prefWidth="30"/>
+                                </HBox>
+                            </VBox>
+                            
+                            <CheckBox fx:id="chkCharlasPosteriores" text="Incluir charlas posteriores a cada película"/>
+                        </VBox>
+                        
+                        <!-- Mensaje cuando no hay tipo seleccionado -->
+                        <VBox fx:id="paneNoTipo" spacing="10" alignment="CENTER" visible="true" managed="true">
+                            <Label text="📝"/>
+                            <Label text="Seleccione un tipo de evento"/>
+                            <Label text="para configurar opciones específicas"/>
+                        </VBox>
+                    </VBox>
+                </VBox>
+            </GridPane>
+        </ScrollPane>
+    </center>
     
-    <Button fx:id="btnVolver" text="Volver a Eventos" onAction="#volverAEventos"/>
+    <!-- Footer con acciones -->
+    <bottom>
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="15" left="20" right="20" bottom="15"/>
+            </padding>
+            <Button fx:id="btnCancelar" text="Cancelar" prefWidth="100"/>
+            <Button fx:id="btnGuardar" text="Guardar Evento" prefWidth="120"/>
+        </HBox>
+    </bottom>
     
-</VBox>
+</BorderPane>
