@@ -6,8 +6,6 @@ import gov.municipio.domain.model.enums.*;
 import gov.municipio.domain.exceptions.*;
 
 import java.time.LocalDate;
-import java.util.List;
-
 /**
  * Clase de prueba para demostrar las mejoras del modelo de dominio rico de Evento.
  */
