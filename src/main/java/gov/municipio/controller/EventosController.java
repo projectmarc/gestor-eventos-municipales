@@ -24,6 +24,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -67,6 +69,9 @@ public class EventosController implements Initializable {
     @FXML private ComboBox<TipoEntrada> cbTipoEntrada;
     @FXML private TextField txtGeneroMusical;
     @FXML private Spinner<Integer> spCapacidadMaxima;
+    //Exposicion
+    @FXML private AnchorPane exposicionPane;
+    @FXML private TextField txtDisciplinaArtistica;
 
     private final ObservableList<Evento> backingData = FXCollections.observableArrayList();
     private FilteredList<Evento> filtered;
@@ -374,7 +379,26 @@ public class EventosController implements Initializable {
                 feriaPane.setVisible(false);
                 feriaPane.setManaged(false);
                 tallerPane.setVisible(false);
-                tallerPane.setManaged(false);      
+                tallerPane.setManaged(false);
+            }else if("Exposicion".equals(nuevo)){
+                exposicionPane.setVisible(true);
+                exposicionPane.setManaged(true);
+
+                feriaPane.setVisible(false);
+                feriaPane.setManaged(false);
+                tallerPane.setVisible(false);
+                tallerPane.setManaged(false);
+                conciertoPane.setVisible(false);
+                conciertoPane.setManaged(false);
+            }else{
+                feriaPane.setVisible(false);
+                feriaPane.setManaged(false);
+                tallerPane.setVisible(false);
+                tallerPane.setManaged(false);
+                conciertoPane.setVisible(false);
+                conciertoPane.setManaged(false);
+                exposicionPane.setVisible(false);
+                exposicionPane.setManaged(false);
             }
         });
 
@@ -402,20 +426,16 @@ public class EventosController implements Initializable {
         Evento nuevo = null;
 
         switch(tipo){
-            case "Concierto" ->{
-                String nombre = txtNombre.getText();
-                LocalDate fecha = datePickerFecha.getValue();
-                int duracion = Integer.parseInt(txtDuracion.getText());
-                boolean requiereInscripcion = chkInscripcion.isSelected();
-                
+            case "Concierto" ->{              
                 List<String> artistas = Arrays.asList(txtArtistas.getText().split(",")); 
                 TipoEntrada tipoEntrada = cbTipoEntrada.getValue();
                 String generoMusical = txtGeneroMusical.getText();
-                int capacidadMaxima = Integer.parseInt(txtCapacidad.getText());
-                nuevo = new Concierto(nombre, fecha, duracion, requiereInscripcion, estado, artistas, tipoEntrada, generoMusical, capacidadMaxima);
+                int capacidadMaxima = spCapacidadMaxima.getValue();
+                nuevo = new Concierto(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, artistas, tipoEntrada, generoMusical, capacidadMaxima);
             }
             case "Exposicion" -> {
-                nuevo = new Exposicion(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado);
+                String disciplinaArtistica = txtDisciplinaArtistica.getText();
+                nuevo = new Exposicion(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, disciplinaArtistica);
             }
             case "Ciclo de Cine" -> {
                 nuevo = new CicloDeCine(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, estado);
