@@ -8,32 +8,20 @@ import gov.municipio.domain.model.enums.TipoLugar;
 import gov.municipio.domain.service.EventoService;
 import gov.municipio.domain.model.enums.ModalidadTaller;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 
 import java.io.IOException;
-import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.EnumSet;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import javafx.event.ActionEvent;
 import java.util.stream.Collectors;
 
@@ -111,6 +99,7 @@ public class EventosFormController {
 
     public void cargarEvento(Evento evento) {
         if (evento != null) {
+            this.eventoEdicion = evento; 
             txtNombre.setText(evento.getNombre());
             dpFechaInicio.setValue(evento.getFechaInicio());
             cbEstadoEvento.setValue(evento.getEstado());
@@ -267,10 +256,25 @@ public class EventosFormController {
         }
         if (nuevo != null) {
             nuevo.setEstado(estado);
-            backingData.add(nuevo);
-            limpiarFormulario();
+            if (onSave != null) {
+                onSave.accept(nuevo); // notifica al padre que guardará y actualizará la tabla
+            } else {
+                // fallback (opcional)
+                Evento guardado = EventoService.getInstance().guardar(nuevo);
+            }
+            ((Stage)((Node)e.getSource()).getScene().getWindow()).close();
         }
     }
+
+    //Método para centralizar los mensajes de error
+    private void alertError(String mensaje) {
+    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText(null);
+    alert.setContentText(mensaje);
+    alert.showAndWait();
+    }
+
     private void limpiarFormulario() {
         txtNombre.clear();
         dpFechaInicio.setValue(null);
