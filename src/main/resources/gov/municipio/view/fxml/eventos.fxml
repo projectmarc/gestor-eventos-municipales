@@ -7,11 +7,10 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="gov.municipio.controller.EventosController"
-      spacing="20"
-      style="-fx-padding: 20;">
+      spacing="20">
     
-    <Label text="Eventos" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+    <Label text="Eventos"/>
     
-    <Button fx:id="btnCrearEvento" text="Crear Nuevo Evento" onAction="#crearEvento" style="-fx-pref-width: 200;"/>
+    <Button fx:id="btnCrearEvento" text="Crear Nuevo Evento" onAction="#crearEvento"/>
     
 </VBox>
