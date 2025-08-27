@@ -46,11 +46,6 @@
                                 <TextField fx:id="txtDuracion" promptText="ej: 2"/>
                             </VBox>
                         </HBox>
-                        
-                        <VBox spacing="8">
-                            <Label text="Estado"/>
-                            <ComboBox fx:id="cbEstado" promptText="Seleccione un estado" maxWidth="Infinity"/>
-                        </VBox>
                     </VBox>
                     
                     <!-- Card: Inscripción y participantes -->

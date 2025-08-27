@@ -18,7 +18,6 @@ public class CrearEventoController {
     @FXML private TextField txtNombre;
     @FXML private DatePicker dpFechaInicio;
     @FXML private TextField txtDuracion;
-    @FXML private ComboBox<EstadoEvento> cbEstado;
     
     // Inscripción y participantes
     @FXML private CheckBox chkRequiereInscripcion;
@@ -100,10 +99,6 @@ public class CrearEventoController {
     }
     
     private void configurarComboBoxes() {
-        // ComboBox de estados
-        cbEstado.setItems(FXCollections.observableArrayList(EstadoEvento.values()));
-        cbEstado.setValue(EstadoEvento.PLANIFICACION);
-        
         // ComboBox de tipos de evento
         cbTipoEvento.setItems(FXCollections.observableArrayList(
             "Feria", "Concierto", "Exposición", "Taller", "Ciclo de cine"
@@ -435,7 +430,7 @@ public class CrearEventoController {
             mensaje.append("Duración: ").append(txtDuracion.getText()).append(" horas\n");
         }
         
-        mensaje.append("Estado: ").append(cbEstado.getValue()).append("\n");
+        mensaje.append("Estado: ").append(EstadoEvento.PLANIFICACION).append("\n");
         mensaje.append("Requiere inscripción: ").append(chkRequiereInscripcion.isSelected() ? "Sí" : "No").append("\n");
         
         if (chkRequiereInscripcion.isSelected() && !txtCupoMaximo.getText().trim().isEmpty()) {
@@ -454,7 +449,6 @@ public class CrearEventoController {
         txtNombre.clear();
         dpFechaInicio.setValue(null);
         txtDuracion.clear();
-        cbEstado.setValue(EstadoEvento.PLANIFICACION);
         
         // Limpiar inscripción
         chkRequiereInscripcion.setSelected(false);
