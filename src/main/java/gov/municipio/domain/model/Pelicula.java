@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Access(AccessType.FIELD)
 public class Pelicula {
     private static final float DURACION_MINIMA = 1.0f;
-    private static final float DURACION_MAXIMA = 600.0f; // 10 horas máximo
+    private static final float DURACION_MAXIMA = 180.0f; // 3 horas máximo
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
