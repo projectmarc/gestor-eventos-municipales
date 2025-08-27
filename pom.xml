@@ -12,19 +12,10 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <javafx.version>23.0.2</javafx.version>
-        <os.detected.classifier>${os.detected.classifier}</os.detected.classifier>
     </properties>
 
-    <!-- Fuerza a Maven a mirar Central -->
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-    </repositories>
-
     <dependencies>
-        <!-- JavaFX con classifier dinámico -->
+        <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -57,22 +48,6 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <!-- Plugin JavaFX -->
-                <plugin>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-maven-plugin</artifactId>
-                    <version>0.0.8</version>
-                    <configuration>
-                        <mainClass>gov.municipio.Main</mainClass>
-                        <!-- fuerza a usar el JAVA_HOME -->
-                        <executable>${env.JAVA_HOME}/bin/java</executable>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <plugins>
             <!-- Compilador -->
             <plugin>
@@ -84,11 +59,11 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin para detectar SO y aplicar classifier -->
+            <!-- Detecta el sistema operativo (para JavaFX) -->
             <plugin>
                 <groupId>kr.motd.maven</groupId>
                 <artifactId>os-maven-plugin</artifactId>
-                <version>1.7.0</version>
+                <version>1.7.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -98,14 +73,13 @@
                 </executions>
             </plugin>
 
-            <!-- JavaFX plugin (activo en build) -->
+            <!-- JavaFX -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>gov.municipio.Main</mainClass>
-                    <executable>${env.JAVA_HOME}/bin/java</executable>
                 </configuration>
             </plugin>
         </plugins>
