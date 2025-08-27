@@ -42,12 +42,12 @@
             </Button>
             <TableView fx:id="tblEventos" layoutX="13.0" layoutY="161.0" prefHeight="312.0" prefWidth="706.0">
               <columns>
-                <TableColumn fx:id="colNombre" prefWidth="196.0" sortable="false" text="Nombre" />
-                <TableColumn fx:id="colFecha" editable="false" prefWidth="85.0" sortable="false" text="Fecha" />
-                  <TableColumn fx:id="colEstado" prefWidth="95.0" sortable="false" text="Estado" />
-                  <TableColumn fx:id="colTipo" prefWidth="99.0" sortable="false" text="Tipo" />
-                  <TableColumn fx:id="colRequiereInscripcion" prefWidth="132.0" sortable="false" text="Requiere Inscripción" />
-                  <TableColumn fx:id="colAcciones" prefWidth="98.0" sortable="false" text="Acciones" />
+                <TableColumn fx:id="colNombre" prefWidth="156.0" sortable="false" text="Nombre" />
+                <TableColumn fx:id="colFecha" editable="false" prefWidth="78.0" sortable="false" text="Fecha" />
+                  <TableColumn fx:id="colEstado" prefWidth="85.0" sortable="false" text="Estado" />
+                  <TableColumn fx:id="colTipo" prefWidth="66.0" sortable="false" text="Tipo" />
+                  <TableColumn fx:id="colRequiereInscripcion" prefWidth="142.0" sortable="false" text="Requiere Inscripción" />
+                  <TableColumn fx:id="colAcciones" prefWidth="178.0" sortable="false" text="Acciones" />
               </columns>
                <opaqueInsets>
                   <Insets />
