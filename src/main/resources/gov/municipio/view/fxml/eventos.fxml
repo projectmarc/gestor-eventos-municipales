@@ -53,7 +53,7 @@
                   <Insets />
                </opaqueInsets>
             </TableView>
-            <Button fx:id="btnLimpiar" layoutX="622.0" layoutY="112.0" mnemonicParsing="false" text="Limpiar filtros" />
+            <Button fx:id="btnLimpiar" layoutX="622.0" layoutY="112.0" mnemonicParsing="false" onAction="#onLimpiarFiltros" text="Limpiar filtros" />
          </children>
       </AnchorPane>
    </children>
