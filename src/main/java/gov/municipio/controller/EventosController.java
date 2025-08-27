@@ -66,33 +66,25 @@ public class EventosController implements Initializable {
         configurarFiltrado();
         wiringBusquedaYFiltros();
 
-        btnLimpiar.disableProperty().bind(
-            txtBuscar.textProperty().isEmpty()
-                .and(cbEstado.valueProperty().isNull())
-                .and(cbTipo.valueProperty().isNull())
-        );
+        btnNuevo.setOnAction(this::onNuevo);
+        if (btnLimpiar != null) {
+            btnLimpiar.setOnAction(e -> {
+                txtBuscar.clear();
+                cbEstado.setValue(null);
+                cbTipo.setValue(null);
+                aplicarFiltros();
+            });
+        }
+        cbEstado.setEditable(false);
+        cbTipo.setEditable(false);
     }
 
     // Combos
     private void configurarCombos() {
-        cbEstado.getItems().clear();
-        cbEstado.getItems().add(null);
-        cbEstado.getItems().addAll(EnumSet.allOf(EstadoEvento.class));
+        cbEstado.getItems().setAll(EnumSet.allOf(EstadoEvento.class));
+        cbEstado.setPromptText("Todos los estados");
 
-        cbEstado.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(EstadoEvento item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else if (item == null) {
-                    setText("Todos los estados");
-                } else {
-                    setText(item.name());
-                }
-            }
-        });
-        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposicion", "Taller", "Feria");
+        cbTipo.getItems().setAll("Concierto", "Ciclo de Cine", "Exposición", "Taller", "Feria");
         cbTipo.setPromptText("Todos los tipos");
     }
 
@@ -109,16 +101,15 @@ public class EventosController implements Initializable {
         });
 
         // Estado   
-        colEstado.setCellValueFactory(cd -> {
-            var e = cd.getValue();
-            var estado = e.getEstado() != null ? e.getEstado().name() : "";
-            return new SimpleStringProperty(estado);
-        });
+        colEstado.setCellValueFactory(cd ->
+            new SimpleStringProperty(estadoAmigable(cd.getValue().getEstado()))
+        );
 
         // Tipo
-        colTipo = new TableColumn<>("Tipo");
-        colTipo.setSortable(false);
         colTipo.setCellValueFactory(cd -> new SimpleStringProperty(tipoAmigable(cd.getValue())));
+        colRequiereInscripcion.setCellValueFactory(cd ->
+            new SimpleStringProperty(cd.getValue().isRequiereInscripcion() ? "Requiere" : "No requiere")
+        );
 
         // Requiere inscripción
         colRequiereInscripcion.setCellValueFactory(cd -> {
@@ -130,86 +121,30 @@ public class EventosController implements Initializable {
         colAcciones.setCellFactory(col -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");
             private final Button btnEliminar = new Button("Borrar");
-
             {
                 btnEditar.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 btnEliminar.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-text-fill: red;");
-                
-                btnEditar.setOnAction(e -> {
-                    Evento ev = getTableView().getItems().get(getIndex());
-                    onEditarEvento(ev);
-                });
-
-                btnEliminar.setOnAction(e -> {
-                    Evento ev = getTableView().getItems().get(getIndex());
-                    onEliminarEvento(ev);
-                });
+                btnEditar.setOnAction(e -> onEditarEvento(getTableView().getItems().get(getIndex())));
+                btnEliminar.setOnAction(e -> onEliminarEvento(getTableView().getItems().get(getIndex())));
             }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
+            @Override protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox box = new HBox(5, btnEditar, btnEliminar);
-                    setGraphic(box);
-                }
+                setGraphic(empty ? null : new HBox(5, btnEditar, btnEliminar));
             }
         });
 
-        tblEventos.getColumns().add(colAcciones);
-
-        if (!tblEventos.getColumns().contains(colEstado)) {
-            tblEventos.getColumns().add(colEstado);
-            tblEventos.getColumns().add(colTipo);
-            tblEventos.getColumns().add(colRequiereInscripcion);
-        }
-
-        // Label cuando no hay resultados
         tblEventos.placeholderProperty().bind(
-                Bindings.createObjectBinding(
-                        () -> new Label("Sin resultados"),
-                        tblEventos.itemsProperty()
-                )
+                Bindings.createObjectBinding(() -> new Label("Sin resultados"), tblEventos.itemsProperty())
         );
     }
 
     // Carga de datos desde el servicio
     private void cargarDatos() {
-            backingData.clear(); // limpiar cualquier resto
-    
-            var hoy = java.time.LocalDate.now();
-
-            var e1 = new Concierto("Rock en la Plaza", hoy.plusDays(7), 4, true,
-                        java.util.List.of("La Renga", "Los Redondos"), TipoEntrada.GRATUITA, "Rock", 500);
-            e1.setEstado(EstadoEvento.CONFIRMADO);
-
-            var e2 = new Exposicion("Arte Local", hoy.plusDays(15), 6, false, "Pintura");
-            e2.setEstado(EstadoEvento.PLANIFICACION);
-
-            var e3 = new Feria("Feria de Emprendedores", hoy.plusDays(30), 10, true,
-                    60, TipoLugar.AIRE_LIBRE);
-            e3.setEstado(EstadoEvento.EN_EJECUCION);
-
-            var p1 = new Pelicula("Relatos Salvajes", 122f);
-            var p2 = new Pelicula("Nueve Reinas", 114f);
-            var e4 = new CicloDeCine("Clásicos", hoy.plusDays(20), 3, true,
-                    java.util.List.of(p1, p2), false);
-            e4.setEstado(EstadoEvento.FINALIZADO);
-
-            var e5 = new Taller("Taller de Cerámica", hoy.plusDays(10), 5, true, ModalidadTaller.PRESENCIAL, 40);
-            e5.setEstado(EstadoEvento.CONFIRMADO);
-
-            var e6 = new Concierto("RockAndROLL", hoy.plusDays(7), 4, true,
-            java.util.List.of("AIRBAG", "Soda Stereo"), TipoEntrada.GRATUITA,   "Rock", 500);
-            e6.setEstado(EstadoEvento.CONFIRMADO);
-
-            var e7 = new Concierto("Cumbia Loca", hoy.plusDays(7), 4, true,
-            java.util.List.of("Christian Warner", "Viejas Locas"), TipoEntrada.GRATUITA, "Rock", 500);
-            e7.setEstado(EstadoEvento.FINALIZADO);
-
-            backingData.addAll(e1, e2, e3, e4, e5, e6, e7);
+        try {
+            backingData.setAll(eventoService.listarEventosConParticipaciones());
+        } catch (Exception ex) {
+            System.err.println("No se pudieron cargar eventos: " + ex.getMessage());
+        }   
     }
 
     // Configuración de filtros
