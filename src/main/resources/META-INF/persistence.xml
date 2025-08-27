@@ -9,7 +9,7 @@
     <properties>
       <!-- Conexión a H2 en archivo -->
       <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:file:./data/municipio;AUTO_SERVER=TRUE"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:file:./data/municipio-db;AUTO_SERVER=TRUE"/>
       <property name="jakarta.persistence.jdbc.user" value="sa"/>
       <property name="jakarta.persistence.jdbc.password" value=""/>
 
@@ -17,6 +17,7 @@
       <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.jdbc.time_zone" value="UTC"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
     </properties>
   </persistence-unit>

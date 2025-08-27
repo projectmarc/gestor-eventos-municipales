@@ -1,15 +1,19 @@
 package gov.municipio.config;
 
 import gov.municipio.application.PersonaService;
-// Con JPA, acá también se crearian EntityManagerFactory, repositorios, etc
+import gov.municipio.persistence.persona.JpaPersonaRepository;
+import gov.municipio.persistence.persona.PersonaRepository;
 
 public class ServiceContainer {
     private final PersonaService personaService;
 
     public ServiceContainer() {
-        // ⚠️ En el futuro: pasale repos/JPA/DAO al servicio
-        this.personaService = new PersonaService();
+        // Configuración manual de dependencias (sin framework DI)
+        PersonaRepository personaRepository = new JpaPersonaRepository();
+        this.personaService = new PersonaService(personaRepository);
     }
 
-    public PersonaService personaService() { return personaService; }
+    public PersonaService personaService() { 
+        return personaService; 
+    }
 }

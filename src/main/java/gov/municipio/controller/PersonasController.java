@@ -36,10 +36,9 @@ public class PersonasController {
         String email    = txtEmail.getText();
 
         try {
-            Persona p = new Persona(nombre, apellido, dni, tel, email);
-            personaService.registrar(p);
+            Persona p = personaService.registrarPersona(nombre, apellido, dni, tel, email);
             limpiarCampos();
-            info("Persona registrada", "Se registró a " + apellido + ", " + nombre);
+            info("Persona registrada", "Se registró a " + apellido + ", " + nombre + " con ID: " + p.getId());
         } catch (IllegalArgumentException e){
             error("Datos inválidos", e.getMessage());
         } catch (IllegalStateException e){

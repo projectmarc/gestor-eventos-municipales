@@ -38,7 +38,6 @@
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
       <version>${jakarta.persistence.version}</version>
-      <scope>provided</scope>
     </dependency>
 
     <!-- Implementación JPA: Hibernate 6 -->
@@ -48,12 +47,11 @@
       <version>${hibernate.version}</version>
     </dependency>
 
-    <!-- H2 (solo en runtime) -->
+    <!-- H2 (base de datos) -->
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>${h2.version}</version>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- Opcional: logging simple y legible en consola -->

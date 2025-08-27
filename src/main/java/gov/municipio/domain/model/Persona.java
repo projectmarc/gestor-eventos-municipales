@@ -1,18 +1,40 @@
 package gov.municipio.domain.model;
 
+import jakarta.persistence.*;
 import java.util.regex.Pattern;
 
+@Entity
+@Table(name = "personas", uniqueConstraints = @UniqueConstraint(columnNames = "dni"))
+@Access(AccessType.FIELD)
 public class Persona {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
         "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
     );
     private static final Pattern TELEFONO_PATTERN = Pattern.compile("^\\d{8,15}$");
     
-    private final String nombre;
-    private final String apellido;
-    private final String dni;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false, length = 60)
+    private String nombre;
+    
+    @Column(nullable = false, length = 60)
+    private String apellido;
+    
+    @Column(nullable = false, length = 20)
+    private String dni;
+    
+    @Column(length = 20)
     private String telefono;
+    
+    @Column(length = 120)
     private String email;
+
+    // Constructor por defecto protegido para JPA
+    protected Persona() {
+        // JPA necesita un constructor por defecto
+    }
 
     public Persona(String nombre, String apellido, String dni, String telefono, String email) {
         this.nombre = validarNombre(nombre);
@@ -23,6 +45,10 @@ public class Persona {
     }
 
     // Getters
+    public Long getId() {
+        return id;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -114,8 +140,8 @@ public class Persona {
 
     @Override
     public String toString() {
-        return String.format("Persona{nombre='%s', apellido='%s', dni='%s', telefono='%s', email='%s'}",
-                nombre, apellido, dni, telefono, email);
+        return String.format("Persona{id=%d, nombre='%s', apellido='%s', dni='%s', telefono='%s', email='%s'}",
+                id, nombre, apellido, dni, telefono, email);
     }
 
     @Override
