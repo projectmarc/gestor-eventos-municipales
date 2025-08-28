@@ -41,6 +41,9 @@ public class EventosController {
     @FXML
     private TableColumn<Evento, String> colTipoEvento;
     
+    @FXML
+    private TableColumn<Evento, String> colEstado;
+    
     private Router router;
     private EventoService eventoService;
     private ObservableList<Evento> eventos;
@@ -87,6 +90,12 @@ public class EventosController {
             String tipo = cellData.getValue().getClass().getSimpleName();
             return new javafx.beans.property.SimpleStringProperty(tipo);
         });
+        
+        // Configurar columna de estado
+        colEstado.setCellValueFactory(cellData -> {
+            String estado = convertirEstadoATexto(cellData.getValue().getEstado());
+            return new javafx.beans.property.SimpleStringProperty(estado);
+        });
     }
     
     /**
@@ -132,5 +141,17 @@ public class EventosController {
         alert.setHeaderText(null);
         alert.setContentText(detalle);
         alert.showAndWait();
+    }
+    
+    /**
+     * Convierte el estado del evento a una representación en texto más amigable.
+     */
+    private String convertirEstadoATexto(gov.municipio.domain.model.enums.EstadoEvento estado) {
+        return switch (estado) {
+            case PLANIFICACION -> "En Planificación";
+            case CONFIRMADO -> "Confirmado";
+            case EN_EJECUCION -> "En Ejecución";
+            case FINALIZADO -> "Finalizado";
+        };
     }
 }

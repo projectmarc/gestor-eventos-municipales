@@ -28,6 +28,7 @@
               <TableColumn text="Fecha de Inicio" fx:id="colFechaInicio"/>
               <TableColumn text="Duración (horas)" fx:id="colDuracion"/>
               <TableColumn text="Tipo de Evento" fx:id="colTipoEvento"/>
+              <TableColumn text="Estado" fx:id="colEstado"/>
           </columns>
       </TableView>
 
