@@ -3,61 +3,61 @@ package gov.municipio.domain.model.evento;
 import gov.municipio.domain.model.Pelicula;
 import gov.municipio.domain.model.enums.Rol;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class CicloDeCine extends Evento {
-    private List<Pelicula> peliculas;
-    private String ordenProyeccion;
-    private boolean incluyeCharlaPosteriores;
 
-    public CicloDeCine(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, List<Pelicula> peliculas, String ordenProyeccion, boolean incluyeCharlaPosteriores) {
+    private final List<Pelicula> peliculasEnOrden;
+    private final boolean incluyeCharlasPosteriores;
+
+    public CicloDeCine(String nombre,
+                       LocalDate fechaInicio,
+                       int duracionEstimadaHoras,
+                       boolean requiereInscripcion,
+                       List<Pelicula> peliculasEnOrden,
+                       boolean incluyeCharlasPosteriores) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
-        this.peliculas = peliculas != null ? new ArrayList<>(peliculas) : new ArrayList<>();
-        this.ordenProyeccion = ordenProyeccion;
-        this.incluyeCharlaPosteriores = incluyeCharlaPosteriores;
-        
-        // Validar datos específicos después de inicializar los atributos
-        validarDatosEspecificos();
+        this.peliculasEnOrden = validarPeliculas(peliculasEnOrden);
+        this.incluyeCharlasPosteriores = incluyeCharlasPosteriores;
     }
 
     @Override
     public boolean validarRol(Rol rol) {
+        // Solo organizadores y asistentes
         return rol == Rol.ORGANIZADOR || rol == Rol.ASISTENTE;
     }
 
-    public List<Pelicula> getPeliculas() {
-        return new ArrayList<>(peliculas); // Copia defensiva
+    public List<Pelicula> getPeliculasEnOrden() {
+        // Vista inmutable: no se puede alterar desde afuera
+        return Collections.unmodifiableList(peliculasEnOrden);
     }
 
-    public String getOrdenProyeccion() {
-        return ordenProyeccion;
-    }
-
-    public boolean incluyeCharlaPosteriores() {
-        return incluyeCharlaPosteriores;
+    public boolean incluyeCharlasPosteriores() {
+        return incluyeCharlasPosteriores;
     }
 
     @Override
     protected void validarDatosEspecificos() {
         super.validarDatosEspecificos();
-        
-        if (peliculas == null || peliculas.isEmpty()) {
+        if (peliculasEnOrden.isEmpty()) {
             throw new IllegalArgumentException("El ciclo de cine debe tener al menos una película");
         }
-        if (peliculas.size() > 20) {
-            throw new IllegalArgumentException("El ciclo de cine no puede tener más de 20 películas");
+    }
+
+    private List<Pelicula> validarPeliculas(List<Pelicula> peliculas) {
+        Objects.requireNonNull(peliculas, "La lista de películas no puede ser nula");
+        if (peliculas.isEmpty()) {
+            throw new IllegalArgumentException("Debe haber al menos una película");
         }
-        if (ordenProyeccion == null || ordenProyeccion.trim().isEmpty()) {
-            throw new IllegalArgumentException("El orden de proyección no puede ser nulo ni vacío");
+        if (peliculas.stream().anyMatch(p -> p == null)) {
+            throw new IllegalArgumentException("Ninguna película puede ser nula");
         }
-        
-        // Validar que todas las películas sean válidas
-        for (Pelicula pelicula : peliculas) {
-            if (pelicula == null) {
-                throw new IllegalArgumentException("Las películas del ciclo no pueden ser nulas");
-            }
+        if (peliculas.size() != peliculas.stream().distinct().count()) {
+            throw new IllegalArgumentException("No se permiten películas repetidas en el ciclo");
         }
+        return List.copyOf(peliculas); // Inmutable y orden preservado
     }
 }
