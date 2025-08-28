@@ -34,7 +34,7 @@ public class Participacion {
 
     public boolean esRolDeLiderazgo() {
         return rol == Rol.ORGANIZADOR || rol == Rol.INSTRUCTOR ||
-               rol == Rol.CURADOR     || rol == Rol.ARTISTA;
+               rol == Rol.CURADOR;
     }
     public boolean esAsistente() { return rol == Rol.ASISTENTE; }
 

@@ -1,24 +1,25 @@
 package gov.municipio.domain.model.evento;
 
+import gov.municipio.domain.model.ArtistaBanda;
 import gov.municipio.domain.model.enums.Rol;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Concierto extends Evento {
-    private String artistaPrincipal;
-    private String generoMusical;
+    private final List<ArtistaBanda> artistasBandas;
     private int capacidadMaxima;
 
-    public Concierto(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, String artistaPrincipal, String generoMusical, int capacidadMaxima) {
+    public Concierto(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, List<ArtistaBanda> artistasBandas, int capacidadMaxima) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
-        this.artistaPrincipal = validarArtistaPrincipal(artistaPrincipal);
-        this.generoMusical = validarGeneroMusical(generoMusical);
+        this.artistasBandas = validarArtistsBandas(artistasBandas);
         this.capacidadMaxima = validarCapacidadMaxima(capacidadMaxima);
     }
 
     @Override
     public boolean validarRol(Rol rol) {
-        return rol == Rol.ASISTENTE || rol == Rol.ORGANIZADOR || rol == Rol.ARTISTA;
+        return rol == Rol.ASISTENTE || rol == Rol.ORGANIZADOR;
     }
 
     @Override
@@ -31,30 +32,27 @@ public class Concierto extends Evento {
         return this.capacidadMaxima;
     }
 
-    public String getArtistaPrincipal() {
-        return artistaPrincipal;
-    }
-
-    public String getGeneroMusical() {
-        return generoMusical;
+    public List<ArtistaBanda> getArtistaBandas() {
+        // Vista inmutable: no se puede alterar desde afuera
+        return Collections.unmodifiableList(artistasBandas);
     }
 
     public int getCapacidadMaxima() {
         return capacidadMaxima;
     }
 
-    private String validarArtistaPrincipal(String artistaPrincipal) {
-        if (artistaPrincipal == null || artistaPrincipal.trim().isEmpty()) {
-            throw new IllegalArgumentException("El artista principal no puede ser nulo ni vacío");
+    private List<ArtistaBanda> validarArtistsBandas(List<ArtistaBanda> artistasBandas) {
+        Objects.requireNonNull(artistasBandas, "La lista de artistas/bandas no puede ser nula");
+        if (artistasBandas.isEmpty()) {
+            throw new IllegalArgumentException("Debe haber al menos un artista/banda");
         }
-        return artistaPrincipal.trim();
-    }
-
-    private String validarGeneroMusical(String generoMusical) {
-        if (generoMusical == null || generoMusical.trim().isEmpty()) {
-            throw new IllegalArgumentException("El género musical no puede ser nulo ni vacío");
+        if (artistasBandas.stream().anyMatch(a -> a == null)) {
+            throw new IllegalArgumentException("Ningún artista/banda puede ser nulo");
         }
-        return generoMusical.trim();
+        if (artistasBandas.size() != artistasBandas.stream().distinct().count()) {
+            throw new IllegalArgumentException("No se permiten artistas/bandas repetidos en el concierto");
+        }
+        return List.copyOf(artistasBandas); // Inmutable y orden preservado
     }
 
     private int validarCapacidadMaxima(int capacidadMaxima) {

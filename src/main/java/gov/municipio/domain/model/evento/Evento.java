@@ -36,7 +36,7 @@ public abstract class Evento {
 
     // -------- API de participaciones
 
-    /** Agrega un responsable (organizador/curador/instructor/artista) solo en PLANIFICACIÓN. */
+    /** Agrega un responsable (organizador/curador/instructor) solo en PLANIFICACIÓN. */
     public Participacion agregarResponsable(Persona persona, Rol rolResponsable) {
         if (persona == null || rolResponsable == null)
             throw new IllegalArgumentException("Persona y rol son obligatorios");
@@ -254,6 +254,6 @@ public abstract class Evento {
     }
 
     private static boolean esRolResponsable(Rol r) {
-        return r == Rol.ORGANIZADOR || r == Rol.INSTRUCTOR || r == Rol.CURADOR || r == Rol.ARTISTA;
+        return r == Rol.ORGANIZADOR || r == Rol.INSTRUCTOR || r == Rol.CURADOR;
     }
 }
