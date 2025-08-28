@@ -2,85 +2,118 @@
 
 /* Base Application Styles */
 .root {
+    font-family: "Roboto", "Segoe UI", "Arial", sans-serif;
     -fx-font-family: "Roboto", "Segoe UI", "Arial", sans-serif;
+    font-size: 14px;
     -fx-font-size: 14px;
+    background-color: #FAFAFA;
     -fx-background-color: #FAFAFA;
     -fx-text-fill: #212121;
 }
 
 /* Typography */
 .text-display-large {
+    font-size: 57px;
     -fx-font-size: 57px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-display-medium {
+    font-size: 45px;
     -fx-font-size: 45px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-display-small {
+    font-size: 36px;
     -fx-font-size: 36px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-headline-large {
+    font-size: 32px;
     -fx-font-size: 32px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-headline-medium {
+    font-size: 28px;
     -fx-font-size: 28px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-headline-small {
+    font-size: 24px;
     -fx-font-size: 24px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-title-large {
+    font-size: 22px;
     -fx-font-size: 22px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-title-medium {
+    font-size: 16px;
     -fx-font-size: 16px;
+    font-weight: bold;
     -fx-font-weight: bold;
 }
 
 .text-title-small {
+    font-size: 14px;
     -fx-font-size: 14px;
+    font-weight: bold;
     -fx-font-weight: bold;
 }
 
 .text-body-large {
+    font-size: 16px;
     -fx-font-size: 16px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-body-medium {
+    font-size: 14px;
     -fx-font-size: 14px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-body-small {
+    font-size: 12px;
     -fx-font-size: 12px;
+    font-weight: normal;
     -fx-font-weight: normal;
 }
 
 .text-label-large {
+    font-size: 14px;
     -fx-font-size: 14px;
+    font-weight: bold;
     -fx-font-weight: bold;
 }
 
 .text-label-medium {
+    font-size: 12px;
     -fx-font-size: 12px;
+    font-weight: bold;
     -fx-font-weight: bold;
 }
 
 .text-label-small {
+    font-size: 11px;
     -fx-font-size: 11px;
+    font-weight: bold;
     -fx-font-weight: bold;
 }
 
@@ -99,24 +132,29 @@
 
 /* Surface Containers */
 .surface {
+    background-color: #FFFFFF;
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #212121;
 }
 
 .surface-variant {
+    background-color: #F5F5F5;
     -fx-background-color: #F5F5F5;
     -fx-text-fill: #757575;
 }
 
 /* Container Styles */
 .container {
+    padding: 16px;
     -fx-padding: 16;
 }
 
 .container-large {
+    padding: 24px;
     -fx-padding: 24;
 }
 
 .container-small {
+    padding: 8px;
     -fx-padding: 8;
 }
