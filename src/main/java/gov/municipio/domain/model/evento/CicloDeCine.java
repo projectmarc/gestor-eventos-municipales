@@ -30,6 +30,11 @@ public class CicloDeCine extends Evento {
         return rol == Rol.ORGANIZADOR || rol == Rol.ASISTENTE;
     }
 
+    @Override
+    protected List<Rol> rolesResponsablesObligatorios() {
+        return List.of(Rol.ORGANIZADOR);
+    }
+
     public List<Pelicula> getPeliculasEnOrden() {
         // Vista inmutable: no se puede alterar desde afuera
         return Collections.unmodifiableList(peliculasEnOrden);
@@ -37,14 +42,6 @@ public class CicloDeCine extends Evento {
 
     public boolean incluyeCharlasPosteriores() {
         return incluyeCharlasPosteriores;
-    }
-
-    @Override
-    protected void validarDatosEspecificos() {
-        super.validarDatosEspecificos();
-        if (peliculasEnOrden.isEmpty()) {
-            throw new IllegalArgumentException("El ciclo de cine debe tener al menos una película");
-        }
     }
 
     private List<Pelicula> validarPeliculas(List<Pelicula> peliculas) {
