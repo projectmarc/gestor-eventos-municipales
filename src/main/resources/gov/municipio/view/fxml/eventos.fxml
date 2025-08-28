@@ -16,7 +16,11 @@
     <Button fx:id="btnCrearEvento" text="Crear Nuevo Evento" onAction="#crearEvento"/>
     
     <VBox spacing="10">
+
       <Label text="Eventos registrados"/>
+
+      <Button fx:id="btnGestionarEvento" text="Gestionar Evento"/>
+
       <TableView fx:id="tblEventos">
           <columns>
               <TableColumn text="Nombre" fx:id="colNombre"/>
@@ -25,6 +29,7 @@
               <TableColumn text="Tipo de Evento" fx:id="colTipoEvento"/>
           </columns>
       </TableView>
+
     </VBox>
 
 </VBox>
