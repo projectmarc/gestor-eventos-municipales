@@ -75,7 +75,7 @@
         </VBox>
         
         <!-- Tercera sección: Asistentes -->
-        <VBox spacing="15" prefWidth="400" styleClass="section-container">
+        <VBox fx:id="seccionAsistentes" spacing="15" prefWidth="400" styleClass="section-container">
             <Label text="Asistentes" styleClass="text-title-medium"/>
             
             <!-- Contenedor para los asistentes -->
@@ -85,7 +85,7 @@
         </VBox>
         
         <!-- Cuarta sección: Películas/Artistas según el tipo de evento -->
-        <VBox spacing="15" prefWidth="400" styleClass="section-container">
+        <VBox fx:id="seccionContenido" spacing="15" prefWidth="400" styleClass="section-container">
             <Label fx:id="lblTituloContenido" text="Contenido" styleClass="text-title-medium"/>
             
             <!-- Contenedor para películas o artistas -->

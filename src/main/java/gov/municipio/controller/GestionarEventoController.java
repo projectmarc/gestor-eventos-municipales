@@ -80,10 +80,16 @@ public class GestionarEventoController {
     private VBox vboxAsistentes;
     
     @FXML
+    private VBox seccionAsistentes;
+    
+    @FXML
     private Label lblTituloContenido;
     
     @FXML
     private VBox vboxContenido;
+    
+    @FXML
+    private VBox seccionContenido;
     
     private Router router;
     private EventoService eventoService;
@@ -111,6 +117,7 @@ public class GestionarEventoController {
         this.eventoActual = evento;
         cargarDatosEvento();
         cargarPersonasResponsables();
+        configurarVisibilidadSecciones();
         cargarAsistentes();
         cargarContenido();
     }
@@ -164,6 +171,20 @@ public class GestionarEventoController {
             // Configurar el botón de gestión de estado dinámico
             configurarBotonGestionEstado();
         }
+    }
+    
+    private void configurarVisibilidadSecciones() {
+        if (eventoActual == null) return;
+        
+        // Configurar visibilidad de la sección de asistentes
+        boolean mostrarAsistentes = eventoActual.isRequiereInscripcion();
+        seccionAsistentes.setVisible(mostrarAsistentes);
+        seccionAsistentes.setManaged(mostrarAsistentes);
+        
+        // Configurar visibilidad de la sección de contenido
+        boolean mostrarContenido = eventoActual instanceof CicloDeCine || eventoActual instanceof Concierto;
+        seccionContenido.setVisible(mostrarContenido);
+        seccionContenido.setManaged(mostrarContenido);
     }
     
     @FXML
