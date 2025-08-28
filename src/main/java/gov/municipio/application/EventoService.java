@@ -7,8 +7,8 @@ import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.persistence.evento.EventoRepository;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Servicio de aplicación para la gestión de eventos.
@@ -119,7 +119,95 @@ public class EventoService {
                 LocalDate fechaEvento = evento.getFechaInicio();
                 return !fechaEvento.isBefore(fechaInicio) && !fechaEvento.isAfter(fechaFin);
             })
-            .collect(java.util.stream.Collectors.toList());
+            .collect(Collectors.toList());
+    }
+
+    // ========== MÉTODOS PARA MÉTRICAS DEL DASHBOARD ==========
+
+    /**
+     * Obtiene la cantidad total de eventos registrados.
+     * 
+     * @return el número total de eventos en el sistema
+     */
+    public int obtenerCantidadTotalEventos() {
+        return eventoRepository.findAll().size();
+    }
+
+    /**
+     * Obtiene la cantidad de eventos por tipo.
+     * 
+     * @return mapa con el nombre del tipo de evento y su cantidad
+     */
+    public Map<String, Integer> obtenerCantidadEventosPorTipo() {
+        List<Evento> eventos = eventoRepository.findAll();
+        Map<String, Integer> contadores = new HashMap<>();
+        
+        // Inicializar contadores en 0
+        contadores.put("Feria", 0);
+        contadores.put("Concierto", 0);
+        contadores.put("Exposición", 0);
+        contadores.put("Taller", 0);
+        contadores.put("Ciclo de cine", 0);
+        
+        // Contar eventos por tipo
+        for (Evento evento : eventos) {
+            String tipoEvento = obtenerNombreTipoEvento(evento);
+            contadores.put(tipoEvento, contadores.get(tipoEvento) + 1);
+        }
+        
+        return contadores;
+    }
+
+    /**
+     * Obtiene la cantidad de eventos por estado.
+     * 
+     * @return mapa con el estado del evento y su cantidad
+     */
+    public Map<EstadoEvento, Integer> obtenerCantidadEventosPorEstado() {
+        List<Evento> eventos = eventoRepository.findAll();
+        Map<EstadoEvento, Integer> contadores = new HashMap<>();
+        
+        // Inicializar contadores en 0
+        for (EstadoEvento estado : EstadoEvento.values()) {
+            contadores.put(estado, 0);
+        }
+        
+        // Contar eventos por estado
+        for (Evento evento : eventos) {
+            EstadoEvento estado = evento.getEstado();
+            contadores.put(estado, contadores.get(estado) + 1);
+        }
+        
+        return contadores;
+    }
+
+    /**
+     * Obtiene la cantidad de eventos que ocurren hoy.
+     * 
+     * @return el número de eventos programados para la fecha actual
+     */
+    public int obtenerCantidadEventosHoy() {
+        LocalDate hoy = LocalDate.now();
+        return (int) eventoRepository.findAll().stream()
+            .filter(evento -> evento.getFechaInicio().equals(hoy))
+            .count();
+    }
+
+    /**
+     * Obtiene el nombre del tipo de evento para mostrar en la interfaz.
+     * 
+     * @param evento el evento del cual obtener el tipo
+     * @return el nombre del tipo de evento
+     */
+    private String obtenerNombreTipoEvento(Evento evento) {
+        return switch (evento.getClass().getSimpleName()) {
+            case "Feria" -> "Feria";
+            case "Concierto" -> "Concierto";
+            case "Exposicion" -> "Exposición";
+            case "Taller" -> "Taller";
+            case "CicloDeCine" -> "Ciclo de cine";
+            default -> "Otro";
+        };
     }
     
     /**

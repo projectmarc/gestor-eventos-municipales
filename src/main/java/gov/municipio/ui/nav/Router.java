@@ -65,7 +65,7 @@ public class Router {
                     return new MainController(services);
                 }
                 if (type == InicioController.class) {
-                    return new InicioController(services.personaService());
+                    return new InicioController(services.personaService(), services.eventoService());
                 }
                 if (type == EventosController.class) {
                     EventosController controller = new EventosController();

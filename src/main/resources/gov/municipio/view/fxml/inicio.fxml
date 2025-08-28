@@ -28,12 +28,12 @@
     <center>
         <VBox spacing="30" styleClass="content-container">
             
-            <!-- Fila de Métricas -->
+            <!-- Fila de Métricas Generales -->
             <HBox alignment="CENTER" spacing="40" styleClass="spacing-large">
-                <!-- Card Eventos -->
+                <!-- Card Eventos Totales -->
                 <VBox styleClass="metric-card">
                     <VBox alignment="CENTER" spacing="5">
-                        <Label text="12" styleClass="metric-value"/>
+                        <Label fx:id="lblCantidadEventosTotal" text="0" styleClass="metric-value"/>
                         <Label text="Eventos Totales" styleClass="metric-label"/>
                     </VBox>
                 </VBox>
@@ -49,8 +49,96 @@
                 <!-- Card Eventos de Hoy -->
                 <VBox styleClass="metric-card">
                     <VBox alignment="CENTER" spacing="5">
-                        <Label text="5" styleClass="metric-value"/>
+                        <Label fx:id="lblCantidadEventosHoy" text="0" styleClass="metric-value"/>
                         <Label text="Eventos Hoy" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+            </HBox>
+            
+            <!-- Separador -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="Eventos por Tipo" styleClass="text-title-large"/>
+            </VBox>
+            
+            <!-- Fila de Métricas por Tipo de Evento -->
+            <HBox alignment="CENTER" spacing="30" styleClass="spacing-large">
+                <!-- Card Ferias -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadFerias" text="0" styleClass="metric-value"/>
+                        <Label text="Ferias" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Card Conciertos -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadConciertos" text="0" styleClass="metric-value"/>
+                        <Label text="Conciertos" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Card Exposiciones -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadExposiciones" text="0" styleClass="metric-value"/>
+                        <Label text="Exposiciones" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Card Talleres -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadTalleres" text="0" styleClass="metric-value"/>
+                        <Label text="Talleres" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Card Ciclos de Cine -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadCiclosCine" text="0" styleClass="metric-value"/>
+                        <Label text="Ciclos de Cine" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+            </HBox>
+            
+            <!-- Separador -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="Eventos por Estado" styleClass="text-title-large"/>
+            </VBox>
+            
+            <!-- Fila de Métricas por Estado de Evento -->
+            <HBox alignment="CENTER" spacing="40" styleClass="spacing-large">
+                <!-- Card Planificación -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadPlanificacion" text="0" styleClass="metric-value"/>
+                        <Label text="En Planificación" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Card Confirmados -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadConfirmados" text="0" styleClass="metric-value"/>
+                        <Label text="Confirmados" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Card En Ejecución -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadEnEjecucion" text="0" styleClass="metric-value"/>
+                        <Label text="En Ejecución" styleClass="metric-label"/>
+                    </VBox>
+                </VBox>
+                
+                <!-- Card Finalizados -->
+                <VBox styleClass="metric-card">
+                    <VBox alignment="CENTER" spacing="5">
+                        <Label fx:id="lblCantidadFinalizados" text="0" styleClass="metric-value"/>
+                        <Label text="Finalizados" styleClass="metric-label"/>
                     </VBox>
                 </VBox>
             </HBox>
