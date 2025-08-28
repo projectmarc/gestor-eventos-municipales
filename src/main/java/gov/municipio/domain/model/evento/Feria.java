@@ -9,8 +9,8 @@ public class Feria extends Evento {
     private int cantidadStands;
     private TipoLugar tipoLugar;
 
-    public Feria(int cantidadStands, TipoLugar tipoLugar, String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion) {
-        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
+    public Feria(int cantidadStands, TipoLugar tipoLugar, String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, Integer cupoMaximo) {
+        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
         this.cantidadStands = validarCantidadStands(cantidadStands);
         this.tipoLugar = validarTipoLugar(tipoLugar);
     }

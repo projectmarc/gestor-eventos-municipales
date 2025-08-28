@@ -20,14 +20,16 @@ public abstract class Evento {
     private int duracionEstimada;
     private EstadoEvento estado;
     private boolean requiereInscripcion;
+    private Integer cupoMaximo; // Obligatorio si requiereInscripcion = true
     private final List<Participacion> participaciones = new ArrayList<>();
 
-    public Evento(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion) {
+    public Evento(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, Integer cupoMaximo) {
         this.nombre = validarNombre(nombre);
         this.fechaInicio = validarFechaInicio(fechaInicio);
         this.duracionEstimada = validarDuracion(duracionEstimadaHoras);
         this.estado = EstadoEvento.PLANIFICACION;
         this.requiereInscripcion = requiereInscripcion;
+        this.cupoMaximo = validarCupoMaximo(cupoMaximo, requiereInscripcion);
     }
 
     protected Evento() {
@@ -105,7 +107,9 @@ public abstract class Evento {
 
     // -------- Cupo
 
-    protected int getCupoMaximo() { return Integer.MAX_VALUE; }
+    protected int getCupoMaximo() { 
+        return cupoMaximo != null ? cupoMaximo : Integer.MAX_VALUE; 
+    }
 
     public boolean hayCupoDisponible() {
         if (!requiereInscripcion) return true;
@@ -195,6 +199,7 @@ public abstract class Evento {
     public int getDuracionEstimada() { return duracionEstimada; }
     public EstadoEvento getEstado() { return estado; }
     public boolean isRequiereInscripcion() { return requiereInscripcion; }
+    public Integer getCupoMaximoDefinido() { return cupoMaximo; }
     public List<Participacion> getParticipaciones() { return new ArrayList<>(participaciones); } // copia defensiva
 
     public void setNombre(String nombre) { this.nombre = validarNombre(nombre); }
@@ -221,6 +226,26 @@ public abstract class Evento {
         if (horas <= 0) throw new IllegalArgumentException("La duración estimada debe ser mayor a 0 horas");
         if (horas > 240) throw new IllegalArgumentException("La duración estimada no puede exceder 240 horas");
         return horas;
+    }
+
+    private Integer validarCupoMaximo(Integer cupoMaximo, boolean requiereInscripcion) {
+        if (requiereInscripcion) {
+            if (cupoMaximo == null) {
+                throw new IllegalArgumentException("El cupo máximo es obligatorio para eventos que requieren inscripción");
+            }
+            if (cupoMaximo <= 0) {
+                throw new IllegalArgumentException("El cupo máximo debe ser mayor a 0");
+            }
+            if (cupoMaximo > 1000000) {
+                throw new IllegalArgumentException("El cupo máximo no puede exceder 1,000,000 participantes");
+            }
+        } else {
+            // Si no requiere inscripción, el cupo debe ser null
+            if (cupoMaximo != null) {
+                throw new IllegalArgumentException("No se debe especificar cupo máximo para eventos que no requieren inscripción");
+            }
+        }
+        return cupoMaximo;
     }
 
     private void validarEstadoParaInscripcion_Ajustado() {

@@ -25,7 +25,6 @@ public class ParticipacionTest {
                 "Taller de Java Avanzado",
                 LocalDate.now().plusDays(7),
                 8, // 8 horas
-                true, // Requiere inscripción
                 ModalidadTaller.PRESENCIAL,
                 25 // Cupo máximo
             );
@@ -58,7 +57,6 @@ public class ParticipacionTest {
                 "Taller de Java Avanzado",
                 LocalDate.now().plusDays(7),
                 8,
-                true,
                 ModalidadTaller.PRESENCIAL,
                 25
             );
@@ -118,7 +116,6 @@ public class ParticipacionTest {
                 "Taller de Python",
                 LocalDate.now().plusDays(14),
                 6,
-                true,
                 ModalidadTaller.VIRTUAL,
                 20
             );

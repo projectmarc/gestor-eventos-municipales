@@ -17,9 +17,10 @@ public class CicloDeCine extends Evento {
                        LocalDate fechaInicio,
                        int duracionEstimadaHoras,
                        boolean requiereInscripcion,
+                       Integer cupoMaximo,
                        List<Pelicula> peliculasEnOrden,
                        boolean incluyeCharlasPosteriores) {
-        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
+        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
         this.peliculasEnOrden = validarPeliculas(peliculasEnOrden);
         this.incluyeCharlasPosteriores = incluyeCharlasPosteriores;
     }

@@ -7,8 +7,8 @@ import java.util.List;
 public class Exposicion extends Evento {
     private String disciplinaArtistica;
 
-    public Exposicion(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, String disciplinaArtistica) {
-        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
+    public Exposicion(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, Integer cupoMaximo, String disciplinaArtistica) {
+        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
         this.disciplinaArtistica = validarDisciplinaArtistica(disciplinaArtistica);
     }
 

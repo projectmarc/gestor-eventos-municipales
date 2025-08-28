@@ -25,19 +25,19 @@ public class EventoDomainTest {
             System.out.println("--- Prueba 1: Validaciones en la creación ---");
             
             try {
-                new Taller("", LocalDate.now().plusDays(1), 4, true, ModalidadTaller.PRESENCIAL, 20);
+                new Taller("", LocalDate.now().plusDays(1), 4, ModalidadTaller.PRESENCIAL, 20);
             } catch (IllegalArgumentException e) {
                 System.out.println("✅ Validación correcta: " + e.getMessage());
             }
             
             try {
-                new Taller("Taller de Java", LocalDate.now().minusDays(1), 4, true, ModalidadTaller.PRESENCIAL, 20);
+                new Taller("Taller de Java", LocalDate.now().minusDays(1), 4, ModalidadTaller.PRESENCIAL, 20);
             } catch (IllegalArgumentException e) {
                 System.out.println("✅ Validación correcta: " + e.getMessage());
             }
             
             try {
-                new Taller("Taller de Java", LocalDate.now().plusDays(1), -2, true, ModalidadTaller.PRESENCIAL, 20);
+                new Taller("Taller de Java", LocalDate.now().plusDays(1), -2, ModalidadTaller.PRESENCIAL, 20);
             } catch (IllegalArgumentException e) {
                 System.out.println("✅ Validación correcta: " + e.getMessage());
             }
@@ -45,7 +45,7 @@ public class EventoDomainTest {
             // === Prueba 2: Transiciones de estado ===
             System.out.println("\n--- Prueba 2: Transiciones de estado ---");
             
-            Taller taller = new Taller("Taller de Programación", LocalDate.now().plusDays(5), 6, true, ModalidadTaller.PRESENCIAL, 2);
+            Taller taller = new Taller("Taller de Programación", LocalDate.now().plusDays(5), 6, ModalidadTaller.PRESENCIAL, 2);
             System.out.println("Estado inicial: " + taller.getEstado());
             
             // Transición válida: PLANIFICACION -> CONFIRMADO
@@ -96,7 +96,7 @@ public class EventoDomainTest {
             System.out.println("\n--- Prueba 4: Validación de roles por tipo de evento ---");
             
             Exposicion exposicion = new Exposicion("Exposición de Arte Moderno", LocalDate.now().plusDays(10), 
-                8, true, "Pintura Contemporánea");
+                8, true, 100, "Pintura Contemporánea");
             exposicion.cambiarEstado(EstadoEvento.CONFIRMADO);
             
             // Rol válido para exposición

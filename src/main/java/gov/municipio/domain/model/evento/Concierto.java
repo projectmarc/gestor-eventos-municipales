@@ -9,12 +9,10 @@ import java.util.Objects;
 
 public class Concierto extends Evento {
     private final List<ArtistaBanda> artistasBandas;
-    private int capacidadMaxima;
 
-    public Concierto(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, List<ArtistaBanda> artistasBandas, int capacidadMaxima) {
-        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion);
+    public Concierto(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, List<ArtistaBanda> artistasBandas, Integer cupoMaximo) {
+        super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
         this.artistasBandas = validarArtistsBandas(artistasBandas);
-        this.capacidadMaxima = validarCapacidadMaxima(capacidadMaxima);
     }
 
     @Override
@@ -27,18 +25,9 @@ public class Concierto extends Evento {
         return List.of(Rol.ORGANIZADOR);
     }
 
-    @Override
-    protected int getCupoMaximo() {
-        return this.capacidadMaxima;
-    }
-
     public List<ArtistaBanda> getArtistaBandas() {
         // Vista inmutable: no se puede alterar desde afuera
         return Collections.unmodifiableList(artistasBandas);
-    }
-
-    public int getCapacidadMaxima() {
-        return capacidadMaxima;
     }
 
     private List<ArtistaBanda> validarArtistsBandas(List<ArtistaBanda> artistasBandas) {
@@ -53,15 +42,5 @@ public class Concierto extends Evento {
             throw new IllegalArgumentException("No se permiten artistas/bandas repetidos en el concierto");
         }
         return List.copyOf(artistasBandas); // Inmutable y orden preservado
-    }
-
-    private int validarCapacidadMaxima(int capacidadMaxima) {
-        if (capacidadMaxima <= 0) {
-            throw new IllegalArgumentException("La capacidad máxima debe ser mayor a 0");
-        }
-        if (capacidadMaxima > 100000) {
-            throw new IllegalArgumentException("La capacidad máxima no puede exceder 100,000 personas");
-        }
-        return capacidadMaxima;
     }
 }
