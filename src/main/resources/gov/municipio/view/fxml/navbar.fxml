@@ -13,5 +13,6 @@
         <Button fx:id="btnInicio" text="Inicio" onAction="#onNavigate" userData="INICIO"/>
         <Button fx:id="btnEventos" text="Eventos" onAction="#onNavigate" userData="EVENTOS"/>
         <Button fx:id="btnPersonas" text="Personas" onAction="#onNavigate" userData="PERSONAS"/>
+        <Button fx:id="btnPeliculas" text="Películas" onAction="#onNavigate" userData="PELICULAS"/>
     </children>
 </HBox>

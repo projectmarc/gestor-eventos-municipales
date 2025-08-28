@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gov.municipio.controller.PeliculasController"
+      spacing="20">
+    
+    <!-- Sección izquierda: formulario -->
+    <VBox spacing="10">
+        <Label text="Registrar película"/>
+        
+        <Label text="Nombre"/>
+        <TextField fx:id="txtNombre"/>
+        
+        <Label text="Duración (horas)"/>
+        <TextField fx:id="txtDuracionHoras"/>
+        
+        <HBox spacing="10">
+            <Button text="Registrar" fx:id="btnRegistrar"/>
+            <Button text="Limpiar" fx:id="btnLimpiar"/>
+        </HBox>
+    </VBox>
+    
+    <!-- Sección derecha: listado -->
+    <VBox spacing="10">
+        <Label text="Películas registradas"/>
+        
+        <HBox spacing="10">
+            <Button text="Editar" fx:id="btnEditar"/>
+            <Button text="Borrar" fx:id="btnBorrar"/>
+        </HBox>
+        
+        <TableView fx:id="tblPeliculas">
+            <columns>
+                <TableColumn text="ID" fx:id="colId"/>
+                <TableColumn text="Nombre" fx:id="colNombre"/>
+                <TableColumn text="Duración (h)" fx:id="colDuracionHoras"/>
+                <TableColumn text="Duración (hh:mm)" fx:id="colDuracionFmt"/>
+            </columns>
+        </TableView>
+    </VBox>
+    
+</HBox>

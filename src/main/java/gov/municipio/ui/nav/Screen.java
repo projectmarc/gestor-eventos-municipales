@@ -5,7 +5,8 @@ public enum Screen {
     INICIO("/gov/municipio/view/fxml/inicio.fxml", "Inicio"),
     EVENTOS("/gov/municipio/view/fxml/eventos.fxml", "Eventos"),
     CREAR_EVENTO("/gov/municipio/view/fxml/crear-evento.fxml", "Crear Evento"),
-    PERSONAS("/gov/municipio/view/fxml/personas.fxml", "Personas");
+    PERSONAS("/gov/municipio/view/fxml/personas.fxml", "Personas"),
+    PELICULAS("/gov/municipio/view/fxml/peliculas.fxml", "Películas");
 
     private String fxmlPath;
     private String title;

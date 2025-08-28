@@ -48,6 +48,9 @@ public class Router {
                     controller.setRouter(this);
                     return controller;
                 }
+                if (type == PeliculasController.class) {
+                    return new PeliculasController();
+                }
 
                 // Fallback: intentar constructor sin args (para pantallas que no necesiten servicios)
                 try {
