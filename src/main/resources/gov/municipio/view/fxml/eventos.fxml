@@ -9,19 +9,20 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="gov.municipio.controller.EventosController"
-      spacing="20">
+      styleClass="content-container"
+      stylesheets="@../css/material-base.css,@../css/material-components.css">
     
-    <Label text="Eventos"/>
+    <Label text="Eventos" styleClass="text-headline-medium"/>
     
-    <Button fx:id="btnCrearEvento" text="Crear Nuevo Evento" onAction="#crearEvento"/>
+    <Button fx:id="btnCrearEvento" text="Crear Nuevo Evento" onAction="#crearEvento" styleClass="btn-primary"/>
     
-    <VBox spacing="10">
+    <VBox styleClass="section-container">
 
-      <Label text="Eventos registrados"/>
+      <Label text="Eventos registrados" styleClass="text-title-medium"/>
 
-      <Button fx:id="btnGestionarEvento" text="Gestionar Evento" onAction="#gestionarEvento"/>
+      <Button fx:id="btnGestionarEvento" text="Gestionar Evento" onAction="#gestionarEvento" styleClass="btn-secondary"/>
 
-      <TableView fx:id="tblEventos">
+      <TableView fx:id="tblEventos" styleClass="table-view">
           <columns>
               <TableColumn text="Nombre" fx:id="colNombre"/>
               <TableColumn text="Fecha de Inicio" fx:id="colFechaInicio"/>

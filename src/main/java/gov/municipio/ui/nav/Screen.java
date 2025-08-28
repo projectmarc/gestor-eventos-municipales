@@ -6,6 +6,7 @@ public enum Screen {
     EVENTOS("/gov/municipio/view/fxml/eventos.fxml", "Eventos"),
     GESTIONAR_EVENTO("/gov/municipio/view/fxml/gestionar-evento.fxml", "Gestionar Evento"),
     CREAR_EVENTO("/gov/municipio/view/fxml/crear-evento.fxml", "Crear Evento"),
+    CALENDARIO("/gov/municipio/view/fxml/calendario.fxml", "Calendario"),
     PERSONAS("/gov/municipio/view/fxml/personas.fxml", "Personas"),
     PELICULAS("/gov/municipio/view/fxml/peliculas.fxml", "Películas"),
     ARTISTAS_BANDAS("/gov/municipio/view/fxml/artistas-bandas.fxml", "Artistas/Bandas");

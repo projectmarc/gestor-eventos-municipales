@@ -77,6 +77,19 @@ public class Persona {
     public void cambiarTelefono(String nuevoTelefono) {
         this.telefono = validarTelefono(nuevoTelefono);
     }
+    
+    // Métodos de comportamiento para actualizar datos personales
+    public void cambiarNombre(String nuevoNombre) {
+        this.nombre = validarNombre(nuevoNombre);
+    }
+    
+    public void cambiarApellido(String nuevoApellido) {
+        this.apellido = validarApellido(nuevoApellido);
+    }
+    
+    public void cambiarDni(String nuevoDni) {
+        this.dni = validarDni(nuevoDni);
+    }
 
     // Métodos de validación privados
     private String validarNombre(String nombre) {

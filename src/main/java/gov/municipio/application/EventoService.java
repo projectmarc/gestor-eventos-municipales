@@ -99,6 +99,30 @@ public class EventoService {
     }
     
     /**
+     * Obtiene los eventos que ocurren en un rango de fechas específico.
+     * Útil para mostrar eventos en el calendario mensual.
+     * 
+     * @param fechaInicio la fecha de inicio del rango (inclusive)
+     * @param fechaFin la fecha de fin del rango (inclusive)
+     * @return lista de eventos que tienen su fecha de inicio dentro del rango especificado
+     */
+    public List<Evento> obtenerEventosPorRangoFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio == null || fechaFin == null) {
+            throw new IllegalArgumentException("Las fechas de inicio y fin no pueden ser nulas");
+        }
+        if (fechaInicio.isAfter(fechaFin)) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
+        }
+        
+        return eventoRepository.findAll().stream()
+            .filter(evento -> {
+                LocalDate fechaEvento = evento.getFechaInicio();
+                return !fechaEvento.isBefore(fechaInicio) && !fechaEvento.isAfter(fechaFin);
+            })
+            .collect(java.util.stream.Collectors.toList());
+    }
+    
+    /**
      * Actualiza un evento existente.
      * Solo permite actualizar eventos que estén en estado PLANIFICACION.
      * 

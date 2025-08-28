@@ -4,46 +4,43 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gov.municipio.controller.CrearEventoController">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="gov.municipio.controller.CrearEventoController"
+            styleClass="content-container"
+            stylesheets="@../css/material-base.css,@../css/material-components.css">
     
     <!-- Header con título y breadcrumb -->
     <top>
-        <VBox spacing="5">
-            <padding>
-                <Insets top="15" left="20" right="20" bottom="15"/>
-            </padding>
-            <Label text="Crear evento" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <VBox spacing="5" styleClass="padding-large">
+            <Label text="Crear evento" styleClass="text-headline-medium"/>
         </VBox>
     </top>
     
     <!-- Formulario principal -->
     <center>
-        <VBox spacing="20" alignment="TOP_CENTER" maxWidth="600">
-            <padding>
-                <Insets top="30" left="40" right="40" bottom="30"/>
-            </padding>
+        <VBox spacing="20" alignment="TOP_CENTER" maxWidth="600" styleClass="section-container">
             
             <!-- Nombre -->
             <VBox spacing="8">
-                <Label text="Nombre *"/>
+                <Label text="Nombre *" styleClass="text-label-large"/>
                 <TextField fx:id="txtNombre" promptText="Ingrese el nombre del evento"/>
             </VBox>
             
             <!-- Tipo de evento -->
             <VBox spacing="8">
-                <Label text="Tipo de evento *"/>
+                <Label text="Tipo de evento *" styleClass="text-label-large"/>
                 <ComboBox fx:id="cbTipoEvento" promptText="Seleccione un tipo de evento" maxWidth="Infinity"/>
             </VBox>
             
             <!-- Fecha de inicio -->
             <VBox spacing="8">
-                <Label text="Fecha de inicio *"/>
+                <Label text="Fecha de inicio *" styleClass="text-label-large"/>
                 <DatePicker fx:id="dpFechaInicio" maxWidth="Infinity"/>
             </VBox>
             
             <!-- Duración -->
             <VBox spacing="8">
-                <Label text="Duración (horas) *"/>
+                <Label text="Duración (horas) *" styleClass="text-label-large"/>
                 <TextField fx:id="txtDuracion" promptText="Ingrese la duración en horas"/>
             </VBox>
             
@@ -54,7 +51,7 @@
             
             <!-- Cupo máximo -->
             <VBox spacing="8">
-                <Label text="Cupo máximo"/>
+                <Label text="Cupo máximo" styleClass="text-label-large"/>
                 <TextField fx:id="txtCupoMaximo" promptText="Ingrese el cupo máximo" disable="true"/>
             </VBox>
             
@@ -63,12 +60,9 @@
     
     <!-- Footer con acciones -->
     <bottom>
-        <HBox spacing="15" alignment="CENTER_RIGHT">
-            <padding>
-                <Insets top="15" left="20" right="20" bottom="15"/>
-            </padding>
-            <Button fx:id="btnCancelar" text="Cancelar" prefWidth="100"/>
-            <Button fx:id="btnCrear" text="Crear" prefWidth="120" defaultButton="true"/>
+        <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="padding-large">
+            <Button fx:id="btnCancelar" text="Cancelar" prefWidth="100" styleClass="btn-outlined"/>
+            <Button fx:id="btnCrear" text="Crear" prefWidth="120" defaultButton="true" styleClass="btn-primary"/>
         </HBox>
     </bottom>
     

@@ -91,6 +91,12 @@ public class Router {
                 if (type == ArtistasBandasController.class) {
                     return new ArtistasBandasController(services.artistaBandaService());
                 }
+                if (type == CalendarioController.class) {
+                    CalendarioController controller = new CalendarioController();
+                    controller.setRouter(this);
+                    controller.setServiceContainer(services);
+                    return controller;
+                }
 
                 // Fallback: intentar constructor sin args (para pantallas que no necesiten servicios)
                 try {
