@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gov.municipio.controller.CalendarioController">
+    <top>
+        <ToolBar>
+            <Button text="◀" onAction="#prevMonth"/>
+            <Label fx:id="lblMes" style="-fx-font-weight:bold;-fx-font-size:14px;"/>
+            <Button text="▶" onAction="#nextMonth"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Nuevo evento" onAction="#crearEventoDiaSeleccionado"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <GridPane fx:id="grid" hgap="6" vgap="6">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </GridPane>
+    </center>
+
+    <right>
+        <TitledPane text="Eventos del día" expanded="true">
+            <content>
+                <ListView fx:id="lstEventos"/>
+            </content>
+        </TitledPane>
+    </right>
+</BorderPane>
