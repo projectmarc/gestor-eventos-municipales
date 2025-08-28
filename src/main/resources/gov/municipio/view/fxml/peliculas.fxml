@@ -11,34 +11,39 @@
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="gov.municipio.controller.PeliculasController"
-      spacing="20">
+      styleClass="content-container"
+      stylesheets="@../css/material-base.css,@../css/material-components.css">
     
     <!-- Sección izquierda: formulario -->
-    <VBox spacing="10">
-        <Label text="Registrar película"/>
+    <VBox styleClass="section-container" prefWidth="300">
+        <Label text="Registrar película" styleClass="text-title-medium"/>
         
-        <Label text="Nombre"/>
-        <TextField fx:id="txtNombre"/>
+        <VBox spacing="8">
+            <Label text="Nombre" styleClass="text-label-large"/>
+            <TextField fx:id="txtNombre"/>
+        </VBox>
         
-        <Label text="Duración (horas)"/>
-        <TextField fx:id="txtDuracionHoras"/>
+        <VBox spacing="8">
+            <Label text="Duración (horas)" styleClass="text-label-large"/>
+            <TextField fx:id="txtDuracionHoras"/>
+        </VBox>
         
         <HBox spacing="10">
-            <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarPelicula"/>
-            <Button text="Limpiar" fx:id="btnLimpiar" onAction="#onLimpiarCampos"/>
+            <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarPelicula" styleClass="btn-primary"/>
+            <Button text="Limpiar" fx:id="btnLimpiar" onAction="#onLimpiarCampos" styleClass="btn-outlined"/>
         </HBox>
     </VBox>
     
     <!-- Sección derecha: listado -->
-    <VBox spacing="10">
-        <Label text="Películas registradas"/>
+    <VBox styleClass="section-container" HBox.hgrow="ALWAYS">
+        <Label text="Películas registradas" styleClass="text-title-medium"/>
         
         <HBox spacing="10">
-            <Button text="Editar" fx:id="btnEditar" onAction="#onEditarPelicula"/>
-            <Button text="Borrar" fx:id="btnBorrar" onAction="#onBorrarPelicula"/>
+            <Button text="Editar" fx:id="btnEditar" onAction="#onEditarPelicula" styleClass="btn-secondary"/>
+            <Button text="Borrar" fx:id="btnBorrar" onAction="#onBorrarPelicula" styleClass="btn-outlined"/>
         </HBox>
         
-        <TableView fx:id="tblPeliculas">
+        <TableView fx:id="tblPeliculas" styleClass="table-view">
             <columns>
                 <TableColumn text="ID" fx:id="colId"/>
                 <TableColumn text="Nombre" fx:id="colNombre"/>

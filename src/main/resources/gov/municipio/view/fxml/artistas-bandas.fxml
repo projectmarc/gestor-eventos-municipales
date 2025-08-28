@@ -11,31 +11,34 @@
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="gov.municipio.controller.ArtistasBandasController"
-      spacing="20">
+      styleClass="content-container"
+      stylesheets="@../css/material-base.css,@../css/material-components.css">
     
     <!-- Sección izquierda: formulario -->
-    <VBox spacing="10">
-        <Label text="Registrar artista/banda"/>
+    <VBox styleClass="section-container" prefWidth="300">
+        <Label text="Registrar artista/banda" styleClass="text-title-medium"/>
         
-        <Label text="Nombre"/>
-        <TextField fx:id="txtNombre"/>
+        <VBox spacing="8">
+            <Label text="Nombre" styleClass="text-label-large"/>
+            <TextField fx:id="txtNombre"/>
+        </VBox>
         
         <HBox spacing="10">
-            <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarArtistaBanda"/>
-            <Button text="Limpiar" fx:id="btnLimpiar" onAction="#onLimpiarCampos"/>
+            <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarArtistaBanda" styleClass="btn-primary"/>
+            <Button text="Limpiar" fx:id="btnLimpiar" onAction="#onLimpiarCampos" styleClass="btn-outlined"/>
         </HBox>
     </VBox>
     
     <!-- Sección derecha: listado -->
-    <VBox spacing="10">
-        <Label text="Artistas/bandas registrados"/>
+    <VBox styleClass="section-container" HBox.hgrow="ALWAYS">
+        <Label text="Artistas/bandas registrados" styleClass="text-title-medium"/>
         
         <HBox spacing="10">
-            <Button text="Editar" fx:id="btnEditar" onAction="#onEditarArtistaBanda"/>
-            <Button text="Borrar" fx:id="btnBorrar" onAction="#onBorrarArtistaBanda"/>
+            <Button text="Editar" fx:id="btnEditar" onAction="#onEditarArtistaBanda" styleClass="btn-secondary"/>
+            <Button text="Borrar" fx:id="btnBorrar" onAction="#onBorrarArtistaBanda" styleClass="btn-outlined"/>
         </HBox>
         
-        <TableView fx:id="tblArtistasBandas">
+        <TableView fx:id="tblArtistasBandas" styleClass="table-view">
             <columns>
                 <TableColumn text="ID" fx:id="colId"/>
                 <TableColumn text="Nombre" fx:id="colNombre"/>

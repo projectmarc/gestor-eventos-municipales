@@ -1,0 +1,278 @@
+/* Material Design State Colors & Special Elements */
+
+/* === ERROR STATES === */
+.error {
+    -fx-text-fill: -fx-error;
+    -fx-font-weight: 500;
+}
+
+.error-border {
+    -fx-border-color: -fx-error;
+    -fx-border-width: 2px;
+}
+
+/* === SUCCESS STATES === */
+.success {
+    -fx-text-fill: -fx-success;
+    -fx-font-weight: 500;
+}
+
+.success-border {
+    -fx-border-color: -fx-success;
+    -fx-border-width: 2px;
+}
+
+/* === WARNING STATES === */
+.warning {
+    -fx-text-fill: -fx-warning;
+    -fx-font-weight: 500;
+}
+
+.warning-border {
+    -fx-border-color: -fx-warning;
+    -fx-border-width: 2px;
+}
+
+/* === STATUS BADGES === */
+.status-planificacion {
+    -fx-background-color: #FFF3E0;
+    -fx-text-fill: #F57C00;
+    -fx-background-radius: 12px;
+    -fx-padding: 4 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}
+
+.status-confirmado {
+    -fx-background-color: #E8F5E8;
+    -fx-text-fill: #2E7D32;
+    -fx-background-radius: 12px;
+    -fx-padding: 4 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}
+
+.status-ejecucion {
+    -fx-background-color: #E3F2FD;
+    -fx-text-fill: #1565C0;
+    -fx-background-radius: 12px;
+    -fx-padding: 4 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}
+
+.status-finalizado {
+    -fx-background-color: #F5F5F5;
+    -fx-text-fill: #616161;
+    -fx-background-radius: 12px;
+    -fx-padding: 4 8;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+}
+
+/* === CALENDAR SPECIFIC === */
+.calendar-cell {
+    -fx-background-color: -fx-surface;
+    -fx-border-color: -fx-surface-variant;
+    -fx-border-width: 1px;
+    -fx-padding: 8;
+    -fx-min-width: 80px;
+    -fx-min-height: 60px;
+    -fx-alignment: top-left;
+}
+
+.calendar-cell:hover {
+    -fx-background-color: -fx-primary-50;
+    -fx-cursor: hand;
+}
+
+.calendar-cell.selected {
+    -fx-background-color: -fx-primary-100;
+    -fx-border-color: -fx-primary-500;
+    -fx-border-width: 2px;
+}
+
+.calendar-cell.today {
+    -fx-background-color: -fx-primary-500;
+    -fx-text-fill: white;
+}
+
+.calendar-cell.other-month {
+    -fx-opacity: 0.5;
+}
+
+.calendar-header {
+    -fx-background-color: -fx-surface-variant;
+    -fx-padding: 8;
+    -fx-alignment: center;
+    -fx-font-weight: 500;
+}
+
+/* === LIST VIEWS === */
+.list-view {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-medium;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 12;
+    -fx-border-color: transparent transparent -fx-surface-variant transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.list-cell:selected {
+    -fx-background-color: -fx-primary-50;
+}
+
+.list-cell:hover {
+    -fx-background-color: -fx-surface-variant;
+}
+
+/* === CHECK BOXES === */
+.check-box {
+    -fx-text-fill: -fx-on-surface;
+}
+
+.check-box .box {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-on-surface-variant;
+    -fx-border-width: 2px;
+    -fx-border-radius: 2px;
+    -fx-background-radius: 2px;
+}
+
+.check-box:selected .box {
+    -fx-background-color: -fx-primary-500;
+    -fx-border-color: -fx-primary-500;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: white;
+}
+
+/* === GRID LINES === */
+.grid-lines-visible {
+    -fx-grid-lines-visible: true;
+}
+
+/* === DIVIDERS === */
+.divider {
+    -fx-background-color: -fx-surface-variant;
+    -fx-min-height: 1px;
+    -fx-max-height: 1px;
+}
+
+.divider-vertical {
+    -fx-background-color: -fx-surface-variant;
+    -fx-min-width: 1px;
+    -fx-max-width: 1px;
+}
+
+/* === BADGES === */
+.badge {
+    -fx-background-color: -fx-primary-500;
+    -fx-text-fill: white;
+    -fx-background-radius: 10px;
+    -fx-padding: 2 6;
+    -fx-font-size: 10px;
+    -fx-font-weight: 500;
+    -fx-min-width: 20px;
+    -fx-alignment: center;
+}
+
+.badge-secondary {
+    -fx-background-color: -fx-secondary-500;
+}
+
+.badge-success {
+    -fx-background-color: -fx-success;
+}
+
+.badge-warning {
+    -fx-background-color: -fx-warning;
+}
+
+.badge-error {
+    -fx-background-color: -fx-error;
+}
+
+/* === TOOLTIPS === */
+.tooltip {
+    -fx-background-color: #424242;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-padding: 6 8;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+/* === PROGRESS INDICATORS === */
+.progress-bar {
+    -fx-background-color: -fx-surface-variant;
+    -fx-background-radius: 4px;
+}
+
+.progress-bar .bar {
+    -fx-background-color: -fx-primary-500;
+    -fx-background-radius: 4px;
+    -fx-padding: 4px;
+}
+
+/* === SCROLLBARS === */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: -fx-on-surface-variant;
+    -fx-background-radius: 4px;
+    -fx-opacity: 0.6;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-opacity: 0.8;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+/* === FOCUS STATES === */
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused,
+.date-picker:focused {
+    -fx-effect: dropshadow(gaussian, -fx-primary-500, 4, 0, 0, 0);
+}
+
+/* === TRANSITIONS === */
+.fade-in {
+    -fx-opacity: 0;
+}
+
+.fade-in:hover {
+    -fx-opacity: 1;
+}
+
+/* === RESPONSIVE SPACING === */
+@media (max-width: 768px) {
+    .responsive-padding {
+        -fx-padding: -fx-spacing-sm;
+    }
+    
+    .responsive-spacing {
+        -fx-spacing: -fx-spacing-sm;
+    }
+}
+
+@media (min-width: 769px) {
+    .responsive-padding {
+        -fx-padding: -fx-spacing-lg;
+    }
+    
+    .responsive-spacing {
+        -fx-spacing: -fx-spacing-lg;
+    }
+}

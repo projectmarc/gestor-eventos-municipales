@@ -6,15 +6,18 @@
 
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="gov.municipio.controller.NavbarController">
+      fx:controller="gov.municipio.controller.NavbarController"
+      styleClass="navbar"
+      stylesheets="@../css/material-base.css,@../css/material-components.css"
+      prefHeight="60">
 
     <children>
-        <Label text="Sistema de Gestión de Eventos Culturales"/>
-        <Button fx:id="btnInicio" text="Inicio" onAction="#onNavigate" userData="INICIO"/>
-        <Button fx:id="btnEventos" text="Eventos" onAction="#onNavigate" userData="EVENTOS"/>
-        <Button fx:id="btnCalendario" text="Calendario" onAction="#onNavigate" userData="CALENDARIO"/>
-        <Button fx:id="btnPersonas" text="Personas" onAction="#onNavigate" userData="PERSONAS"/>
-        <Button fx:id="btnPeliculas" text="Películas" onAction="#onNavigate" userData="PELICULAS"/>
-        <Button fx:id="btnArtistasBandas" text="Artistas/Bandas" onAction="#onNavigate" userData="ARTISTAS_BANDAS"/>
+        <Label text="Sistema de Gestión de Eventos Culturales" styleClass="nav-title"/>
+        <Button fx:id="btnInicio" text="Inicio" onAction="#onNavigate" userData="INICIO" styleClass="nav-button"/>
+        <Button fx:id="btnEventos" text="Eventos" onAction="#onNavigate" userData="EVENTOS" styleClass="nav-button"/>
+        <Button fx:id="btnCalendario" text="Calendario" onAction="#onNavigate" userData="CALENDARIO" styleClass="nav-button"/>
+        <Button fx:id="btnPersonas" text="Personas" onAction="#onNavigate" userData="PERSONAS" styleClass="nav-button"/>
+        <Button fx:id="btnPeliculas" text="Películas" onAction="#onNavigate" userData="PELICULAS" styleClass="nav-button"/>
+        <Button fx:id="btnArtistasBandas" text="Artistas/Bandas" onAction="#onNavigate" userData="ARTISTAS_BANDAS" styleClass="nav-button"/>
     </children>
 </HBox>

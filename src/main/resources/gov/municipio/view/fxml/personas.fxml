@@ -11,35 +11,46 @@
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="gov.municipio.controller.PersonasController"
-      spacing="20">
+      styleClass="content-container"
+      stylesheets="@../css/material-base.css,@../css/material-components.css">
     
     <!-- Sección izquierda: formulario -->
-    <VBox spacing="10">
-        <Label text="Registrar persona"/>
+    <VBox styleClass="section-container" prefWidth="300">
+        <Label text="Registrar persona" styleClass="text-title-medium"/>
         
-        <Label text="Nombre"/>
-        <TextField fx:id="txtNombre"/>
+        <VBox spacing="8">
+            <Label text="Nombre" styleClass="text-label-large"/>
+            <TextField fx:id="txtNombre"/>
+        </VBox>
         
-        <Label text="Apellido"/>
-        <TextField fx:id="txtApellido"/>
+        <VBox spacing="8">
+            <Label text="Apellido" styleClass="text-label-large"/>
+            <TextField fx:id="txtApellido"/>
+        </VBox>
         
-        <Label text="DNI"/>
-        <TextField fx:id="txtDni"/>
+        <VBox spacing="8">
+            <Label text="DNI" styleClass="text-label-large"/>
+            <TextField fx:id="txtDni"/>
+        </VBox>
         
-        <Label text="Teléfono"/>
-        <TextField fx:id="txtTelefono"/>
+        <VBox spacing="8">
+            <Label text="Teléfono" styleClass="text-label-large"/>
+            <TextField fx:id="txtTelefono"/>
+        </VBox>
         
-        <Label text="Email"/>
-        <TextField fx:id="txtEmail"/>
+        <VBox spacing="8">
+            <Label text="Email" styleClass="text-label-large"/>
+            <TextField fx:id="txtEmail"/>
+        </VBox>
         
-        <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarPersona"/>
+        <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarPersona" styleClass="btn-primary"/>
     </VBox>
     
     <!-- Sección derecha: listado -->
-    <VBox spacing="10">
-        <Label text="Personas registradas"/>
+    <VBox styleClass="section-container" HBox.hgrow="ALWAYS">
+        <Label text="Personas registradas" styleClass="text-title-medium"/>
         
-        <TableView fx:id="tblPersonas">
+        <TableView fx:id="tblPersonas" styleClass="table-view">
             <columns>
                 <TableColumn text="ID" fx:id="colId"/>
                 <TableColumn text="Nombre" fx:id="colNombre"/>

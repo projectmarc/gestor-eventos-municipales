@@ -1,0 +1,360 @@
+/* Material Design Components */
+
+/* === BUTTONS === */
+
+/* Primary Button */
+.btn-primary {
+    -fx-background-color: -fx-primary-500;
+    -fx-text-fill: white;
+    -fx-padding: 10 24;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+}
+
+.btn-primary:hover {
+    -fx-background-color: -fx-primary-600;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-2, 4, 0, 0, 2);
+}
+
+.btn-primary:pressed {
+    -fx-background-color: -fx-primary-700;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+}
+
+/* Secondary Button */
+.btn-secondary {
+    -fx-background-color: -fx-secondary-500;
+    -fx-text-fill: white;
+    -fx-padding: 10 24;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+}
+
+.btn-secondary:hover {
+    -fx-background-color: -fx-secondary-600;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-2, 4, 0, 0, 2);
+}
+
+.btn-secondary:pressed {
+    -fx-background-color: -fx-secondary-700;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+}
+
+/* Outlined Button */
+.btn-outlined {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-500;
+    -fx-border-color: -fx-primary-500;
+    -fx-border-width: 1px;
+    -fx-border-radius: -fx-border-radius-small;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-padding: 10 24;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-font-size: 14px;
+}
+
+.btn-outlined:hover {
+    -fx-background-color: -fx-primary-50;
+}
+
+.btn-outlined:pressed {
+    -fx-background-color: -fx-primary-100;
+}
+
+/* Text Button */
+.btn-text {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-500;
+    -fx-padding: 10 24;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+    -fx-font-size: 14px;
+}
+
+.btn-text:hover {
+    -fx-background-color: -fx-primary-50;
+}
+
+.btn-text:pressed {
+    -fx-background-color: -fx-primary-100;
+}
+
+/* Icon Button */
+.btn-icon {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-on-surface-variant;
+    -fx-padding: 8;
+    -fx-background-radius: 50%;
+    -fx-cursor: hand;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+}
+
+.btn-icon:hover {
+    -fx-background-color: -fx-on-surface-variant;
+    -fx-opacity: 0.08;
+}
+
+.btn-icon:pressed {
+    -fx-background-color: -fx-on-surface-variant;
+    -fx-opacity: 0.12;
+}
+
+/* === CARDS === */
+
+.card {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-medium;
+    -fx-padding: -fx-spacing-md;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+}
+
+.card:hover {
+    -fx-effect: dropshadow(gaussian, -fx-shadow-2, 4, 0, 0, 2);
+}
+
+.card-elevated {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-medium;
+    -fx-padding: -fx-spacing-md;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-2, 4, 0, 0, 2);
+}
+
+.card-outlined {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-medium;
+    -fx-border-color: -fx-on-surface-variant;
+    -fx-border-width: 1px;
+    -fx-border-radius: -fx-border-radius-medium;
+    -fx-padding: -fx-spacing-md;
+}
+
+/* Metric Cards */
+.metric-card {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-medium;
+    -fx-padding: -fx-spacing-lg;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+    -fx-alignment: center;
+    -fx-min-width: 200px;
+    -fx-min-height: 120px;
+}
+
+.metric-card:hover {
+    -fx-effect: dropshadow(gaussian, -fx-shadow-2, 4, 0, 0, 2);
+}
+
+.metric-card .metric-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary-500;
+}
+
+.metric-card .metric-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-on-surface-variant;
+}
+
+/* === TABLES === */
+
+.table-view {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-medium;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -fx-surface-variant;
+}
+
+.table-view .column-header {
+    -fx-background-color: -fx-surface-variant;
+    -fx-text-fill: -fx-on-surface;
+    -fx-font-weight: 500;
+    -fx-padding: 16 12;
+}
+
+.table-view .table-cell {
+    -fx-padding: 12;
+    -fx-border-color: transparent transparent -fx-surface-variant transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -fx-primary-50;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: -fx-surface-variant;
+}
+
+/* === NAVIGATION === */
+
+.navbar {
+    -fx-background-color: -fx-surface;
+    -fx-padding: 0 -fx-spacing-lg;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+    -fx-alignment: center-left;
+    -fx-spacing: -fx-spacing-md;
+}
+
+.navbar .nav-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 500;
+    -fx-text-fill: -fx-on-surface;
+}
+
+.navbar .nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-on-surface-variant;
+    -fx-padding: 12 16;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-cursor: hand;
+    -fx-font-weight: 500;
+}
+
+.navbar .nav-button:hover {
+    -fx-background-color: -fx-primary-50;
+    -fx-text-fill: -fx-primary-500;
+}
+
+.navbar .nav-button.active {
+    -fx-background-color: -fx-primary-100;
+    -fx-text-fill: -fx-primary-700;
+}
+
+/* === FORMS === */
+
+.text-field {
+    -fx-background-color: -fx-surface-variant;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-border-color: transparent;
+    -fx-padding: 12 16;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: -fx-primary-500;
+    -fx-border-width: 2px;
+    -fx-background-color: -fx-surface;
+}
+
+.combo-box {
+    -fx-background-color: -fx-surface-variant;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-border-color: transparent;
+}
+
+.combo-box:focused {
+    -fx-border-color: -fx-primary-500;
+    -fx-border-width: 2px;
+}
+
+.date-picker {
+    -fx-background-color: -fx-surface-variant;
+    -fx-background-radius: -fx-border-radius-small;
+    -fx-border-color: transparent;
+}
+
+.date-picker:focused {
+    -fx-border-color: -fx-primary-500;
+    -fx-border-width: 2px;
+}
+
+/* === DIALOGS === */
+
+.dialog-pane {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-large;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-3, 8, 0, 0, 4);
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: -fx-surface;
+    -fx-padding: -fx-spacing-lg;
+}
+
+.dialog-pane .content {
+    -fx-padding: 0 -fx-spacing-lg -fx-spacing-lg -fx-spacing-lg;
+}
+
+.dialog-pane .button-bar {
+    -fx-padding: -fx-spacing-sm -fx-spacing-lg -fx-spacing-lg -fx-spacing-lg;
+}
+
+/* === LAYOUT CONTAINERS === */
+
+.main-container {
+    -fx-background-color: -fx-background;
+    -fx-padding: 0;
+}
+
+.content-container {
+    -fx-background-color: -fx-background;
+    -fx-padding: -fx-spacing-lg;
+    -fx-spacing: -fx-spacing-lg;
+}
+
+.section-container {
+    -fx-background-color: -fx-surface;
+    -fx-background-radius: -fx-border-radius-medium;
+    -fx-padding: -fx-spacing-lg;
+    -fx-effect: dropshadow(gaussian, -fx-shadow-1, 2, 0, 0, 1);
+    -fx-spacing: -fx-spacing-md;
+}
+
+/* === UTILITY CLASSES === */
+
+.rounded {
+    -fx-background-radius: -fx-border-radius-medium;
+}
+
+.rounded-large {
+    -fx-background-radius: -fx-border-radius-large;
+}
+
+.text-center {
+    -fx-alignment: center;
+}
+
+.text-left {
+    -fx-alignment: center-left;
+}
+
+.text-right {
+    -fx-alignment: center-right;
+}
+
+.spacing-small {
+    -fx-spacing: -fx-spacing-sm;
+}
+
+.spacing-medium {
+    -fx-spacing: -fx-spacing-md;
+}
+
+.spacing-large {
+    -fx-spacing: -fx-spacing-lg;
+}
+
+.padding-small {
+    -fx-padding: -fx-spacing-sm;
+}
+
+.padding-medium {
+    -fx-padding: -fx-spacing-md;
+}
+
+.padding-large {
+    -fx-padding: -fx-spacing-lg;
+}

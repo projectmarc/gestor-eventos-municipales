@@ -9,21 +9,23 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="gov.municipio.controller.BuscarContenidoDialogController"
-      spacing="15" prefWidth="350">
+      styleClass="dialog-pane" 
+      stylesheets="@../css/material-base.css,@../css/material-components.css"
+      prefWidth="350">
     
-    <Label fx:id="lblTitulo" text="Agregar Contenido" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+    <Label fx:id="lblTitulo" text="Agregar Contenido" styleClass="text-title-medium"/>
     
-    <VBox spacing="10">
-        <Label fx:id="lblInstruccion" text="ID del contenido:"/>
+    <VBox spacing="10" styleClass="padding-medium">
+        <Label fx:id="lblInstruccion" text="ID del contenido:" styleClass="text-label-large"/>
         <TextField fx:id="txtId" promptText="Ingrese el ID"/>
     </VBox>
     
-    <Label fx:id="lblError" text="" style="-fx-text-fill: red;" visible="false" managed="false"/>
+    <Label fx:id="lblError" text="" visible="false" managed="false" styleClass="text-body-small"/>
     
     <!-- Botones de acción -->
-    <HBox spacing="10">
-        <Button fx:id="btnAceptar" text="Agregar" onAction="#aceptar"/>
-        <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelar"/>
+    <HBox spacing="10" styleClass="padding-medium">
+        <Button fx:id="btnAceptar" text="Agregar" onAction="#aceptar" styleClass="btn-primary"/>
+        <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelar" styleClass="btn-outlined"/>
     </HBox>
     
 </VBox>

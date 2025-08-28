@@ -11,55 +11,54 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="gov.municipio.controller.CalendarioController"
-           prefWidth="1200" prefHeight="700">
+           prefWidth="1200" prefHeight="700"
+           styleClass="content-container"
+           stylesheets="@../css/material-base.css,@../css/material-components.css">
            
     <!-- Encabezado con título y navegación -->
     <top>
-        <VBox spacing="15" alignment="CENTER">
-            <Label text="Calendario de Eventos" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <VBox spacing="15" alignment="CENTER" styleClass="padding-large">
+            <Label text="Calendario de Eventos" styleClass="text-headline-medium"/>
             
             <!-- Navegación de meses -->
             <HBox spacing="20" alignment="CENTER">
-                <Button fx:id="btnAnterior" text="&lt;" onAction="#mesAnterior" 
-                        style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-                <Label fx:id="lblMesAnio" text="AGOSTO 2025" 
-                       style="-fx-font-size: 18px; -fx-font-weight: bold;" 
+                <Button fx:id="btnAnterior" text="&lt;" onAction="#mesAnterior" styleClass="btn-icon"/>
+                <Label fx:id="lblMesAnio" text="AGOSTO 2025" styleClass="text-title-large" 
                        prefWidth="200" alignment="CENTER"/>
-                <Button fx:id="btnSiguiente" text="&gt;" onAction="#mesSiguiente" 
-                        style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                <Button fx:id="btnSiguiente" text="&gt;" onAction="#mesSiguiente" styleClass="btn-icon"/>
             </HBox>
         </VBox>
     </top>
     
     <!-- Área principal: Calendario -->
     <center>
-        <VBox spacing="10" alignment="CENTER">
+        <VBox spacing="10" alignment="CENTER" styleClass="section-container">
             <!-- Calendario en grid -->
             <GridPane fx:id="gridCalendario" 
                      hgap="2" vgap="2" 
                      alignment="CENTER"
-                     style="-fx-border-color: #333333; -fx-border-width: 2;">
+                     styleClass="card">
                 <!-- Las celdas se generan dinámicamente en el controlador -->
             </GridPane>
             
             <!-- Leyenda de colores -->
-            <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
-                <Label text="Leyenda:"/>
+            <HBox spacing="20" alignment="CENTER" styleClass="padding-medium">
+                <Label text="Leyenda:" styleClass="text-label-large"/>
                 <HBox spacing="5" alignment="CENTER">
                     <javafx.scene.shape.Circle radius="5" fill="ORANGE"/>
-                    <Label text="Planificación"/>
+                    <Label text="Planificación" styleClass="text-body-small"/>
                 </HBox>
                 <HBox spacing="5" alignment="CENTER">
                     <javafx.scene.shape.Circle radius="5" fill="GREEN"/>
-                    <Label text="Confirmado"/>
+                    <Label text="Confirmado" styleClass="text-body-small"/>
                 </HBox>
                 <HBox spacing="5" alignment="CENTER">
                     <javafx.scene.shape.Circle radius="5" fill="BLUE"/>
-                    <Label text="En Ejecución"/>
+                    <Label text="En Ejecución" styleClass="text-body-small"/>
                 </HBox>
                 <HBox spacing="5" alignment="CENTER">
                     <javafx.scene.shape.Circle radius="5" fill="GRAY"/>
-                    <Label text="Finalizado"/>
+                    <Label text="Finalizado" styleClass="text-body-small"/>
                 </HBox>
             </HBox>
         </VBox>
@@ -67,12 +66,12 @@
     
     <!-- Panel lateral derecho: Eventos del día seleccionado -->
     <right>
-        <VBox spacing="15" prefWidth="300" style="-fx-padding: 20; -fx-border-color: #cccccc; -fx-border-width: 0 0 0 1;">
-            <Label text="Eventos del Día" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <VBox spacing="15" prefWidth="300" styleClass="section-container">
+            <Label text="Eventos del Día" styleClass="text-title-medium"/>
             
             <!-- Fecha seleccionada -->
             <Label fx:id="lblFechaSeleccionada" text="Seleccione una fecha" 
-                   style="-fx-font-size: 14px; -fx-text-fill: #666666;" 
+                   styleClass="text-body-medium" 
                    wrapText="true"/>
             
             <!-- Lista de eventos -->
@@ -82,7 +81,7 @@
             
             <!-- Instrucciones -->
             <Label text="Haga doble clic en un evento para gestionarlo" 
-                   style="-fx-font-size: 12px; -fx-text-fill: #999999;" 
+                   styleClass="text-body-small" 
                    wrapText="true"/>
         </VBox>
     </right>
