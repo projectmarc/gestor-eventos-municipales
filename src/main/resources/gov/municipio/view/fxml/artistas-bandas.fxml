@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gov.municipio.controller.ArtistasBandasController"
+      spacing="20">
+    
+    <!-- Sección izquierda: formulario -->
+    <VBox spacing="10">
+        <Label text="Registrar artista/banda"/>
+        
+        <Label text="Nombre"/>
+        <TextField fx:id="txtNombre"/>
+        
+        <HBox spacing="10">
+            <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarArtistaBanda"/>
+            <Button text="Limpiar" fx:id="btnLimpiar" onAction="#onLimpiarCampos"/>
+        </HBox>
+    </VBox>
+    
+    <!-- Sección derecha: listado -->
+    <VBox spacing="10">
+        <Label text="Artistas/bandas registrados"/>
+        
+        <HBox spacing="10">
+            <Button text="Editar" fx:id="btnEditar" onAction="#onEditarArtistaBanda"/>
+            <Button text="Borrar" fx:id="btnBorrar" onAction="#onBorrarArtistaBanda"/>
+        </HBox>
+        
+        <TableView fx:id="tblArtistasBandas">
+            <columns>
+                <TableColumn text="ID" fx:id="colId"/>
+                <TableColumn text="Nombre" fx:id="colNombre"/>
+            </columns>
+        </TableView>
+    </VBox>
+    
+</HBox>

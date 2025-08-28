@@ -51,6 +51,9 @@ public class Router {
                 if (type == PeliculasController.class) {
                     return new PeliculasController(services.peliculaService());
                 }
+                if (type == ArtistasBandasController.class) {
+                    return new ArtistasBandasController(services.artistaBandaService());
+                }
 
                 // Fallback: intentar constructor sin args (para pantallas que no necesiten servicios)
                 try {

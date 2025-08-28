@@ -2,14 +2,18 @@ package gov.municipio.config;
 
 import gov.municipio.application.PersonaService;
 import gov.municipio.application.PeliculaService;
+import gov.municipio.application.ArtistaBandaService;
 import gov.municipio.persistence.persona.JpaPersonaRepository;
 import gov.municipio.persistence.persona.PersonaRepository;
 import gov.municipio.persistence.pelicula.JpaPeliculaRepository;
 import gov.municipio.persistence.pelicula.PeliculaRepository;
+import gov.municipio.persistence.artistabanda.JpaArtistaBandaRepository;
+import gov.municipio.persistence.artistabanda.ArtistaBandaRepository;
 
 public class ServiceContainer {
     private final PersonaService personaService;
     private final PeliculaService peliculaService;
+    private final ArtistaBandaService artistaBandaService;
 
     public ServiceContainer() {
         // Configuración manual de dependencias (sin framework DI)
@@ -18,6 +22,9 @@ public class ServiceContainer {
         
         PeliculaRepository peliculaRepository = new JpaPeliculaRepository();
         this.peliculaService = new PeliculaService(peliculaRepository);
+        
+        ArtistaBandaRepository artistaBandaRepository = new JpaArtistaBandaRepository();
+        this.artistaBandaService = new ArtistaBandaService(artistaBandaRepository);
     }
 
     public PersonaService personaService() { 
@@ -26,5 +33,9 @@ public class ServiceContainer {
     
     public PeliculaService peliculaService() {
         return peliculaService;
+    }
+    
+    public ArtistaBandaService artistaBandaService() {
+        return artistaBandaService;
     }
 }
