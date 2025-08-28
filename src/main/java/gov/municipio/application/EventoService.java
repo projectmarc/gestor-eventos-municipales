@@ -444,4 +444,28 @@ public class EventoService {
         
         return eventoRepository.save(concierto);
     }
+    
+    /**
+     * Elimina un evento de la base de datos.
+     * Solo permite eliminar eventos que estén en estado PLANIFICACION o FINALIZADO.
+     * 
+     * @param eventoId el ID del evento a eliminar
+     * @throws IllegalArgumentException si el evento no existe
+     * @throws IllegalStateException si el evento no puede ser eliminado (no está en PLANIFICACION o FINALIZADO)
+     */
+    public void eliminarEvento(Long eventoId) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        
+        // Validar que el evento pueda ser eliminado (solo PLANIFICACION o FINALIZADO)
+        if (!evento.estaEnPlanificacion() && !evento.estaCerrado()) {
+            throw new IllegalStateException("Solo se pueden eliminar eventos en estado PLANIFICACION o FINALIZADO. Estado actual: " + evento.getEstado());
+        }
+        
+        eventoRepository.delete(evento);
+    }
 }

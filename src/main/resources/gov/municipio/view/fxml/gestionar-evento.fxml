@@ -57,6 +57,7 @@
             <!-- Botones de acción -->
             <HBox spacing="10">
                 <Button fx:id="btnEditar" text="Editar" onAction="#editar" styleClass="btn-secondary"/>
+                <Button fx:id="btnEliminar" text="Eliminar" onAction="#eliminarEvento" styleClass="btn-outlined"/>
                 <Button fx:id="btnGuardar" text="Guardar" onAction="#guardar" visible="false" managed="false" styleClass="btn-primary"/>
                 <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelar" visible="false" managed="false" styleClass="btn-outlined"/>
                 <Button fx:id="btnConfirmar" text="Confirmar Evento" onAction="#confirmarEvento" styleClass="btn-primary"/>

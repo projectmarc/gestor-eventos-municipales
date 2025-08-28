@@ -62,6 +62,9 @@ public class GestionarEventoController {
     private Button btnEditar;
     
     @FXML
+    private Button btnEliminar;
+    
+    @FXML
     private Button btnGuardar;
     
     @FXML
@@ -163,6 +166,11 @@ public class GestionarEventoController {
             
             // Habilitar/deshabilitar edición según el estado
             btnEditar.setDisable(!eventoActual.estaEnPlanificacion());
+            
+            // Mostrar el botón de eliminar solo si está en planificación o finalizado
+            boolean puedeEliminar = eventoActual.estaEnPlanificacion() || eventoActual.estaCerrado();
+            btnEliminar.setVisible(puedeEliminar);
+            btnEliminar.setManaged(puedeEliminar);
             
             // Mostrar el botón de confirmar solo si está en planificación
             btnConfirmar.setVisible(eventoActual.estaEnPlanificacion());
@@ -317,6 +325,55 @@ public class GestionarEventoController {
     }
     
     @FXML
+    private void eliminarEvento() {
+        try {
+            if (eventoActual == null) {
+                mostrarError("Error", "No hay evento seleccionado");
+                return;
+            }
+            
+            // Verificar que el evento pueda eliminarse
+            if (!eventoActual.estaEnPlanificacion() && !eventoActual.estaCerrado()) {
+                mostrarError("Eliminación no permitida", 
+                           "Solo se pueden eliminar eventos en estado PLANIFICACION o FINALIZADO.\n\n" +
+                           "Estado actual: " + eventoActual.getEstado());
+                return;
+            }
+            
+            // Mostrar diálogo de confirmación
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar eliminación");
+            confirmacion.setHeaderText("¿Está seguro de que desea eliminar este evento?");
+            confirmacion.setContentText("Esta acción eliminará permanentemente el evento '" + 
+                                      eventoActual.getNombre() + "' y todos sus datos asociados.\n\n" +
+                                      "Esta acción no se puede deshacer.");
+            
+            if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                // Eliminar el evento
+                eventoService.eliminarEvento(eventoActual.getId());
+                
+                // Mostrar mensaje de éxito
+                mostrarInfo("Evento eliminado", 
+                           "El evento '" + eventoActual.getNombre() + "' ha sido eliminado exitosamente.");
+                
+                // Volver a la pantalla de eventos
+                if (router != null) {
+                    router.goTo(Screen.EVENTOS);
+                }
+            }
+            
+        } catch (IllegalStateException e) {
+            mostrarError("Error de Estado", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            mostrarError("Error de Parámetros", e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Exception inesperada al eliminar evento: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
+            mostrarError("Error", "Error inesperado al eliminar el evento: " + e.getMessage());
+        }
+    }
+    
+    @FXML
     private void gestionarEstadoEvento() {
         try {
             if (eventoActual == null) {
@@ -396,7 +453,7 @@ public class GestionarEventoController {
         txtCupoMaximo.setVisible(false);
         txtCupoMaximo.setManaged(false);
         
-        // Mostrar botón editar y confirmar (si corresponde), ocultar guardar/cancelar
+        // Mostrar botón editar y eliminar (si corresponde), confirmar (si corresponde), ocultar guardar/cancelar
         btnEditar.setVisible(true);
         btnEditar.setManaged(true);
         btnGuardar.setVisible(false);
@@ -404,8 +461,12 @@ public class GestionarEventoController {
         btnCancelar.setVisible(false);
         btnCancelar.setManaged(false);
         
-        // El botón confirmar se maneja en cargarDatosEvento según el estado
+        // El botón eliminar y confirmar se manejan en cargarDatosEvento según el estado
         if (eventoActual != null) {
+            boolean puedeEliminar = eventoActual.estaEnPlanificacion() || eventoActual.estaCerrado();
+            btnEliminar.setVisible(puedeEliminar);
+            btnEliminar.setManaged(puedeEliminar);
+            
             btnConfirmar.setVisible(eventoActual.estaEnPlanificacion());
             btnConfirmar.setManaged(eventoActual.estaEnPlanificacion());
             
@@ -462,9 +523,11 @@ public class GestionarEventoController {
         txtCupoMaximo.setVisible(true);
         txtCupoMaximo.setManaged(true);
         
-        // Ocultar botones editar y confirmar, mostrar guardar/cancelar
+        // Ocultar botones editar, eliminar, confirmar y gestión de estado, mostrar guardar/cancelar
         btnEditar.setVisible(false);
         btnEditar.setManaged(false);
+        btnEliminar.setVisible(false);
+        btnEliminar.setManaged(false);
         btnConfirmar.setVisible(false);
         btnConfirmar.setManaged(false);
         btnGestionarEstado.setVisible(false);
