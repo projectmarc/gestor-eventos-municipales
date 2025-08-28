@@ -28,7 +28,6 @@ public class PeliculasController {
     @FXML private TableView<Pelicula> tblPeliculas;
     @FXML private TableColumn<Pelicula, Long> colId;
     @FXML private TableColumn<Pelicula, String> colNombre;
-    @FXML private TableColumn<Pelicula, Double> colDuracionHoras;
     @FXML private TableColumn<Pelicula, String> colDuracionFmt;
     
     // Lista observable para la tabla
@@ -61,13 +60,7 @@ public class PeliculasController {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         
-        // Para duración en horas, usar método personalizado
-        colDuracionHoras.setCellValueFactory(cellData -> {
-            double horas = cellData.getValue().getDuracionEnHoras();
-            return new javafx.beans.property.SimpleObjectProperty<>(Math.round(horas * 100.0) / 100.0);
-        });
-        
-        // Para duración formateada
+        // Para duración formateada (hh:mm)
         colDuracionFmt.setCellValueFactory(cellData -> {
             String formateada = cellData.getValue().getDuracionFormateada();
             return new javafx.beans.property.SimpleStringProperty(formateada);
@@ -76,7 +69,6 @@ public class PeliculasController {
         // Configurar ancho de columnas
         colId.setPrefWidth(50);
         colNombre.setPrefWidth(200);
-        colDuracionHoras.setPrefWidth(100);
         colDuracionFmt.setPrefWidth(120);
     }
     

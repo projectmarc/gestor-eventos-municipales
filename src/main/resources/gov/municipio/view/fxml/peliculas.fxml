@@ -47,8 +47,7 @@
             <columns>
                 <TableColumn text="ID" fx:id="colId"/>
                 <TableColumn text="Nombre" fx:id="colNombre"/>
-                <TableColumn text="Duración (h)" fx:id="colDuracionHoras"/>
-                <TableColumn text="Duración (hh:mm)" fx:id="colDuracionFmt"/>
+                <TableColumn text="Duración" fx:id="colDuracionFmt"/>
             </columns>
         </TableView>
     </VBox>
