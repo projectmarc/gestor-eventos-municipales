@@ -14,6 +14,12 @@
     
     <Label text="Gestionar Evento" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
     
+    <!-- Estado del evento -->
+    <HBox spacing="10">
+        <Label text="Estado:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="lblEstado" text="" style="-fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+    </HBox>
+    
     <HBox spacing="20">
         <!-- Primera sección: Detalles básicos del evento -->
         <VBox spacing="15" prefWidth="400">
@@ -52,6 +58,7 @@
                 <Button fx:id="btnEditar" text="Editar" onAction="#editar"/>
                 <Button fx:id="btnGuardar" text="Guardar" onAction="#guardar" visible="false" managed="false"/>
                 <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelar" visible="false" managed="false"/>
+                <Button fx:id="btnConfirmar" text="Confirmar Evento" onAction="#confirmarEvento" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
             </HBox>
         </VBox>
         

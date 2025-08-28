@@ -3,6 +3,7 @@ package gov.municipio.application;
 import gov.municipio.domain.model.ArtistaBanda;
 import gov.municipio.domain.model.Pelicula;
 import gov.municipio.domain.model.evento.*;
+import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.persistence.evento.EventoRepository;
 
 import java.time.LocalDate;
@@ -113,6 +114,60 @@ public class EventoService {
             throw new IllegalStateException("Solo se pueden editar eventos en estado PLANIFICACION");
         }
         return eventoRepository.save(evento);
+    }
+    
+    /**
+     * Confirma un evento cambiando su estado de PLANIFICACION a CONFIRMADO.
+     * Valida que el evento tenga todos los responsables obligatorios antes de confirmarlo.
+     * 
+     * @param eventoId el ID del evento a confirmar
+     * @return el evento confirmado con todas las participaciones cargadas
+     * @throws IllegalArgumentException si el evento no existe
+     * @throws IllegalStateException si el evento no está en PLANIFICACION o no cumple las condiciones para ser confirmado
+     */
+    public Evento confirmarEvento(Long eventoId) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        if (!evento.estaEnPlanificacion()) {
+            throw new IllegalStateException("Solo se pueden confirmar eventos en estado PLANIFICACION. Estado actual: " + evento.getEstado());
+        }
+        
+        // El método cambiarEstado del evento ya valida que tenga los responsables obligatorios
+        evento.cambiarEstado(EstadoEvento.CONFIRMADO);
+        
+        // Guardar y devolver el evento recargado con participaciones
+        eventoRepository.save(evento);
+        
+        // Recargar para asegurar que todas las relaciones estén disponibles
+        return buscarEventoPorIdConParticipaciones(eventoId).orElseThrow(
+            () -> new IllegalStateException("Error al recargar el evento después de confirmarlo")
+        );
+    }
+    
+    /**
+     * Actualiza las participaciones de un evento (inscripciones/bajas de asistentes y responsables).
+     * No valida el estado del evento ya que las reglas de negocio están en el dominio.
+     * 
+     * @param evento el evento con las participaciones modificadas
+     * @return el evento actualizado con todas las participaciones cargadas
+     * @throws IllegalArgumentException si el evento no existe
+     */
+    public Evento actualizarParticipaciones(Evento evento) {
+        if (evento == null) {
+            throw new IllegalArgumentException("El evento no puede ser nulo");
+        }
+        
+        // Guardar el evento (las validaciones de negocio están en el dominio)
+        eventoRepository.save(evento);
+        
+        // Recargar para asegurar que todas las relaciones estén disponibles
+        return buscarEventoPorIdConParticipaciones(evento.getId()).orElseThrow(
+            () -> new IllegalStateException("Error al recargar el evento tras actualizar participaciones")
+        );
     }
     
     /**

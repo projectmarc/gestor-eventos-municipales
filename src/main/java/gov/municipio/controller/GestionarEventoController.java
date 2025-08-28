@@ -32,6 +32,9 @@ import java.util.stream.Collectors;
 public class GestionarEventoController {
     
     @FXML
+    private Label lblEstado;
+    
+    @FXML
     private Label lblNombre;
     
     @FXML
@@ -63,6 +66,9 @@ public class GestionarEventoController {
     
     @FXML
     private Button btnCancelar;
+    
+    @FXML
+    private Button btnConfirmar;
     
     @FXML
     private VBox vboxResponsables;
@@ -114,6 +120,15 @@ public class GestionarEventoController {
     
     private void cargarDatosEvento() {
         if (eventoActual != null) {
+            // Cargar estado con color según el estado actual
+            lblEstado.setText(eventoActual.getEstado().toString());
+            switch (eventoActual.getEstado()) {
+                case PLANIFICACION -> lblEstado.setStyle("-fx-font-weight: bold; -fx-text-fill: #FF9800;");
+                case CONFIRMADO -> lblEstado.setStyle("-fx-font-weight: bold; -fx-text-fill: #4CAF50;");
+                case EN_EJECUCION -> lblEstado.setStyle("-fx-font-weight: bold; -fx-text-fill: #2196F3;");
+                case FINALIZADO -> lblEstado.setStyle("-fx-font-weight: bold; -fx-text-fill: #757575;");
+            }
+            
             // Cargar datos en los labels
             lblNombre.setText(eventoActual.getNombre());
             lblDuracion.setText(String.valueOf(eventoActual.getDuracionEstimada()));
@@ -138,6 +153,10 @@ public class GestionarEventoController {
             
             // Habilitar/deshabilitar edición según el estado
             btnEditar.setDisable(!eventoActual.estaEnPlanificacion());
+            
+            // Mostrar el botón de confirmar solo si está en planificación
+            btnConfirmar.setVisible(eventoActual.estaEnPlanificacion());
+            btnConfirmar.setManaged(eventoActual.estaEnPlanificacion());
         }
     }
     
@@ -216,6 +235,54 @@ public class GestionarEventoController {
     }
     
     @FXML
+    private void confirmarEvento() {
+        try {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Evento");
+            confirmacion.setHeaderText("¿Está seguro de que desea confirmar este evento?");
+            confirmacion.setContentText("Una vez confirmado, el evento pasará a estado CONFIRMADO y no se podrán modificar los responsables ni el contenido.");
+            
+            if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                // Confirmar el evento a través del servicio
+                Evento eventoConfirmado = eventoService.confirmarEvento(eventoActual.getId());
+                
+                // Actualizar la vista con el evento confirmado (ya viene con participaciones cargadas)
+                setEvento(eventoConfirmado);
+                
+                mostrarInfo("Evento Confirmado", 
+                           "El evento '" + eventoConfirmado.getNombre() + "' ha sido confirmado exitosamente.\n\n" +
+                           "Estado actual: " + eventoConfirmado.getEstado() + "\n" +
+                           "Ahora se pueden inscribir asistentes al evento.");
+            }
+            
+        } catch (IllegalStateException e) {
+            // Errores específicos del dominio (falta de responsables, etc.)
+            String mensaje = e.getMessage();
+            System.err.println("IllegalStateException al confirmar evento: " + mensaje);
+            e.printStackTrace();
+            
+            if (mensaje.contains("Falta al menos un")) {
+                mostrarError("No se puede confirmar", 
+                           "Para confirmar el evento debe asignar todos los responsables obligatorios:\n\n" + mensaje);
+            } else {
+                mostrarError("Error de Estado", mensaje);
+            }
+        } catch (IllegalArgumentException e) {
+            // Error de argumento (evento no encontrado, etc.)
+            String mensaje = e.getMessage();
+            System.err.println("IllegalArgumentException al confirmar evento: " + mensaje);
+            e.printStackTrace();
+            mostrarError("Error de Parámetros", mensaje);
+        } catch (Exception e) {
+            // Cualquier otro error inesperado
+            System.err.println("Exception inesperada al confirmar evento: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
+            mostrarError("Error", "Error inesperado al confirmar el evento: " + e.getMessage() + 
+                         "\n\nTipo de error: " + e.getClass().getSimpleName());
+        }
+    }
+    
+    @FXML
     private void volver() {
         if (router != null) {
             router.goTo(Screen.EVENTOS);
@@ -238,13 +305,19 @@ public class GestionarEventoController {
         txtCupoMaximo.setVisible(false);
         txtCupoMaximo.setManaged(false);
         
-        // Mostrar botón editar, ocultar guardar/cancelar
+        // Mostrar botón editar y confirmar (si corresponde), ocultar guardar/cancelar
         btnEditar.setVisible(true);
         btnEditar.setManaged(true);
         btnGuardar.setVisible(false);
         btnGuardar.setManaged(false);
         btnCancelar.setVisible(false);
         btnCancelar.setManaged(false);
+        
+        // El botón confirmar se maneja en cargarDatosEvento según el estado
+        if (eventoActual != null) {
+            btnConfirmar.setVisible(eventoActual.estaEnPlanificacion());
+            btnConfirmar.setManaged(eventoActual.estaEnPlanificacion());
+        }
     }
     
     private void mostrarModoEdicion() {
@@ -263,9 +336,11 @@ public class GestionarEventoController {
         txtCupoMaximo.setVisible(true);
         txtCupoMaximo.setManaged(true);
         
-        // Ocultar botón editar, mostrar guardar/cancelar
+        // Ocultar botones editar y confirmar, mostrar guardar/cancelar
         btnEditar.setVisible(false);
         btnEditar.setManaged(false);
+        btnConfirmar.setVisible(false);
+        btnConfirmar.setManaged(false);
         btnGuardar.setVisible(true);
         btnGuardar.setManaged(true);
         btnCancelar.setVisible(true);
@@ -400,7 +475,7 @@ public class GestionarEventoController {
     private void agregarPersonaResponsable(Persona persona, Rol rol) {
         try {
             eventoActual.agregarResponsable(persona, rol);
-            eventoService.actualizarEvento(eventoActual);
+            eventoService.actualizarEvento(eventoActual); // Los responsables solo se pueden cambiar en PLANIFICACION
             cargarPersonasResponsables(); // Recargar la vista
             mostrarInfo("Éxito", "Persona agregada como " + rol.toString() + " exitosamente");
         } catch (Exception e) {
@@ -417,7 +492,7 @@ public class GestionarEventoController {
             
             if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
                 eventoActual.removerParticipacion(persona);
-                eventoService.actualizarEvento(eventoActual);
+                eventoService.actualizarEvento(eventoActual); // Los responsables solo se pueden quitar en PLANIFICACION
                 cargarPersonasResponsables(); // Recargar la vista
                 mostrarInfo("Éxito", "Persona quitada del evento exitosamente");
             }
@@ -554,7 +629,8 @@ public class GestionarEventoController {
     private void inscribirAsistente(Persona persona) {
         try {
             eventoActual.inscribirAsistente(persona);
-            eventoService.actualizarEvento(eventoActual);
+            Evento eventoActualizado = eventoService.actualizarParticipaciones(eventoActual);
+            setEvento(eventoActualizado); // Actualizar la referencia local
             cargarAsistentes(); // Recargar la vista
             mostrarInfo("Éxito", "Asistente inscripto exitosamente");
         } catch (Exception e) {
@@ -571,7 +647,8 @@ public class GestionarEventoController {
             
             if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
                 eventoActual.removerParticipacion(asistente);
-                eventoService.actualizarEvento(eventoActual);
+                Evento eventoActualizado = eventoService.actualizarParticipaciones(eventoActual);
+                setEvento(eventoActualizado); // Actualizar la referencia local
                 cargarAsistentes(); // Recargar la vista
                 mostrarInfo("Éxito", "Asistente dado de baja exitosamente");
             }
