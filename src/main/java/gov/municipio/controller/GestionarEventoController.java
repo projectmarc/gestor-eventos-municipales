@@ -1,14 +1,26 @@
 package gov.municipio.controller;
 
 import gov.municipio.application.EventoService;
+import gov.municipio.application.PersonaService;
 import gov.municipio.config.ServiceContainer;
+import gov.municipio.domain.model.Persona;
+import gov.municipio.domain.model.enums.Rol;
 import gov.municipio.domain.model.evento.Evento;
 import gov.municipio.ui.nav.Router;
 import gov.municipio.ui.nav.Screen;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GestionarEventoController {
     
@@ -45,8 +57,12 @@ public class GestionarEventoController {
     @FXML
     private Button btnCancelar;
     
+    @FXML
+    private VBox vboxResponsables;
+    
     private Router router;
     private EventoService eventoService;
+    private PersonaService personaService;
     private Evento eventoActual;
     
     public GestionarEventoController() {
@@ -59,11 +75,13 @@ public class GestionarEventoController {
     
     public void setServiceContainer(ServiceContainer serviceContainer) {
         this.eventoService = serviceContainer.eventoService();
+        this.personaService = serviceContainer.personaService();
     }
     
     public void setEvento(Evento evento) {
         this.eventoActual = evento;
         cargarDatosEvento();
+        cargarPersonasResponsables();
     }
     
     @FXML
@@ -249,5 +267,140 @@ public class GestionarEventoController {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
+    }
+    
+    // ========== MÉTODOS PARA GESTIÓN DE PERSONAS RESPONSABLES ==========
+    
+    private void cargarPersonasResponsables() {
+        if (eventoActual == null) return;
+        
+        vboxResponsables.getChildren().clear();
+        
+        // Obtener roles válidos para este tipo de evento
+        List<Rol> rolesResponsables = obtenerRolesResponsablesParaEvento();
+        
+        for (Rol rol : rolesResponsables) {
+            VBox seccionRol = crearSeccionParaRol(rol);
+            vboxResponsables.getChildren().add(seccionRol);
+        }
+    }
+    
+    private List<Rol> obtenerRolesResponsablesParaEvento() {
+        // Filtrar solo los roles responsables (no asistente) que son válidos para este evento
+        return List.of(Rol.ORGANIZADOR, Rol.CURADOR, Rol.INSTRUCTOR)
+                .stream()
+                .filter(rol -> eventoActual.validarRol(rol))
+                .collect(Collectors.toList());
+    }
+    
+    private VBox crearSeccionParaRol(Rol rol) {
+        VBox seccionRol = new VBox(5);
+        
+        // Título de la sección con botón para agregar
+        HBox headerRol = new HBox(10);
+        Label lblRol = new Label(rol.toString() + "S:");
+        lblRol.setStyle("-fx-font-weight: bold;");
+        
+        Button btnAgregar = new Button("Agregar " + rol.toString());
+        btnAgregar.setOnAction(e -> abrirDialogoBuscarPersona(rol));
+        
+        // Solo permitir agregar responsables si el evento está en planificación
+        btnAgregar.setDisable(!eventoActual.estaEnPlanificacion());
+        
+        headerRol.getChildren().addAll(lblRol, btnAgregar);
+        seccionRol.getChildren().add(headerRol);
+        
+        // Lista de personas con este rol
+        VBox listaPersonas = new VBox(3);
+        List<Persona> personasConRol = eventoActual.getPersonasPorRol(rol);
+        
+        for (Persona persona : personasConRol) {
+            HBox itemPersona = crearItemPersona(persona, rol);
+            listaPersonas.getChildren().add(itemPersona);
+        }
+        
+        if (personasConRol.isEmpty()) {
+            Label lblVacio = new Label("No hay " + rol.toString().toLowerCase() + "s asignados");
+            lblVacio.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+            listaPersonas.getChildren().add(lblVacio);
+        }
+        
+        seccionRol.getChildren().add(listaPersonas);
+        return seccionRol;
+    }
+    
+    private HBox crearItemPersona(Persona persona, Rol rol) {
+        HBox itemPersona = new HBox(10);
+        
+        // Información de la persona
+        VBox infoPersona = new VBox(2);
+        infoPersona.getChildren().addAll(
+            new Label(persona.getNombre() + " " + persona.getApellido()),
+            new Label("DNI: " + persona.getDni()),
+            new Label("Tel: " + persona.getTelefono()),
+            new Label("Email: " + persona.getEmail())
+        );
+        
+        // Botón para quitar (solo si está en planificación)
+        Button btnQuitar = new Button("Quitar");
+        btnQuitar.setOnAction(e -> quitarPersonaResponsable(persona));
+        btnQuitar.setDisable(!eventoActual.estaEnPlanificacion());
+        
+        itemPersona.getChildren().addAll(infoPersona, btnQuitar);
+        return itemPersona;
+    }
+    
+    private void abrirDialogoBuscarPersona(Rol rol) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gov/municipio/view/fxml/buscar-persona-dialog.fxml"));
+            Parent root = loader.load();
+            
+            BuscarPersonaDialogController dialogController = loader.getController();
+            dialogController.setPersonaService(personaService);
+            dialogController.setRol(rol);
+            
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Agregar " + rol.toString());
+            dialogStage.setScene(new Scene(root));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(vboxResponsables.getScene().getWindow());
+            dialogStage.showAndWait();
+            
+            if (dialogController.getResultado() && dialogController.getPersonaSeleccionada() != null) {
+                agregarPersonaResponsable(dialogController.getPersonaSeleccionada(), rol);
+            }
+            
+        } catch (Exception e) {
+            mostrarError("Error", "Error al abrir el diálogo: " + e.getMessage());
+        }
+    }
+    
+    private void agregarPersonaResponsable(Persona persona, Rol rol) {
+        try {
+            eventoActual.agregarResponsable(persona, rol);
+            eventoService.actualizarEvento(eventoActual);
+            cargarPersonasResponsables(); // Recargar la vista
+            mostrarInfo("Éxito", "Persona agregada como " + rol.toString() + " exitosamente");
+        } catch (Exception e) {
+            mostrarError("Error", "Error al agregar persona: " + e.getMessage());
+        }
+    }
+    
+    private void quitarPersonaResponsable(Persona persona) {
+        try {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar eliminación");
+            confirmacion.setHeaderText(null);
+            confirmacion.setContentText("¿Está seguro de quitar a " + persona.getNombre() + " " + persona.getApellido() + " del evento?");
+            
+            if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                eventoActual.removerParticipacion(persona);
+                eventoService.actualizarEvento(eventoActual);
+                cargarPersonasResponsables(); // Recargar la vista
+                mostrarInfo("Éxito", "Persona quitada del evento exitosamente");
+            }
+        } catch (Exception e) {
+            mostrarError("Error", "Error al quitar persona: " + e.getMessage());
+        }
     }
 }

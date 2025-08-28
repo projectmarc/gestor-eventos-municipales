@@ -25,6 +25,11 @@ public class Router {
     
     public void goToGestionarEvento(gov.municipio.domain.model.evento.Evento evento) {
         try {
+            // Recargar el evento con las participaciones para evitar LazyInitializationException
+            gov.municipio.domain.model.evento.Evento eventoConParticipaciones = 
+                services.eventoService().buscarEventoPorIdConParticipaciones(evento.getId())
+                    .orElseThrow(() -> new RuntimeException("Evento no encontrado"));
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Screen.GESTIONAR_EVENTO.getFxmlPath()));
             
             loader.setControllerFactory(type -> {
@@ -39,7 +44,7 @@ public class Router {
             
             Parent view = loader.load();
             GestionarEventoController controller = loader.getController();
-            controller.setEvento(evento);
+            controller.setEvento(eventoConParticipaciones);
             
             container.getChildren().setAll(view);
         } catch (IOException e) {

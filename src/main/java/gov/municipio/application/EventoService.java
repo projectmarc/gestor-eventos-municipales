@@ -76,6 +76,17 @@ public class EventoService {
     }
     
     /**
+     * Busca un evento por su ID cargando las participaciones de forma eager.
+     * Útil para las pantallas de gestión donde se necesita acceder a las participaciones.
+     * 
+     * @param id el ID del evento
+     * @return Optional con el evento si existe, con las participaciones cargadas
+     */
+    public Optional<Evento> buscarEventoPorIdConParticipaciones(Long id) {
+        return eventoRepository.findByIdWithParticipaciones(id);
+    }
+    
+    /**
      * Obtiene todos los eventos registrados.
      * 
      * @return lista de todos los eventos ordenados por fecha de inicio

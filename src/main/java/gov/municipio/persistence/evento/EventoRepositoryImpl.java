@@ -60,6 +60,27 @@ public class EventoRepositoryImpl implements EventoRepository {
     }
 
     @Override
+    public Optional<Evento> findByIdWithParticipaciones(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+        
+        EntityManager em = JpaUtil.getEntityManager();
+        
+        try {
+            TypedQuery<Evento> query = em.createQuery(
+                "SELECT e FROM Evento e LEFT JOIN FETCH e.participaciones p LEFT JOIN FETCH p.persona WHERE e.id = :id", 
+                Evento.class);
+            query.setParameter("id", id);
+            
+            List<Evento> resultados = query.getResultList();
+            return resultados.isEmpty() ? Optional.empty() : Optional.of(resultados.get(0));
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
     public List<Evento> findAll() {
         EntityManager em = JpaUtil.getEntityManager();
         

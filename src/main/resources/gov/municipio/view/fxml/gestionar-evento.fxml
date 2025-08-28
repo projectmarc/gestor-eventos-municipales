@@ -55,6 +55,16 @@
             </HBox>
         </VBox>
         
+        <!-- Segunda sección: Personas Responsables -->
+        <VBox spacing="15" prefWidth="400">
+            <Label text="Personas Responsables" style="-fx-font-weight: bold;"/>
+            
+            <!-- Contenedor dinámico para los roles de responsables -->
+            <VBox fx:id="vboxResponsables" spacing="10">
+                <!-- Se llenarán dinámicamente según el tipo de evento -->
+            </VBox>
+        </VBox>
+        
         <!-- Espacio para futuras secciones -->
         <VBox spacing="15" prefWidth="400">
             <!-- Esta sección se completará en futuras iteraciones -->

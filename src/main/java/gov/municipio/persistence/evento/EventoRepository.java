@@ -27,6 +27,14 @@ public interface EventoRepository {
     Optional<Evento> findById(Long id);
     
     /**
+     * Busca un evento por su ID cargando las participaciones de forma eager.
+     * 
+     * @param id el ID del evento
+     * @return Optional con el evento si existe, vacío si no existe
+     */
+    Optional<Evento> findByIdWithParticipaciones(Long id);
+    
+    /**
      * Obtiene todos los eventos registrados.
      * 
      * @return lista de todos los eventos
