@@ -52,6 +52,12 @@
                 <CheckBox fx:id="chkRequiereInscripcion" text="Requiere inscripción"/>
             </VBox>
             
+            <!-- Cupo máximo -->
+            <VBox spacing="8">
+                <Label text="Cupo máximo"/>
+                <TextField fx:id="txtCupoMaximo" promptText="Ingrese el cupo máximo" disable="true"/>
+            </VBox>
+            
         </VBox>
     </center>
     

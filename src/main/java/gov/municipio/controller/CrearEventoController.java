@@ -1,6 +1,8 @@
 package gov.municipio.controller;
 
-import gov.municipio.domain.model.enums.EstadoEvento;
+import gov.municipio.application.EventoService;
+import gov.municipio.config.ServiceContainer;
+import gov.municipio.domain.model.evento.Evento;
 import gov.municipio.ui.nav.Router;
 import gov.municipio.ui.nav.Screen;
 import javafx.collections.FXCollections;
@@ -17,12 +19,14 @@ public class CrearEventoController {
     @FXML private DatePicker dpFechaInicio;
     @FXML private TextField txtDuracion;
     @FXML private CheckBox chkRequiereInscripcion;
+    @FXML private TextField txtCupoMaximo;
     
     // Botones de acción
     @FXML private Button btnCancelar;
     @FXML private Button btnCrear;
     
     private Router router;
+    private EventoService eventoService;
     
     public CrearEventoController() {
         // Constructor vacío para el patrón actual
@@ -30,6 +34,10 @@ public class CrearEventoController {
     
     public void setRouter(Router router) {
         this.router = router;
+    }
+    
+    public void setServiceContainer(ServiceContainer serviceContainer) {
+        this.eventoService = serviceContainer.eventoService();
     }
     
     @FXML
@@ -53,8 +61,17 @@ public class CrearEventoController {
             if ("Taller".equals(tipoSeleccionado)) {
                 chkRequiereInscripcion.setSelected(true);
                 chkRequiereInscripcion.setDisable(true);
+                txtCupoMaximo.setDisable(false);
             } else {
                 chkRequiereInscripcion.setDisable(false);
+            }
+        });
+        
+        // Handler para checkbox de requiere inscripción
+        chkRequiereInscripcion.setOnAction(event -> {
+            txtCupoMaximo.setDisable(!chkRequiereInscripcion.isSelected());
+            if (!chkRequiereInscripcion.isSelected()) {
+                txtCupoMaximo.clear();
             }
         });
         
@@ -66,6 +83,9 @@ public class CrearEventoController {
     private void configurarValidaciones() {
         // Configurar validaciones de texto numérico para duración
         configurarCampoNumerico(txtDuracion);
+        
+        // Configurar validaciones de texto numérico para cupo máximo
+        configurarCampoNumerico(txtCupoMaximo);
     }
     
     private void configurarCampoNumerico(TextField campo) {
@@ -83,11 +103,26 @@ public class CrearEventoController {
                 return;
             }
             
-            // Aquí iría la lógica para crear el evento según el tipo seleccionado
-            // Por ahora solo mostramos la información que se capturaría
+            // Extraer datos del formulario
+            String nombre = txtNombre.getText().trim();
+            String tipoEvento = cbTipoEvento.getValue();
+            LocalDate fechaInicio = dpFechaInicio.getValue();
+            int duracionEstimada = Integer.parseInt(txtDuracion.getText().trim());
+            boolean requiereInscripcion = chkRequiereInscripcion.isSelected();
+            Integer cupoMaximo = null;
             
-            String mensaje = construirMensajeResumen();
-            mostrarAlerta("Evento creado", mensaje, Alert.AlertType.INFORMATION);
+            if (requiereInscripcion && !txtCupoMaximo.getText().trim().isEmpty()) {
+                cupoMaximo = Integer.parseInt(txtCupoMaximo.getText().trim());
+            }
+            
+            // Crear el evento usando el servicio
+            Evento eventoCreado = eventoService.crearEventoBasico(
+                tipoEvento, nombre, fechaInicio, duracionEstimada, requiereInscripcion, cupoMaximo
+            );
+            
+            // Mostrar mensaje de éxito
+            String mensaje = construirMensajeExito(eventoCreado);
+            mostrarAlerta("Evento creado exitosamente", mensaje, Alert.AlertType.INFORMATION);
             
             // Limpiar formulario después de crear
             limpiarFormulario();
@@ -144,19 +179,45 @@ public class CrearEventoController {
             return false;
         }
         
+        // Validar cupo máximo si requiere inscripción
+        if (chkRequiereInscripcion.isSelected()) {
+            if (txtCupoMaximo.getText().trim().isEmpty()) {
+                mostrarAlerta("Campo requerido", "El cupo máximo es obligatorio para eventos que requieren inscripción.", Alert.AlertType.WARNING);
+                txtCupoMaximo.requestFocus();
+                return false;
+            }
+            
+            try {
+                int cupo = Integer.parseInt(txtCupoMaximo.getText().trim());
+                if (cupo <= 0) {
+                    mostrarAlerta("Cupo inválido", "El cupo máximo debe ser mayor a 0.", Alert.AlertType.WARNING);
+                    txtCupoMaximo.requestFocus();
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                mostrarAlerta("Cupo inválido", "El cupo máximo debe ser un número válido.", Alert.AlertType.WARNING);
+                txtCupoMaximo.requestFocus();
+                return false;
+            }
+        }
+        
         return true;
     }
     
-    private String construirMensajeResumen() {
+    private String construirMensajeExito(Evento evento) {
         StringBuilder mensaje = new StringBuilder();
-        mensaje.append("Evento: ").append(txtNombre.getText()).append("\n");
-        mensaje.append("Tipo: ").append(cbTipoEvento.getValue()).append("\n");
-        mensaje.append("Fecha: ").append(dpFechaInicio.getValue()).append("\n");
-        mensaje.append("Duración: ").append(txtDuracion.getText()).append(" horas\n");
-        mensaje.append("Estado: ").append(EstadoEvento.PLANIFICACION).append("\n");
-        mensaje.append("Requiere inscripción: ").append(chkRequiereInscripcion.isSelected() ? "Sí" : "No").append("\n");
+        mensaje.append("Evento creado exitosamente:\n\n");
+        mensaje.append("ID: ").append(evento.getId()).append("\n");
+        mensaje.append("Nombre: ").append(evento.getNombre()).append("\n");
+        mensaje.append("Tipo: ").append(evento.getClass().getSimpleName()).append("\n");
+        mensaje.append("Fecha: ").append(evento.getFechaInicio()).append("\n");
+        mensaje.append("Duración: ").append(evento.getDuracionEstimada()).append(" horas\n");
+        mensaje.append("Estado: ").append(evento.getEstado()).append("\n");
+        mensaje.append("Requiere inscripción: ").append(evento.isRequiereInscripcion() ? "Sí" : "No").append("\n");
         
-        mensaje.append("\nNota: Los responsables del evento se pueden agregar después de la creación.");
+        if (evento.isRequiereInscripcion() && evento.getCupoMaximoDefinido() != null) {
+            mensaje.append("Cupo máximo: ").append(evento.getCupoMaximoDefinido()).append("\n");
+        }
         
         return mensaje.toString();
     }
@@ -167,10 +228,12 @@ public class CrearEventoController {
         cbTipoEvento.setValue(null);
         dpFechaInicio.setValue(null);
         txtDuracion.clear();
+        txtCupoMaximo.clear();
         
         // Resetear inscripción
         chkRequiereInscripcion.setSelected(false);
         chkRequiereInscripcion.setDisable(false);
+        txtCupoMaximo.setDisable(true);
     }
     
     private void cancelar() {
@@ -195,7 +258,8 @@ public class CrearEventoController {
         return !txtNombre.getText().trim().isEmpty() ||
                cbTipoEvento.getValue() != null ||
                dpFechaInicio.getValue() != null ||
-               !txtDuracion.getText().trim().isEmpty();
+               !txtDuracion.getText().trim().isEmpty() ||
+               !txtCupoMaximo.getText().trim().isEmpty();
     }
     
     @FXML

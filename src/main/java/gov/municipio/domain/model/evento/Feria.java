@@ -2,17 +2,29 @@ package gov.municipio.domain.model.evento;
 
 import gov.municipio.domain.model.enums.Rol;
 import gov.municipio.domain.model.enums.TipoLugar;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table(name = "ferias")
 public class Feria extends Evento {
+    @Column(nullable = false)
     private int cantidadStands;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TipoLugar tipoLugar;
 
     public Feria(int cantidadStands, TipoLugar tipoLugar, String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, Integer cupoMaximo) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
         this.cantidadStands = validarCantidadStands(cantidadStands);
         this.tipoLugar = validarTipoLugar(tipoLugar);
+    }
+
+    // Constructor protegido para JPA
+    protected Feria() {
+        super();
     }
 
     @Override

@@ -5,6 +5,7 @@ import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.domain.model.enums.Rol;
 import gov.municipio.domain.exceptions.*;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +15,33 @@ import java.util.Optional;
  * Clase abstracta que representa un evento cultural del municipio.
  * Modelo de dominio rico con reglas centralizadas.
  */
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "eventos")
 public abstract class Evento {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false, length = 100)
     private String nombre;
+    
+    @Column(nullable = false)
     private LocalDate fechaInicio;
+    
+    @Column(nullable = false)
     private int duracionEstimada;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EstadoEvento estado;
+    
+    @Column(nullable = false)
     private boolean requiereInscripcion;
+    
     private Integer cupoMaximo; // Obligatorio si requiereInscripcion = true
+    
+    @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private final List<Participacion> participaciones = new ArrayList<>();
 
     public Evento(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, Integer cupoMaximo) {
@@ -194,6 +215,7 @@ public abstract class Evento {
 
     // -------- Getters/Setters básicos
 
+    public Long getId() { return id; }
     public String getNombre() { return nombre; }
     public LocalDate getFechaInicio() { return fechaInicio; }
     public int getDuracionEstimada() { return duracionEstimada; }

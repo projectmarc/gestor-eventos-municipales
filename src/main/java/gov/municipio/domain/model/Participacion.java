@@ -2,6 +2,7 @@ package gov.municipio.domain.model;
 
 import gov.municipio.domain.model.enums.Rol;
 import gov.municipio.domain.model.evento.Evento;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -12,9 +13,23 @@ import java.util.Objects;
  *
  * Identidad: una persona tiene UN solo rol por evento -> equals/hashCode por (persona, evento).
  */
+@Entity
+@Table(name = "participaciones")
 public class Participacion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "persona_id", nullable = false)
     private final Persona persona;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evento_id", nullable = false)
     private final Evento evento;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private final Rol rol;
 
     // Se mantiene público por estar en otro paquete que Evento;
@@ -27,6 +42,15 @@ public class Participacion {
         this.evento = evento;
         this.rol = rol;
     }
+
+    // Constructor protegido para JPA
+    protected Participacion() {
+        this.persona = null;
+        this.evento = null;
+        this.rol = null;
+    }
+
+    public Long getId() { return id; }
 
     public Persona getPersona() { return persona; }
     public Evento getEvento()   { return evento; }

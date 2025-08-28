@@ -46,6 +46,7 @@ public class Router {
                 if (type == CrearEventoController.class) {
                     CrearEventoController controller = new CrearEventoController();
                     controller.setRouter(this);
+                    controller.setServiceContainer(services);
                     return controller;
                 }
                 if (type == PeliculasController.class) {

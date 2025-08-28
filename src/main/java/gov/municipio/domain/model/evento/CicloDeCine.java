@@ -2,15 +2,27 @@ package gov.municipio.domain.model.evento;
 
 import gov.municipio.domain.model.Pelicula;
 import gov.municipio.domain.model.enums.Rol;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "ciclos_de_cine")
 public class CicloDeCine extends Evento {
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "ciclo_cine_pelicula",
+        joinColumns = @JoinColumn(name = "ciclo_cine_id"),
+        inverseJoinColumns = @JoinColumn(name = "pelicula_id")
+    )
+    @OrderColumn(name = "orden")
     private final List<Pelicula> peliculasEnOrden;
+    
+    @Column(nullable = false)
     private final boolean incluyeCharlasPosteriores;
 
     public CicloDeCine(String nombre,
@@ -23,6 +35,13 @@ public class CicloDeCine extends Evento {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
         this.peliculasEnOrden = validarPeliculas(peliculasEnOrden);
         this.incluyeCharlasPosteriores = incluyeCharlasPosteriores;
+    }
+
+    // Constructor protegido para JPA
+    protected CicloDeCine() {
+        super();
+        this.peliculasEnOrden = null;
+        this.incluyeCharlasPosteriores = false;
     }
 
     @Override
@@ -47,9 +66,12 @@ public class CicloDeCine extends Evento {
 
     private List<Pelicula> validarPeliculas(List<Pelicula> peliculas) {
         Objects.requireNonNull(peliculas, "La lista de películas no puede ser nula");
+        
+        // Permitir lista vacía para eventos básicos (se agregarán películas después)
         if (peliculas.isEmpty()) {
-            throw new IllegalArgumentException("Debe haber al menos una película");
+            return List.copyOf(peliculas);
         }
+        
         if (peliculas.stream().anyMatch(p -> p == null)) {
             throw new IllegalArgumentException("Ninguna película puede ser nula");
         }
