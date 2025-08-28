@@ -41,6 +41,7 @@ public class Router {
                 if (type == EventosController.class) {
                     EventosController controller = new EventosController();
                     controller.setRouter(this);
+                    controller.setServiceContainer(services);
                     return controller;
                 }
                 if (type == CrearEventoController.class) {
