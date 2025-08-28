@@ -1,10 +1,16 @@
 package gov.municipio.controller;
 
+import gov.municipio.application.ArtistaBandaService;
 import gov.municipio.application.EventoService;
+import gov.municipio.application.PeliculaService;
 import gov.municipio.application.PersonaService;
 import gov.municipio.config.ServiceContainer;
+import gov.municipio.domain.model.ArtistaBanda;
+import gov.municipio.domain.model.Pelicula;
 import gov.municipio.domain.model.Persona;
 import gov.municipio.domain.model.enums.Rol;
+import gov.municipio.domain.model.evento.CicloDeCine;
+import gov.municipio.domain.model.evento.Concierto;
 import gov.municipio.domain.model.evento.Evento;
 import gov.municipio.ui.nav.Router;
 import gov.municipio.ui.nav.Screen;
@@ -20,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GestionarEventoController {
@@ -63,9 +70,17 @@ public class GestionarEventoController {
     @FXML
     private VBox vboxAsistentes;
     
+    @FXML
+    private Label lblTituloContenido;
+    
+    @FXML
+    private VBox vboxContenido;
+    
     private Router router;
     private EventoService eventoService;
     private PersonaService personaService;
+    private PeliculaService peliculaService;
+    private ArtistaBandaService artistaBandaService;
     private Evento eventoActual;
     
     public GestionarEventoController() {
@@ -79,6 +94,8 @@ public class GestionarEventoController {
     public void setServiceContainer(ServiceContainer serviceContainer) {
         this.eventoService = serviceContainer.eventoService();
         this.personaService = serviceContainer.personaService();
+        this.peliculaService = serviceContainer.peliculaService();
+        this.artistaBandaService = serviceContainer.artistaBandaService();
     }
     
     public void setEvento(Evento evento) {
@@ -86,6 +103,7 @@ public class GestionarEventoController {
         cargarDatosEvento();
         cargarPersonasResponsables();
         cargarAsistentes();
+        cargarContenido();
     }
     
     @FXML
@@ -559,6 +577,255 @@ public class GestionarEventoController {
             }
         } catch (Exception e) {
             mostrarError("Error", "Error al dar de baja asistente: " + e.getMessage());
+        }
+    }
+    
+    // ========== MÉTODOS PARA GESTIÓN DE CONTENIDO (PELÍCULAS/ARTISTAS) ==========
+    
+    private void cargarContenido() {
+        if (eventoActual == null) return;
+        
+        vboxContenido.getChildren().clear();
+        
+        if (eventoActual instanceof CicloDeCine) {
+            cargarPeliculas((CicloDeCine) eventoActual);
+        } else if (eventoActual instanceof Concierto) {
+            cargarArtistas((Concierto) eventoActual);
+        } else {
+            // Otros tipos de eventos no tienen contenido específico
+            lblTituloContenido.setText("Contenido");
+            Label lblNoAplica = new Label("Este tipo de evento no requiere contenido específico");
+            lblNoAplica.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+            vboxContenido.getChildren().add(lblNoAplica);
+        }
+    }
+    
+    private void cargarPeliculas(CicloDeCine cicloDeCine) {
+        lblTituloContenido.setText("Películas del Ciclo");
+        
+        VBox seccionPeliculas = new VBox(5);
+        
+        // Header con botón para agregar película
+        HBox headerPeliculas = new HBox(10);
+        Label lblPeliculas = new Label("LISTA DE PELÍCULAS:");
+        lblPeliculas.setStyle("-fx-font-weight: bold;");
+        
+        Button btnAgregarPelicula = new Button("Agregar Película");
+        btnAgregarPelicula.setOnAction(e -> abrirDialogoAgregarPelicula());
+        
+        // Solo permitir agregar si está en planificación
+        btnAgregarPelicula.setDisable(!eventoActual.estaEnPlanificacion());
+        
+        headerPeliculas.getChildren().addAll(lblPeliculas, btnAgregarPelicula);
+        seccionPeliculas.getChildren().add(headerPeliculas);
+        
+        // Lista de películas
+        VBox listaPeliculas = new VBox(3);
+        List<Pelicula> peliculas = cicloDeCine.getPeliculasEnOrden();
+        
+        for (int i = 0; i < peliculas.size(); i++) {
+            Pelicula pelicula = peliculas.get(i);
+            HBox itemPelicula = crearItemPelicula(pelicula, i + 1);
+            listaPeliculas.getChildren().add(itemPelicula);
+        }
+        
+        if (peliculas.isEmpty()) {
+            Label lblVacio = new Label("No hay películas agregadas al ciclo");
+            lblVacio.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+            listaPeliculas.getChildren().add(lblVacio);
+        }
+        
+        seccionPeliculas.getChildren().add(listaPeliculas);
+        vboxContenido.getChildren().add(seccionPeliculas);
+    }
+    
+    private void cargarArtistas(Concierto concierto) {
+        lblTituloContenido.setText("Artistas del Concierto");
+        
+        VBox seccionArtistas = new VBox(5);
+        
+        // Header con botón para agregar artista
+        HBox headerArtistas = new HBox(10);
+        Label lblArtistas = new Label("LISTA DE ARTISTAS/BANDAS:");
+        lblArtistas.setStyle("-fx-font-weight: bold;");
+        
+        Button btnAgregarArtista = new Button("Agregar Artista/Banda");
+        btnAgregarArtista.setOnAction(e -> abrirDialogoAgregarArtista());
+        
+        // Solo permitir agregar si está en planificación
+        btnAgregarArtista.setDisable(!eventoActual.estaEnPlanificacion());
+        
+        headerArtistas.getChildren().addAll(lblArtistas, btnAgregarArtista);
+        seccionArtistas.getChildren().add(headerArtistas);
+        
+        // Lista de artistas
+        VBox listaArtistas = new VBox(3);
+        List<ArtistaBanda> artistas = concierto.getArtistaBandas();
+        
+        for (ArtistaBanda artista : artistas) {
+            HBox itemArtista = crearItemArtista(artista);
+            listaArtistas.getChildren().add(itemArtista);
+        }
+        
+        if (artistas.isEmpty()) {
+            Label lblVacio = new Label("No hay artistas/bandas agregados al concierto");
+            lblVacio.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+            listaArtistas.getChildren().add(lblVacio);
+        }
+        
+        seccionArtistas.getChildren().add(listaArtistas);
+        vboxContenido.getChildren().add(seccionArtistas);
+    }
+    
+    private HBox crearItemPelicula(Pelicula pelicula, int orden) {
+        HBox itemPelicula = new HBox(10);
+        
+        VBox infoPelicula = new VBox(2);
+        infoPelicula.getChildren().addAll(
+            new Label(orden + ". " + pelicula.getNombre()),
+            new Label("Duración: " + pelicula.getDuracionEnMinutos() + " minutos"),
+            new Label("ID: " + pelicula.getId())
+        );
+        
+        Button btnQuitar = new Button("Quitar");
+        btnQuitar.setOnAction(e -> quitarPelicula(pelicula));
+        btnQuitar.setDisable(!eventoActual.estaEnPlanificacion());
+        
+        itemPelicula.getChildren().addAll(infoPelicula, btnQuitar);
+        return itemPelicula;
+    }
+    
+    private HBox crearItemArtista(ArtistaBanda artista) {
+        HBox itemArtista = new HBox(10);
+        
+        VBox infoArtista = new VBox(2);
+        infoArtista.getChildren().addAll(
+            new Label(artista.getNombre()),
+            new Label("ID: " + artista.getId())
+        );
+        
+        Button btnQuitar = new Button("Quitar");
+        btnQuitar.setOnAction(e -> quitarArtista(artista));
+        btnQuitar.setDisable(!eventoActual.estaEnPlanificacion());
+        
+        itemArtista.getChildren().addAll(infoArtista, btnQuitar);
+        return itemArtista;
+    }
+    
+    private void abrirDialogoAgregarPelicula() {
+        abrirDialogoContenido(BuscarContenidoDialogController.TipoContenido.PELICULA);
+    }
+    
+    private void abrirDialogoAgregarArtista() {
+        abrirDialogoContenido(BuscarContenidoDialogController.TipoContenido.ARTISTA_BANDA);
+    }
+    
+    private void abrirDialogoContenido(BuscarContenidoDialogController.TipoContenido tipo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gov/municipio/view/fxml/buscar-contenido-dialog.fxml"));
+            Parent root = loader.load();
+            
+            BuscarContenidoDialogController dialogController = loader.getController();
+            dialogController.setPeliculaService(peliculaService);
+            dialogController.setArtistaBandaService(artistaBandaService);
+            dialogController.setTipoContenido(tipo);
+            
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(tipo == BuscarContenidoDialogController.TipoContenido.PELICULA ? 
+                                "Agregar Película" : "Agregar Artista/Banda");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(vboxContenido.getScene().getWindow());
+            dialogStage.showAndWait();
+            
+            if (dialogController.getResultado() && dialogController.getContenidoSeleccionado() != null) {
+                if (tipo == BuscarContenidoDialogController.TipoContenido.PELICULA) {
+                    agregarPelicula((Pelicula) dialogController.getContenidoSeleccionado());
+                } else {
+                    agregarArtista((ArtistaBanda) dialogController.getContenidoSeleccionado());
+                }
+            }
+            
+        } catch (Exception e) {
+            mostrarError("Error", "Error al abrir el diálogo: " + e.getMessage());
+        }
+    }
+    
+    private void agregarPelicula(Pelicula pelicula) {
+        try {
+            eventoService.agregarPeliculaACiclo(eventoActual.getId(), pelicula);
+            
+            // Recargar el evento para reflejar los cambios
+            Optional<Evento> eventoActualizado = eventoService.buscarEventoPorIdConParticipaciones(eventoActual.getId());
+            if (eventoActualizado.isPresent()) {
+                setEvento(eventoActualizado.get());
+            }
+            
+            mostrarError("Éxito", "Película agregada correctamente al ciclo de cine");
+        } catch (Exception e) {
+            mostrarError("Error", "Error al agregar película: " + e.getMessage());
+        }
+    }
+    
+    private void agregarArtista(ArtistaBanda artista) {
+        try {
+            eventoService.agregarArtistaBandaAConcierto(eventoActual.getId(), artista);
+            
+            // Recargar el evento para reflejar los cambios
+            Optional<Evento> eventoActualizado = eventoService.buscarEventoPorIdConParticipaciones(eventoActual.getId());
+            if (eventoActualizado.isPresent()) {
+                setEvento(eventoActualizado.get());
+            }
+            
+            mostrarError("Éxito", "Artista/banda agregado correctamente al concierto");
+        } catch (Exception e) {
+            mostrarError("Error", "Error al agregar artista: " + e.getMessage());
+        }
+    }
+    
+    private void quitarPelicula(Pelicula pelicula) {
+        try {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar eliminación");
+            confirmacion.setHeaderText(null);
+            confirmacion.setContentText("¿Está seguro de quitar la película \"" + pelicula.getNombre() + "\"?");
+            
+            if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                eventoService.quitarPeliculaDeCiclo(eventoActual.getId(), pelicula);
+                
+                // Recargar el evento para reflejar los cambios
+                Optional<Evento> eventoActualizado = eventoService.buscarEventoPorIdConParticipaciones(eventoActual.getId());
+                if (eventoActualizado.isPresent()) {
+                    setEvento(eventoActualizado.get());
+                }
+                
+                mostrarError("Éxito", "Película quitada correctamente del ciclo de cine");
+            }
+        } catch (Exception e) {
+            mostrarError("Error", "Error al quitar película: " + e.getMessage());
+        }
+    }
+    
+    private void quitarArtista(ArtistaBanda artista) {
+        try {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar eliminación");
+            confirmacion.setHeaderText(null);
+            confirmacion.setContentText("¿Está seguro de quitar al artista/banda \"" + artista.getNombre() + "\"?");
+            
+            if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                eventoService.quitarArtistaBandaDeConcierto(eventoActual.getId(), artista);
+                
+                // Recargar el evento para reflejar los cambios
+                Optional<Evento> eventoActualizado = eventoService.buscarEventoPorIdConParticipaciones(eventoActual.getId());
+                if (eventoActualizado.isPresent()) {
+                    setEvento(eventoActualizado.get());
+                }
+                
+                mostrarError("Éxito", "Artista/banda quitado correctamente del concierto");
+            }
+        } catch (Exception e) {
+            mostrarError("Error", "Error al quitar artista: " + e.getMessage());
         }
     }
 }

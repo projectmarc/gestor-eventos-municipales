@@ -1,5 +1,7 @@
 package gov.municipio.application;
 
+import gov.municipio.domain.model.ArtistaBanda;
+import gov.municipio.domain.model.Pelicula;
 import gov.municipio.domain.model.evento.*;
 import gov.municipio.persistence.evento.EventoRepository;
 
@@ -111,5 +113,109 @@ public class EventoService {
             throw new IllegalStateException("Solo se pueden editar eventos en estado PLANIFICACION");
         }
         return eventoRepository.save(evento);
+    }
+    
+    /**
+     * Agrega una película a un ciclo de cine.
+     * 
+     * @param eventoId el ID del evento (debe ser un CicloDeCine)
+     * @param pelicula la película a agregar
+     * @return el evento actualizado
+     * @throws IllegalArgumentException si el evento no es un CicloDeCine o la película es inválida
+     * @throws IllegalStateException si el evento no está en PLANIFICACION
+     */
+    public Evento agregarPeliculaACiclo(Long eventoId, Pelicula pelicula) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        if (!(evento instanceof CicloDeCine)) {
+            throw new IllegalArgumentException("El evento no es un Ciclo de Cine");
+        }
+        
+        CicloDeCine ciclo = (CicloDeCine) evento;
+        ciclo.agregarPelicula(pelicula);
+        
+        return eventoRepository.save(ciclo);
+    }
+    
+    /**
+     * Quita una película de un ciclo de cine.
+     * 
+     * @param eventoId el ID del evento (debe ser un CicloDeCine)
+     * @param pelicula la película a quitar
+     * @return el evento actualizado
+     * @throws IllegalArgumentException si el evento no es un CicloDeCine o la película no está en el ciclo
+     * @throws IllegalStateException si el evento no está en PLANIFICACION
+     */
+    public Evento quitarPeliculaDeCiclo(Long eventoId, Pelicula pelicula) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        if (!(evento instanceof CicloDeCine)) {
+            throw new IllegalArgumentException("El evento no es un Ciclo de Cine");
+        }
+        
+        CicloDeCine ciclo = (CicloDeCine) evento;
+        ciclo.quitarPelicula(pelicula);
+        
+        return eventoRepository.save(ciclo);
+    }
+    
+    /**
+     * Agrega un artista/banda a un concierto.
+     * 
+     * @param eventoId el ID del evento (debe ser un Concierto)
+     * @param artistaBanda el artista/banda a agregar
+     * @return el evento actualizado
+     * @throws IllegalArgumentException si el evento no es un Concierto o el artista/banda es inválido
+     * @throws IllegalStateException si el evento no está en PLANIFICACION
+     */
+    public Evento agregarArtistaBandaAConcierto(Long eventoId, ArtistaBanda artistaBanda) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        if (!(evento instanceof Concierto)) {
+            throw new IllegalArgumentException("El evento no es un Concierto");
+        }
+        
+        Concierto concierto = (Concierto) evento;
+        concierto.agregarArtistaBanda(artistaBanda);
+        
+        return eventoRepository.save(concierto);
+    }
+    
+    /**
+     * Quita un artista/banda de un concierto.
+     * 
+     * @param eventoId el ID del evento (debe ser un Concierto)
+     * @param artistaBanda el artista/banda a quitar
+     * @return el evento actualizado
+     * @throws IllegalArgumentException si el evento no es un Concierto o el artista/banda no está en el concierto
+     * @throws IllegalStateException si el evento no está en PLANIFICACION
+     */
+    public Evento quitarArtistaBandaDeConcierto(Long eventoId, ArtistaBanda artistaBanda) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        if (!(evento instanceof Concierto)) {
+            throw new IllegalArgumentException("El evento no es un Concierto");
+        }
+        
+        Concierto concierto = (Concierto) evento;
+        concierto.quitarArtistaBanda(artistaBanda);
+        
+        return eventoRepository.save(concierto);
     }
 }

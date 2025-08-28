@@ -4,6 +4,7 @@ import gov.municipio.domain.model.ArtistaBanda;
 import gov.municipio.domain.model.enums.Rol;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -17,17 +18,17 @@ public class Concierto extends Evento {
         joinColumns = @JoinColumn(name = "concierto_id"),
         inverseJoinColumns = @JoinColumn(name = "artista_banda_id")
     )
-    private final List<ArtistaBanda> artistasBandas;
+    private List<ArtistaBanda> artistasBandas;
 
     public Concierto(String nombre, LocalDate fechaInicio, int duracionEstimadaHoras, boolean requiereInscripcion, List<ArtistaBanda> artistasBandas, Integer cupoMaximo) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
-        this.artistasBandas = validarArtistsBandas(artistasBandas);
+        this.artistasBandas = new ArrayList<>(validarArtistsBandas(artistasBandas));
     }
 
     // Constructor protegido para JPA
     protected Concierto() {
         super();
-        this.artistasBandas = null;
+        this.artistasBandas = new ArrayList<>();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class Concierto extends Evento {
         
         // Permitir lista vacía para eventos básicos (se agregarán artistas después)
         if (artistasBandas.isEmpty()) {
-            return List.copyOf(artistasBandas);
+            return new ArrayList<>(artistasBandas);
         }
         
         if (artistasBandas.stream().anyMatch(a -> a == null)) {
@@ -59,6 +60,44 @@ public class Concierto extends Evento {
         if (artistasBandas.size() != artistasBandas.stream().distinct().count()) {
             throw new IllegalArgumentException("No se permiten artistas/bandas repetidos en el concierto");
         }
-        return List.copyOf(artistasBandas); // Inmutable y orden preservado
+        return new ArrayList<>(artistasBandas); // Mutable pero con contenido validado
+    }
+    
+    /**
+     * Agrega un artista/banda al concierto.
+     * @param artistaBanda el artista/banda a agregar
+     * @throws IllegalArgumentException si el artista/banda es nulo o ya está en el concierto
+     * @throws IllegalStateException si el evento no está en estado PLANIFICACION
+     */
+    public void agregarArtistaBanda(ArtistaBanda artistaBanda) {
+        if (!estaEnPlanificacion()) {
+            throw new IllegalStateException("Solo se pueden agregar artistas/bandas en estado PLANIFICACION");
+        }
+        Objects.requireNonNull(artistaBanda, "El artista/banda no puede ser nulo");
+        
+        if (artistasBandas.contains(artistaBanda)) {
+            throw new IllegalArgumentException("El artista/banda ya está incluido en el concierto");
+        }
+        
+        artistasBandas.add(artistaBanda);
+    }
+    
+    /**
+     * Quita un artista/banda del concierto.
+     * @param artistaBanda el artista/banda a quitar
+     * @throws IllegalArgumentException si el artista/banda es nulo o no está en el concierto
+     * @throws IllegalStateException si el evento no está en estado PLANIFICACION
+     */
+    public void quitarArtistaBanda(ArtistaBanda artistaBanda) {
+        if (!estaEnPlanificacion()) {
+            throw new IllegalStateException("Solo se pueden quitar artistas/bandas en estado PLANIFICACION");
+        }
+        Objects.requireNonNull(artistaBanda, "El artista/banda no puede ser nulo");
+        
+        if (!artistasBandas.contains(artistaBanda)) {
+            throw new IllegalArgumentException("El artista/banda no está incluido en el concierto");
+        }
+        
+        artistasBandas.remove(artistaBanda);
     }
 }

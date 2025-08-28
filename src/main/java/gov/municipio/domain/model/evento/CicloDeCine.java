@@ -5,6 +5,7 @@ import gov.municipio.domain.model.enums.Rol;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class CicloDeCine extends Evento {
         inverseJoinColumns = @JoinColumn(name = "pelicula_id")
     )
     @OrderColumn(name = "orden")
-    private final List<Pelicula> peliculasEnOrden;
+    private List<Pelicula> peliculasEnOrden;
     
     @Column(nullable = false)
     private final boolean incluyeCharlasPosteriores;
@@ -33,14 +34,14 @@ public class CicloDeCine extends Evento {
                        List<Pelicula> peliculasEnOrden,
                        boolean incluyeCharlasPosteriores) {
         super(nombre, fechaInicio, duracionEstimadaHoras, requiereInscripcion, cupoMaximo);
-        this.peliculasEnOrden = validarPeliculas(peliculasEnOrden);
+        this.peliculasEnOrden = new ArrayList<>(validarPeliculas(peliculasEnOrden));
         this.incluyeCharlasPosteriores = incluyeCharlasPosteriores;
     }
 
     // Constructor protegido para JPA
     protected CicloDeCine() {
         super();
-        this.peliculasEnOrden = null;
+        this.peliculasEnOrden = new ArrayList<>();
         this.incluyeCharlasPosteriores = false;
     }
 
@@ -69,7 +70,7 @@ public class CicloDeCine extends Evento {
         
         // Permitir lista vacía para eventos básicos (se agregarán películas después)
         if (peliculas.isEmpty()) {
-            return List.copyOf(peliculas);
+            return new ArrayList<>(peliculas);
         }
         
         if (peliculas.stream().anyMatch(p -> p == null)) {
@@ -78,6 +79,44 @@ public class CicloDeCine extends Evento {
         if (peliculas.size() != peliculas.stream().distinct().count()) {
             throw new IllegalArgumentException("No se permiten películas repetidas en el ciclo");
         }
-        return List.copyOf(peliculas); // Inmutable y orden preservado
+        return new ArrayList<>(peliculas); // Mutable pero con contenido validado
+    }
+    
+    /**
+     * Agrega una película al final del ciclo.
+     * @param pelicula la película a agregar
+     * @throws IllegalArgumentException si la película es nula o ya está en el ciclo
+     * @throws IllegalStateException si el evento no está en estado PLANIFICACION
+     */
+    public void agregarPelicula(Pelicula pelicula) {
+        if (!estaEnPlanificacion()) {
+            throw new IllegalStateException("Solo se pueden agregar películas en estado PLANIFICACION");
+        }
+        Objects.requireNonNull(pelicula, "La película no puede ser nula");
+        
+        if (peliculasEnOrden.contains(pelicula)) {
+            throw new IllegalArgumentException("La película ya está incluida en el ciclo");
+        }
+        
+        peliculasEnOrden.add(pelicula);
+    }
+    
+    /**
+     * Quita una película del ciclo.
+     * @param pelicula la película a quitar
+     * @throws IllegalArgumentException si la película es nula o no está en el ciclo
+     * @throws IllegalStateException si el evento no está en estado PLANIFICACION
+     */
+    public void quitarPelicula(Pelicula pelicula) {
+        if (!estaEnPlanificacion()) {
+            throw new IllegalStateException("Solo se pueden quitar películas en estado PLANIFICACION");
+        }
+        Objects.requireNonNull(pelicula, "La película no puede ser nula");
+        
+        if (!peliculasEnOrden.contains(pelicula)) {
+            throw new IllegalArgumentException("La película no está incluida en el ciclo");
+        }
+        
+        peliculasEnOrden.remove(pelicula);
     }
 }

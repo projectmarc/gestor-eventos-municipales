@@ -74,7 +74,33 @@ public class EventoRepositoryImpl implements EventoRepository {
             query.setParameter("id", id);
             
             List<Evento> resultados = query.getResultList();
-            return resultados.isEmpty() ? Optional.empty() : Optional.of(resultados.get(0));
+            
+            if (resultados.isEmpty()) {
+                return Optional.empty();
+            }
+            
+            Evento evento = resultados.get(0);
+            
+            // Forzar inicialización de colecciones perezosas antes de cerrar el EntityManager
+            if (evento instanceof gov.municipio.domain.model.evento.CicloDeCine) {
+                gov.municipio.domain.model.evento.CicloDeCine ciclo = 
+                    (gov.municipio.domain.model.evento.CicloDeCine) evento;
+                // Forzar inicialización accediendo al tamaño
+                ciclo.getPeliculasEnOrden().size();
+            }
+            
+            if (evento instanceof gov.municipio.domain.model.evento.Concierto) {
+                gov.municipio.domain.model.evento.Concierto concierto = 
+                    (gov.municipio.domain.model.evento.Concierto) evento;
+                // Forzar inicialización de artistas/bandas
+                concierto.getArtistaBandas().size();
+            }
+            
+            return Optional.of(evento);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
         } finally {
             em.close();
         }
