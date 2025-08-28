@@ -2,7 +2,6 @@ package gov.municipio.ui.nav;
 
 import gov.municipio.config.ServiceContainer;
 import gov.municipio.controller.*;
-import gov.municipio.domain.model.evento.Evento;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;

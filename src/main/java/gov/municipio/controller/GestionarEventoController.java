@@ -3,7 +3,6 @@ package gov.municipio.controller;
 import gov.municipio.application.EventoService;
 import gov.municipio.config.ServiceContainer;
 import gov.municipio.domain.model.evento.Evento;
-import gov.municipio.domain.model.enums.EstadoEvento;
 import gov.municipio.ui.nav.Router;
 import gov.municipio.ui.nav.Screen;
 import javafx.fxml.FXML;
