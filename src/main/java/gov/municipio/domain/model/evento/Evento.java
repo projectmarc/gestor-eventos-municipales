@@ -226,6 +226,8 @@ public abstract class Evento {
 
     public void setNombre(String nombre) { this.nombre = validarNombre(nombre); }
     public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = validarFechaInicio(fechaInicio); }
+    public void setDuracionEstimada(int duracionEstimadaHoras) { this.duracionEstimada = validarDuracion(duracionEstimadaHoras); }
+    public void setCupoMaximo(Integer cupoMaximo) { this.cupoMaximo = validarCupoMaximo(cupoMaximo, this.requiereInscripcion); }
 
     // -------- Validaciones básicas
 

@@ -83,4 +83,22 @@ public class EventoService {
     public List<Evento> obtenerTodosLosEventos() {
         return eventoRepository.findAll();
     }
+    
+    /**
+     * Actualiza un evento existente.
+     * Solo permite actualizar eventos que estén en estado PLANIFICACION.
+     * 
+     * @param evento el evento a actualizar
+     * @return el evento actualizado
+     * @throws IllegalStateException si el evento no está en PLANIFICACION
+     */
+    public Evento actualizarEvento(Evento evento) {
+        if (evento == null) {
+            throw new IllegalArgumentException("El evento no puede ser nulo");
+        }
+        if (!evento.estaEnPlanificacion()) {
+            throw new IllegalStateException("Solo se pueden editar eventos en estado PLANIFICACION");
+        }
+        return eventoRepository.save(evento);
+    }
 }

@@ -19,7 +19,7 @@
 
       <Label text="Eventos registrados"/>
 
-      <Button fx:id="btnGestionarEvento" text="Gestionar Evento"/>
+      <Button fx:id="btnGestionarEvento" text="Gestionar Evento" onAction="#gestionarEvento"/>
 
       <TableView fx:id="tblEventos">
           <columns>

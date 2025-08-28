@@ -2,6 +2,7 @@ package gov.municipio.ui.nav;
 
 import gov.municipio.config.ServiceContainer;
 import gov.municipio.controller.*;
+import gov.municipio.domain.model.evento.Evento;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
@@ -21,6 +22,30 @@ public class Router {
     public void goTo(Screen screen) {
         Parent view = loadView(screen.getFxmlPath());
         container.getChildren().setAll(view);
+    }
+    
+    public void goToGestionarEvento(gov.municipio.domain.model.evento.Evento evento) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(Screen.GESTIONAR_EVENTO.getFxmlPath()));
+            
+            loader.setControllerFactory(type -> {
+                if (type == GestionarEventoController.class) {
+                    GestionarEventoController controller = new GestionarEventoController();
+                    controller.setRouter(this);
+                    controller.setServiceContainer(services);
+                    return controller;
+                }
+                return null;
+            });
+            
+            Parent view = loader.load();
+            GestionarEventoController controller = loader.getController();
+            controller.setEvento(evento);
+            
+            container.getChildren().setAll(view);
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo cargar la pantalla gestionar evento", e);
+        }
     }
 
     private Parent loadView(String fxmlPath) {
@@ -46,6 +71,12 @@ public class Router {
                 }
                 if (type == CrearEventoController.class) {
                     CrearEventoController controller = new CrearEventoController();
+                    controller.setRouter(this);
+                    controller.setServiceContainer(services);
+                    return controller;
+                }
+                if (type == GestionarEventoController.class) {
+                    GestionarEventoController controller = new GestionarEventoController();
                     controller.setRouter(this);
                     controller.setServiceContainer(services);
                     return controller;

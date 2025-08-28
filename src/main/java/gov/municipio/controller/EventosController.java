@@ -24,6 +24,9 @@ public class EventosController {
     private Button btnCrearEvento;
     
     @FXML
+    private Button btnGestionarEvento;
+    
+    @FXML
     private TableView<Evento> tblEventos;
     
     @FXML
@@ -107,6 +110,19 @@ public class EventosController {
     private void crearEvento() {
         if (router != null) {
             router.goTo(Screen.CREAR_EVENTO);
+        }
+    }
+    
+    @FXML
+    private void gestionarEvento() {
+        Evento eventoSeleccionado = tblEventos.getSelectionModel().getSelectedItem();
+        if (eventoSeleccionado == null) {
+            error("Selección requerida", "Debe seleccionar un evento de la tabla para gestionar");
+            return;
+        }
+        
+        if (router != null) {
+            router.goToGestionarEvento(eventoSeleccionado);
         }
     }
     

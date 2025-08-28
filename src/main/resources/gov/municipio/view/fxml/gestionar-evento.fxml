@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gov.municipio.controller.GestionarEventoController"
+      spacing="20">
+    
+    <Label text="Gestionar Evento" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    
+    <HBox spacing="20">
+        <!-- Primera sección: Detalles básicos del evento -->
+        <VBox spacing="15" prefWidth="400">
+            <Label text="Detalles del Evento" style="-fx-font-weight: bold;"/>
+            
+            <!-- Nombre -->
+            <VBox spacing="5">
+                <Label text="Nombre:"/>
+                <Label fx:id="lblNombre" text="" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtNombre" visible="false" managed="false"/>
+            </VBox>
+            
+            <!-- Duración -->
+            <VBox spacing="5">
+                <Label text="Duración (horas):"/>
+                <Label fx:id="lblDuracion" text="" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtDuracion" visible="false" managed="false"/>
+            </VBox>
+            
+            <!-- Fecha de Inicio -->
+            <VBox spacing="5">
+                <Label text="Fecha de Inicio:"/>
+                <Label fx:id="lblFechaInicio" text="" style="-fx-font-weight: bold;"/>
+                <DatePicker fx:id="dpFechaInicio" visible="false" managed="false"/>
+            </VBox>
+            
+            <!-- Cupo Máximo -->
+            <VBox spacing="5">
+                <Label text="Cupo Máximo:"/>
+                <Label fx:id="lblCupoMaximo" text="" style="-fx-font-weight: bold;"/>
+                <TextField fx:id="txtCupoMaximo" visible="false" managed="false"/>
+            </VBox>
+            
+            <!-- Botones de acción -->
+            <HBox spacing="10">
+                <Button fx:id="btnEditar" text="Editar" onAction="#editar"/>
+                <Button fx:id="btnGuardar" text="Guardar" onAction="#guardar" visible="false" managed="false"/>
+                <Button fx:id="btnCancelar" text="Cancelar" onAction="#cancelar" visible="false" managed="false"/>
+            </HBox>
+        </VBox>
+        
+        <!-- Espacio para futuras secciones -->
+        <VBox spacing="15" prefWidth="400">
+            <!-- Esta sección se completará en futuras iteraciones -->
+        </VBox>
+    </HBox>
+    
+    <!-- Botón para volver -->
+    <Button text="Volver a Eventos" onAction="#volver"/>
+    
+</VBox>
