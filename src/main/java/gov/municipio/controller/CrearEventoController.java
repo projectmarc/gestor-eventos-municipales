@@ -1,7 +1,6 @@
 package gov.municipio.controller;
 
 import gov.municipio.domain.model.enums.EstadoEvento;
-import gov.municipio.domain.model.enums.TipoEntrada;
 import gov.municipio.ui.nav.Router;
 import gov.municipio.ui.nav.Screen;
 import javafx.collections.FXCollections;
@@ -23,11 +22,6 @@ public class CrearEventoController {
     @FXML private CheckBox chkRequiereInscripcion;
     @FXML private TextField txtCupoMaximo;
     
-    // Organizadores
-    @FXML private ListView<String> lvOrganizadores;
-    @FXML private Button btnAgregarOrganizador;
-    @FXML private Button btnQuitarOrganizador;
-    
     // Tipo de evento
     @FXML private ComboBox<String> cbTipoEvento;
     
@@ -46,18 +40,14 @@ public class CrearEventoController {
     @FXML private ToggleGroup tgUbicacionFeria;
     
     // Controles específicos de Concierto
-    @FXML private ListView<String> lvArtistas;
-    @FXML private Button btnAgregarArtista;
-    @FXML private Button btnQuitarArtista;
-    @FXML private ComboBox<TipoEntrada> cbTipoEntrada;
+    @FXML private TextField txtGeneroMusical;
+    @FXML private TextField txtCapacidadMaxima;
     
     // Controles específicos de Exposición
     @FXML private ComboBox<String> cbTipoArte;
-    @FXML private ComboBox<String> cbCurador;
     
     // Controles específicos de Taller
     @FXML private TextField txtCupoTaller;
-    @FXML private ComboBox<String> cbInstructor;
     @FXML private RadioButton rbPresencial;
     @FXML private RadioButton rbVirtual;
     @FXML private ToggleGroup tgModalidadTaller;
@@ -76,9 +66,7 @@ public class CrearEventoController {
     
     private Router router;
     
-    // Listas observables para los ListView
-    private ObservableList<String> organizadores;
-    private ObservableList<String> artistas;
+    // Lista observables para los ListView (solo películas)
     private ObservableList<String> peliculas;
     
     public CrearEventoController() {
@@ -104,35 +92,18 @@ public class CrearEventoController {
             "Feria", "Concierto", "Exposición", "Taller", "Ciclo de cine"
         ));
         
-        // ComboBox de tipo de entrada (Concierto)
-        cbTipoEntrada.setItems(FXCollections.observableArrayList(TipoEntrada.values()));
-        
         // ComboBox de tipos de arte (Exposición)
         cbTipoArte.setItems(FXCollections.observableArrayList(
             "Pintura", "Escultura", "Fotografía", "Arte Digital", "Arte Contemporáneo", 
             "Arte Clásico", "Instalaciones", "Performance"
         ));
-        
-        // ComboBox de curadores (esto debería venir de un servicio en el futuro)
-        cbCurador.setItems(FXCollections.observableArrayList(
-            "María González", "Carlos Rodríguez", "Ana Martínez", "José López"
-        ));
-        
-        // ComboBox de instructores (esto debería venir de un servicio en el futuro)
-        cbInstructor.setItems(FXCollections.observableArrayList(
-            "Dr. Pedro Hernández", "Lic. Laura Silva", "Prof. Miguel Torres", "Dra. Carmen Vega"
-        ));
     }
     
     private void configurarListViews() {
-        // Inicializar listas observables
-        organizadores = FXCollections.observableArrayList();
-        artistas = FXCollections.observableArrayList();
+        // Inicializar solo la lista de películas
         peliculas = FXCollections.observableArrayList();
         
-        // Asignar a los ListView
-        lvOrganizadores.setItems(organizadores);
-        lvArtistas.setItems(artistas);
+        // Asignar al ListView
         lvPeliculas.setItems(peliculas);
     }
     
@@ -145,14 +116,6 @@ public class CrearEventoController {
             boolean requiere = chkRequiereInscripcion.isSelected();
             txtCupoMaximo.setDisable(!requiere);
         });
-        
-        // Handlers para botones de organizadores
-        btnAgregarOrganizador.setOnAction(event -> agregarOrganizador());
-        btnQuitarOrganizador.setOnAction(event -> quitarOrganizador());
-        
-        // Handlers para botones de artistas
-        btnAgregarArtista.setOnAction(event -> agregarArtista());
-        btnQuitarArtista.setOnAction(event -> quitarArtista());
         
         // Handlers para botones de películas
         btnAgregarPelicula.setOnAction(event -> agregarPelicula());
@@ -234,52 +197,6 @@ public class CrearEventoController {
         for (VBox panel : paneles) {
             panel.setVisible(false);
             panel.setManaged(false);
-        }
-    }
-    
-    // Métodos para manejar organizadores
-    private void agregarOrganizador() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Agregar Organizador");
-        dialog.setHeaderText("Nuevo organizador");
-        dialog.setContentText("Nombre del organizador:");
-        
-        dialog.showAndWait().ifPresent(nombre -> {
-            if (!nombre.trim().isEmpty() && !organizadores.contains(nombre.trim())) {
-                organizadores.add(nombre.trim());
-            }
-        });
-    }
-    
-    private void quitarOrganizador() {
-        String seleccionado = lvOrganizadores.getSelectionModel().getSelectedItem();
-        if (seleccionado != null) {
-            organizadores.remove(seleccionado);
-        } else {
-            mostrarAlerta("Selección requerida", "Debe seleccionar un organizador para quitar.", Alert.AlertType.WARNING);
-        }
-    }
-    
-    // Métodos para manejar artistas
-    private void agregarArtista() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Agregar Artista");
-        dialog.setHeaderText("Nuevo artista/banda");
-        dialog.setContentText("Nombre del artista o banda:");
-        
-        dialog.showAndWait().ifPresent(nombre -> {
-            if (!nombre.trim().isEmpty() && !artistas.contains(nombre.trim())) {
-                artistas.add(nombre.trim());
-            }
-        });
-    }
-    
-    private void quitarArtista() {
-        String seleccionado = lvArtistas.getSelectionModel().getSelectedItem();
-        if (seleccionado != null) {
-            artistas.remove(seleccionado);
-        } else {
-            mostrarAlerta("Selección requerida", "Debe seleccionar un artista para quitar.", Alert.AlertType.WARNING);
         }
     }
     
@@ -403,8 +320,14 @@ public class CrearEventoController {
                 break;
                 
             case "Concierto":
-                if (artistas.isEmpty()) {
-                    mostrarAlerta("Campo requerido", "Debe agregar al menos un artista para el concierto.", Alert.AlertType.WARNING);
+                if (txtGeneroMusical.getText().trim().isEmpty()) {
+                    mostrarAlerta("Campo requerido", "El género musical es obligatorio para conciertos.", Alert.AlertType.WARNING);
+                    txtGeneroMusical.requestFocus();
+                    return false;
+                }
+                if (txtCapacidadMaxima.getText().trim().isEmpty()) {
+                    mostrarAlerta("Campo requerido", "La capacidad máxima es obligatoria para conciertos.", Alert.AlertType.WARNING);
+                    txtCapacidadMaxima.requestFocus();
                     return false;
                 }
                 break;
@@ -437,9 +360,7 @@ public class CrearEventoController {
             mensaje.append("Cupo máximo: ").append(txtCupoMaximo.getText()).append("\n");
         }
         
-        if (!organizadores.isEmpty()) {
-            mensaje.append("Organizadores: ").append(String.join(", ", organizadores)).append("\n");
-        }
+        mensaje.append("\nNota: Los responsables del evento se pueden agregar después de la creación.");
         
         return mensaje.toString();
     }
@@ -455,9 +376,7 @@ public class CrearEventoController {
         txtCupoMaximo.clear();
         txtCupoMaximo.setDisable(true);
         
-        // Limpiar listas
-        organizadores.clear();
-        artistas.clear();
+        // Limpiar solo lista de películas
         peliculas.clear();
         
         // Limpiar tipo de evento
@@ -478,15 +397,14 @@ public class CrearEventoController {
         }
         
         // Concierto
-        cbTipoEntrada.setValue(null);
+        txtGeneroMusical.clear();
+        txtCapacidadMaxima.clear();
         
         // Exposición
         cbTipoArte.setValue(null);
-        cbCurador.setValue(null);
         
         // Taller
         txtCupoTaller.clear();
-        cbInstructor.setValue(null);
         if (tgModalidadTaller != null) {
             tgModalidadTaller.selectToggle(null);
         }
@@ -517,8 +435,7 @@ public class CrearEventoController {
         return !txtNombre.getText().trim().isEmpty() ||
                dpFechaInicio.getValue() != null ||
                !txtDuracion.getText().trim().isEmpty() ||
-               cbTipoEvento.getValue() != null ||
-               !organizadores.isEmpty();
+               cbTipoEvento.getValue() != null;
     }
     
     @FXML

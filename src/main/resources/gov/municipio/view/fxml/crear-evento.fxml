@@ -61,15 +61,14 @@
                         </VBox>
                     </VBox>
                     
-                    <!-- Card: Organizadores -->
+                    <!-- Card: Nota sobre responsables -->
                     <VBox spacing="15">
-                        <Label text="Organizadores"/>
+                        <Label text="Responsables del Evento"/>
                         
-                        <ListView fx:id="lvOrganizadores" prefHeight="120"/>
-                        <HBox spacing="10">
-                            <Button fx:id="btnAgregarOrganizador" text="+ Agregar"/>
-                            <Button fx:id="btnQuitarOrganizador" text="- Quitar"/>
-                        </HBox>
+                        <VBox spacing="8" style="-fx-background-color: #f0f8ff; -fx-padding: 15; -fx-background-radius: 5;">
+                            <Label text="ℹ️ Información"/>
+                            <Label text="Los organizadores, instructores y otros responsables se pueden agregar después de crear el evento, cuando esté en estado de planificación." wrapText="true"/>
+                        </VBox>
                     </VBox>
                 </VBox>
                 
@@ -118,17 +117,17 @@
                         <!-- Comentario: Visible solo si cbTipoEvento = "Concierto" -->
                         <VBox fx:id="paneConcierto" spacing="15" visible="false" managed="false">
                             <VBox spacing="8">
-                                <Label text="Artistas/Bandas"/>
-                                <ListView fx:id="lvArtistas" prefHeight="100"/>
-                                <HBox spacing="10">
-                                    <Button fx:id="btnAgregarArtista" text="+ Agregar"/>
-                                    <Button fx:id="btnQuitarArtista" text="- Quitar"/>
-                                </HBox>
+                                <Label text="Género musical"/>
+                                <TextField fx:id="txtGeneroMusical" promptText="ej: Rock, Jazz, Clásica"/>
                             </VBox>
                             
                             <VBox spacing="8">
-                                <Label text="Tipo de entrada"/>
-                                <ComboBox fx:id="cbTipoEntrada" promptText="Seleccione tipo de entrada" maxWidth="Infinity"/>
+                                <Label text="Capacidad máxima"/>
+                                <TextField fx:id="txtCapacidadMaxima" promptText="Número máximo de asistentes"/>
+                            </VBox>
+                            
+                            <VBox spacing="8" style="-fx-background-color: #fff8dc; -fx-padding: 10; -fx-background-radius: 3;">
+                                <Label text="💡 Nota: Los artistas se pueden agregar después de crear el evento."/>
                             </VBox>
                         </VBox>
                         
@@ -140,9 +139,8 @@
                                 <ComboBox fx:id="cbTipoArte" promptText="Seleccione tipo de arte" maxWidth="Infinity"/>
                             </VBox>
                             
-                            <VBox spacing="8">
-                                <Label text="Curador"/>
-                                <ComboBox fx:id="cbCurador" promptText="Seleccione uno o más curadores" maxWidth="Infinity"/>
+                            <VBox spacing="8" style="-fx-background-color: #fff8dc; -fx-padding: 10; -fx-background-radius: 3;">
+                                <Label text="💡 Nota: Los curadores se pueden asignar después de crear el evento."/>
                             </VBox>
                         </VBox>
                         
@@ -155,11 +153,6 @@
                             </VBox>
                             
                             <VBox spacing="8">
-                                <Label text="Instructor"/>
-                                <ComboBox fx:id="cbInstructor" promptText="Seleccione uno o más instructores" maxWidth="Infinity"/>
-                            </VBox>
-                            
-                            <VBox spacing="8">
                                 <Label text="Modalidad"/>
                                 <HBox spacing="20">
                                     <RadioButton fx:id="rbPresencial" text="Presencial">
@@ -169,6 +162,10 @@
                                     </RadioButton>
                                     <RadioButton fx:id="rbVirtual" text="Virtual" toggleGroup="$tgModalidadTaller"/>
                                 </HBox>
+                            </VBox>
+                            
+                            <VBox spacing="8" style="-fx-background-color: #fff8dc; -fx-padding: 10; -fx-background-radius: 3;">
+                                <Label text="💡 Nota: Los instructores se pueden asignar después de crear el evento."/>
                             </VBox>
                         </VBox>
                         
