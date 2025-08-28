@@ -173,6 +173,65 @@ public class EventoService {
     }
     
     /**
+     * Inicia un evento cambiando su estado de CONFIRMADO a EN_EJECUCION.
+     * Solo permite iniciar el evento si está confirmado y la fecha actual es la fecha de inicio.
+     * 
+     * @param eventoId el ID del evento a iniciar
+     * @return el evento iniciado con todas las participaciones cargadas
+     * @throws IllegalArgumentException si el evento no existe
+     * @throws IllegalStateException si el evento no puede iniciarse hoy
+     */
+    public Evento iniciarEvento(Long eventoId) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        if (!evento.puedeIniciarseHoy()) {
+            throw new IllegalStateException("El evento no puede iniciarse. Debe estar CONFIRMADO y ser la fecha de inicio del evento.");
+        }
+        
+        evento.cambiarEstado(EstadoEvento.EN_EJECUCION);
+        
+        // Guardar y devolver el evento recargado con participaciones
+        eventoRepository.save(evento);
+        
+        return buscarEventoPorIdConParticipaciones(eventoId).orElseThrow(
+            () -> new IllegalStateException("Error al recargar el evento después de iniciarlo")
+        );
+    }
+    
+    /**
+     * Finaliza un evento cambiando su estado de EN_EJECUCION a FINALIZADO.
+     * 
+     * @param eventoId el ID del evento a finalizar
+     * @return el evento finalizado con todas las participaciones cargadas
+     * @throws IllegalArgumentException si el evento no existe
+     * @throws IllegalStateException si el evento no está EN_EJECUCION
+     */
+    public Evento finalizarEvento(Long eventoId) {
+        Optional<Evento> eventoOpt = buscarEventoPorIdConParticipaciones(eventoId);
+        if (eventoOpt.isEmpty()) {
+            throw new IllegalArgumentException("Evento no encontrado con ID: " + eventoId);
+        }
+        
+        Evento evento = eventoOpt.get();
+        if (!evento.puedeFinalizarse()) {
+            throw new IllegalStateException("Solo se pueden finalizar eventos que estén EN_EJECUCION. Estado actual: " + evento.getEstado());
+        }
+        
+        evento.cambiarEstado(EstadoEvento.FINALIZADO);
+        
+        // Guardar y devolver el evento recargado con participaciones
+        eventoRepository.save(evento);
+        
+        return buscarEventoPorIdConParticipaciones(eventoId).orElseThrow(
+            () -> new IllegalStateException("Error al recargar el evento después de finalizarlo")
+        );
+    }
+    
+    /**
      * Actualiza las participaciones de un evento (inscripciones/bajas de asistentes y responsables).
      * No valida el estado del evento ya que las reglas de negocio están en el dominio.
      * 

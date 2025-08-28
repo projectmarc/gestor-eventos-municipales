@@ -179,6 +179,30 @@ public abstract class Evento {
         return estado == EstadoEvento.PLANIFICACION;
     }
 
+    public boolean estaEnEjecucion() {
+        return estado == EstadoEvento.EN_EJECUCION;
+    }
+
+    public boolean estaConfirmado() {
+        return estado == EstadoEvento.CONFIRMADO;
+    }
+
+    /**
+     * Verifica si el evento puede pasar a estado EN_EJECUCION.
+     * Condiciones: debe estar CONFIRMADO y la fecha actual debe ser la fecha de inicio.
+     */
+    public boolean puedeIniciarseHoy() {
+        return estado == EstadoEvento.CONFIRMADO && LocalDate.now().equals(fechaInicio);
+    }
+
+    /**
+     * Verifica si el evento puede pasar a estado FINALIZADO.
+     * Condición: debe estar EN_EJECUCION.
+     */
+    public boolean puedeFinalizarse() {
+        return estado == EstadoEvento.EN_EJECUCION;
+    }
+
     private boolean estaTransicionPermitida(EstadoEvento actual, EstadoEvento nuevo) {
         if (actual == nuevo) return true;
         return switch (actual) {

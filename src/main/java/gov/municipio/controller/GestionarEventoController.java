@@ -71,6 +71,9 @@ public class GestionarEventoController {
     private Button btnConfirmar;
     
     @FXML
+    private Button btnGestionarEstado;
+    
+    @FXML
     private VBox vboxResponsables;
     
     @FXML
@@ -157,6 +160,9 @@ public class GestionarEventoController {
             // Mostrar el botón de confirmar solo si está en planificación
             btnConfirmar.setVisible(eventoActual.estaEnPlanificacion());
             btnConfirmar.setManaged(eventoActual.estaEnPlanificacion());
+            
+            // Configurar el botón de gestión de estado dinámico
+            configurarBotonGestionEstado();
         }
     }
     
@@ -289,6 +295,70 @@ public class GestionarEventoController {
         }
     }
     
+    @FXML
+    private void gestionarEstadoEvento() {
+        try {
+            if (eventoActual == null) {
+                mostrarError("Error", "No hay evento seleccionado");
+                return;
+            }
+            
+            String confirmacionTexto;
+            Evento eventoActualizado;
+            
+            if (eventoActual.puedeIniciarseHoy()) {
+                confirmacionTexto = "¿Está seguro de que desea iniciar el evento '" + eventoActual.getNombre() + "'?\n\n" +
+                                  "El evento pasará a estado EN_EJECUCION y se permitirán inscripciones hasta que finalice.";
+                
+                Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmacion.setTitle("Iniciar Evento");
+                confirmacion.setHeaderText("Confirmar inicio del evento");
+                confirmacion.setContentText(confirmacionTexto);
+                
+                if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                    eventoActualizado = eventoService.iniciarEvento(eventoActual.getId());
+                    mostrarInfo("Evento Iniciado", 
+                               "El evento '" + eventoActualizado.getNombre() + "' ha sido iniciado exitosamente.\n\n" +
+                               "Estado actual: " + eventoActualizado.getEstado());
+                    setEvento(eventoActualizado);
+                }
+                
+            } else if (eventoActual.puedeFinalizarse()) {
+                confirmacionTexto = "¿Está seguro de que desea finalizar el evento '" + eventoActual.getNombre() + "'?\n\n" +
+                                  "Una vez finalizado, no se podrán realizar más cambios ni inscripciones.";
+                
+                Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmacion.setTitle("Finalizar Evento");
+                confirmacion.setHeaderText("Confirmar finalización del evento");
+                confirmacion.setContentText(confirmacionTexto);
+                
+                if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                    eventoActualizado = eventoService.finalizarEvento(eventoActual.getId());
+                    mostrarInfo("Evento Finalizado", 
+                               "El evento '" + eventoActualizado.getNombre() + "' ha sido finalizado exitosamente.\n\n" +
+                               "Estado actual: " + eventoActualizado.getEstado());
+                    setEvento(eventoActualizado);
+                }
+                
+            } else {
+                mostrarError("Acción no disponible", 
+                           "No se puede cambiar el estado del evento en este momento.\n\n" +
+                           "Estado actual: " + eventoActual.getEstado() + "\n" +
+                           "Fecha del evento: " + eventoActual.getFechaInicio() + "\n" +
+                           "Fecha actual: " + LocalDate.now());
+            }
+            
+        } catch (IllegalStateException e) {
+            mostrarError("Error de Estado", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            mostrarError("Error de Parámetros", e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Exception inesperada al gestionar estado del evento: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
+            mostrarError("Error", "Error inesperado al cambiar el estado del evento: " + e.getMessage());
+        }
+    }
+    
     private void mostrarModoLectura() {
         // Mostrar labels, ocultar campos de edición
         lblNombre.setVisible(true);
@@ -317,6 +387,41 @@ public class GestionarEventoController {
         if (eventoActual != null) {
             btnConfirmar.setVisible(eventoActual.estaEnPlanificacion());
             btnConfirmar.setManaged(eventoActual.estaEnPlanificacion());
+            
+            // Configurar el botón de gestión de estado dinámico
+            configurarBotonGestionEstado();
+        }
+    }
+    
+    private void configurarBotonGestionEstado() {
+        if (eventoActual == null) {
+            btnGestionarEstado.setVisible(false);
+            btnGestionarEstado.setManaged(false);
+            return;
+        }
+        
+        boolean mostrarBoton = false;
+        String textoBoton = "";
+        String estiloBoton = "btn-primary";
+        
+        if (eventoActual.puedeIniciarseHoy()) {
+            mostrarBoton = true;
+            textoBoton = "Iniciar Evento";
+            estiloBoton = "btn-primary";
+        } else if (eventoActual.puedeFinalizarse()) {
+            mostrarBoton = true;
+            textoBoton = "Finalizar Evento";
+            estiloBoton = "btn-secondary";
+        }
+        
+        btnGestionarEstado.setVisible(mostrarBoton);
+        btnGestionarEstado.setManaged(mostrarBoton);
+        
+        if (mostrarBoton) {
+            btnGestionarEstado.setText(textoBoton);
+            // Limpiar estilos anteriores y aplicar el nuevo
+            btnGestionarEstado.getStyleClass().removeAll("btn-primary", "btn-secondary", "btn-outlined");
+            btnGestionarEstado.getStyleClass().add(estiloBoton);
         }
     }
     
@@ -341,6 +446,8 @@ public class GestionarEventoController {
         btnEditar.setManaged(false);
         btnConfirmar.setVisible(false);
         btnConfirmar.setManaged(false);
+        btnGestionarEstado.setVisible(false);
+        btnGestionarEstado.setManaged(false);
         btnGuardar.setVisible(true);
         btnGuardar.setManaged(true);
         btnCancelar.setVisible(true);
