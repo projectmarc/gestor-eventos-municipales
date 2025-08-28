@@ -133,11 +133,14 @@ public class PersonaService {
             throw new IllegalStateException("Ya existe una persona registrada con el DNI: " + dni);
         }
         
-        // Eliminar la persona actual y crear una nueva con los datos actualizados
-        personaRepository.delete(persona);
-        Persona personaActualizada = new Persona(nombre, apellido, dni, telefono, email);
+        // Actualizar los campos usando los métodos de la entidad
+        persona.cambiarNombre(nombre);
+        persona.cambiarApellido(apellido);
+        persona.cambiarDni(dni);
+        persona.cambiarTelefono(telefono);
+        persona.cambiarEmail(email);
         
-        return personaRepository.save(personaActualizada);
+        return personaRepository.save(persona);
     }
     
     /**

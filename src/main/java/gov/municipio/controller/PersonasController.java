@@ -101,8 +101,14 @@ public class PersonasController {
     private void cargarPersonas() {
         try {
             List<Persona> listaPersonas = personaService.obtenerTodasLasPersonas();
-            personas = FXCollections.observableArrayList(listaPersonas);
-            tblPersonas.setItems(personas);
+            
+            if (personas == null) {
+                personas = FXCollections.observableArrayList(listaPersonas);
+                tblPersonas.setItems(personas);
+            } else {
+                personas.clear();
+                personas.addAll(listaPersonas);
+            }
             
             System.out.println("Cargadas " + listaPersonas.size() + " personas en la tabla");
             
@@ -125,16 +131,26 @@ public class PersonasController {
                 // Crear nueva persona
                 Persona p = personaService.registrarPersona(nombre, apellido, dni, tel, email);
                 info("Persona registrada", "Se registró a " + apellido + ", " + nombre + " con ID: " + p.getId());
+                // Recargar la tabla para mostrar la nueva persona
+                cargarPersonas();
             } else {
                 // Actualizar persona existente
-                personaService.actualizarPersona(personaEnEdicion.getId(), nombre, apellido, dni, tel, email);
+                Persona personaActualizada = personaService.actualizarPersona(personaEnEdicion.getId(), nombre, apellido, dni, tel, email);
                 info("Persona actualizada", "Se actualizó a " + apellido + ", " + nombre);
+                
+                // Encontrar y actualizar el objeto en la lista observable
+                for (int i = 0; i < personas.size(); i++) {
+                    if (personas.get(i).getId().equals(personaEnEdicion.getId())) {
+                        personas.set(i, personaActualizada);
+                        break;
+                    }
+                }
+                
+                // Forzar refresh de la tabla
+                tblPersonas.refresh();
             }
             
             limpiarFormulario();
-            
-            // Recargar la tabla para mostrar los cambios
-            cargarPersonas();
             
         } catch (IllegalArgumentException e){
             error("Datos inválidos", e.getMessage());
