@@ -24,8 +24,8 @@
         <TextField fx:id="txtDuracionHoras"/>
         
         <HBox spacing="10">
-            <Button text="Registrar" fx:id="btnRegistrar"/>
-            <Button text="Limpiar" fx:id="btnLimpiar"/>
+            <Button text="Registrar" fx:id="btnRegistrar" onAction="#onRegistrarPelicula"/>
+            <Button text="Limpiar" fx:id="btnLimpiar" onAction="#onLimpiarCampos"/>
         </HBox>
     </VBox>
     
@@ -34,8 +34,8 @@
         <Label text="Películas registradas"/>
         
         <HBox spacing="10">
-            <Button text="Editar" fx:id="btnEditar"/>
-            <Button text="Borrar" fx:id="btnBorrar"/>
+            <Button text="Editar" fx:id="btnEditar" onAction="#onEditarPelicula"/>
+            <Button text="Borrar" fx:id="btnBorrar" onAction="#onBorrarPelicula"/>
         </HBox>
         
         <TableView fx:id="tblPeliculas">

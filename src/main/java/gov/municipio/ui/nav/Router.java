@@ -49,7 +49,7 @@ public class Router {
                     return controller;
                 }
                 if (type == PeliculasController.class) {
-                    return new PeliculasController();
+                    return new PeliculasController(services.peliculaService());
                 }
 
                 // Fallback: intentar constructor sin args (para pantallas que no necesiten servicios)
