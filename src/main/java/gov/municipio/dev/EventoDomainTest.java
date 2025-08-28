@@ -96,7 +96,7 @@ public class EventoDomainTest {
             System.out.println("\n--- Prueba 4: Validación de roles por tipo de evento ---");
             
             Exposicion exposicion = new Exposicion("Exposición de Arte Moderno", LocalDate.now().plusDays(10), 
-                8, true, 100, "Pintura Contemporánea");
+                8, true, 100);
             exposicion.cambiarEstado(EstadoEvento.CONFIRMADO);
             
             // Rol válido para exposición

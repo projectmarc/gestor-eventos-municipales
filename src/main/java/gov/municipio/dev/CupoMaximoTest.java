@@ -56,7 +56,7 @@ public class CupoMaximoTest {
             System.out.println("✅ Cupo máximo (1,000,000): " + taller2.getCupoMaximoDefinido());
             
             // Cupo intermedio
-            Exposicion expo = new Exposicion("Expo Test", LocalDate.now().plusDays(1), 4, true, 500, "Arte");
+            Exposicion expo = new Exposicion("Expo Test", LocalDate.now().plusDays(1), 4, true, 500);
             System.out.println("✅ Cupo intermedio (500): " + expo.getCupoMaximoDefinido());
             
             // Verificar que los talleres siempre requieren inscripción

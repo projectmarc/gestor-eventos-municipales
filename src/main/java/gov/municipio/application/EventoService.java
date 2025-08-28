@@ -51,7 +51,7 @@ public class EventoService {
                                              java.util.Collections.emptyList(), cupoMaximo);
             
             case "Exposición" -> new Exposicion(nombre, fechaInicio, duracionEstimada, requiereInscripcion, 
-                                               cupoMaximo, "Arte General"); // disciplina por defecto
+                                               cupoMaximo);
             
             case "Taller" -> new Taller(nombre, fechaInicio, duracionEstimada, 
                                        gov.municipio.domain.model.enums.ModalidadTaller.PRESENCIAL, cupoMaximo);
