@@ -65,6 +65,16 @@
             </VBox>
         </VBox>
         
+        <!-- Tercera sección: Asistentes -->
+        <VBox spacing="15" prefWidth="400">
+            <Label text="Asistentes" style="-fx-font-weight: bold;"/>
+            
+            <!-- Contenedor para los asistentes -->
+            <VBox fx:id="vboxAsistentes" spacing="10">
+                <!-- Se llenarán dinámicamente -->
+            </VBox>
+        </VBox>
+        
         <!-- Espacio para futuras secciones -->
         <VBox spacing="15" prefWidth="400">
             <!-- Esta sección se completará en futuras iteraciones -->

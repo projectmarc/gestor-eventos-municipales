@@ -60,6 +60,9 @@ public class GestionarEventoController {
     @FXML
     private VBox vboxResponsables;
     
+    @FXML
+    private VBox vboxAsistentes;
+    
     private Router router;
     private EventoService eventoService;
     private PersonaService personaService;
@@ -82,6 +85,7 @@ public class GestionarEventoController {
         this.eventoActual = evento;
         cargarDatosEvento();
         cargarPersonasResponsables();
+        cargarAsistentes();
     }
     
     @FXML
@@ -401,6 +405,160 @@ public class GestionarEventoController {
             }
         } catch (Exception e) {
             mostrarError("Error", "Error al quitar persona: " + e.getMessage());
+        }
+    }
+    
+    // ========== MÉTODOS PARA GESTIÓN DE ASISTENTES ==========
+    
+    private void cargarAsistentes() {
+        if (eventoActual == null) return;
+        
+        vboxAsistentes.getChildren().clear();
+        
+        // Verificar si el evento permite asistentes
+        if (!eventoActual.validarRol(Rol.ASISTENTE)) {
+            Label lblNoPermitido = new Label("Este tipo de evento no permite asistentes");
+            lblNoPermitido.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+            vboxAsistentes.getChildren().add(lblNoPermitido);
+            return;
+        }
+        
+        // Crear sección de asistentes
+        VBox seccionAsistentes = crearSeccionAsistentes();
+        vboxAsistentes.getChildren().add(seccionAsistentes);
+    }
+    
+    private VBox crearSeccionAsistentes() {
+        VBox seccionAsistentes = new VBox(5);
+        
+        // Header con botón para agregar asistente
+        HBox headerAsistentes = new HBox(10);
+        Label lblAsistentes = new Label("LISTA DE ASISTENTES:");
+        lblAsistentes.setStyle("-fx-font-weight: bold;");
+        
+        Button btnAgregarAsistente = new Button("Inscribir Asistente");
+        btnAgregarAsistente.setOnAction(e -> abrirDialogoInscribirAsistente());
+        
+        // Solo permitir inscribir si el evento está confirmado o en ejecución y requiere inscripción
+        boolean puedeInscribir = eventoActual.isRequiereInscripcion() && 
+                                (eventoActual.estaActivo());
+        btnAgregarAsistente.setDisable(!puedeInscribir);
+        
+        headerAsistentes.getChildren().addAll(lblAsistentes, btnAgregarAsistente);
+        seccionAsistentes.getChildren().add(headerAsistentes);
+        
+        // Información del cupo si requiere inscripción
+        if (eventoActual.isRequiereInscripcion()) {
+            HBox infoCupo = new HBox(10);
+            int lugaresDisponibles = eventoActual.getLugaresDisponibles();
+            int totalAsistentes = eventoActual.getParticipacionesAsistentes().size();
+            
+            Label lblCupoInfo = new Label(String.format("Inscriptos: %d | Disponibles: %d", 
+                                                       totalAsistentes, lugaresDisponibles));
+            lblCupoInfo.setStyle("-fx-font-style: italic;");
+            
+            if (lugaresDisponibles == 0) {
+                lblCupoInfo.setStyle("-fx-font-style: italic; -fx-text-fill: red;");
+                lblCupoInfo.setText(lblCupoInfo.getText() + " (COMPLETO)");
+            }
+            
+            infoCupo.getChildren().add(lblCupoInfo);
+            seccionAsistentes.getChildren().add(infoCupo);
+        }
+        
+        // Lista de asistentes
+        VBox listaAsistentes = new VBox(3);
+        List<Persona> asistentes = eventoActual.getPersonasPorRol(Rol.ASISTENTE);
+        
+        for (Persona asistente : asistentes) {
+            HBox itemAsistente = crearItemAsistente(asistente);
+            listaAsistentes.getChildren().add(itemAsistente);
+        }
+        
+        if (asistentes.isEmpty()) {
+            Label lblVacio = new Label("No hay asistentes inscriptos");
+            lblVacio.setStyle("-fx-text-fill: gray; -fx-font-style: italic;");
+            listaAsistentes.getChildren().add(lblVacio);
+        }
+        
+        seccionAsistentes.getChildren().add(listaAsistentes);
+        return seccionAsistentes;
+    }
+    
+    private HBox crearItemAsistente(Persona asistente) {
+        HBox itemAsistente = new HBox(10);
+        
+        // Información del asistente
+        VBox infoAsistente = new VBox(2);
+        infoAsistente.getChildren().addAll(
+            new Label(asistente.getNombre() + " " + asistente.getApellido()),
+            new Label("DNI: " + asistente.getDni()),
+            new Label("Tel: " + asistente.getTelefono()),
+            new Label("Email: " + asistente.getEmail())
+        );
+        
+        // Botón para dar de baja (solo si está confirmado o en ejecución)
+        Button btnDarDeBaja = new Button("Dar de Baja");
+        btnDarDeBaja.setOnAction(e -> darDeBajaAsistente(asistente));
+        
+        // Solo permitir dar de baja si no está finalizado
+        btnDarDeBaja.setDisable(eventoActual.estaCerrado());
+        
+        itemAsistente.getChildren().addAll(infoAsistente, btnDarDeBaja);
+        return itemAsistente;
+    }
+    
+    private void abrirDialogoInscribirAsistente() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/gov/municipio/view/fxml/buscar-persona-dialog.fxml"));
+            Parent root = loader.load();
+            
+            BuscarPersonaDialogController dialogController = loader.getController();
+            dialogController.setPersonaService(personaService);
+            dialogController.setRol(Rol.ASISTENTE);
+            
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Inscribir Asistente");
+            dialogStage.setScene(new Scene(root));
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(vboxAsistentes.getScene().getWindow());
+            dialogStage.showAndWait();
+            
+            if (dialogController.getResultado() && dialogController.getPersonaSeleccionada() != null) {
+                inscribirAsistente(dialogController.getPersonaSeleccionada());
+            }
+            
+        } catch (Exception e) {
+            mostrarError("Error", "Error al abrir el diálogo: " + e.getMessage());
+        }
+    }
+    
+    private void inscribirAsistente(Persona persona) {
+        try {
+            eventoActual.inscribirAsistente(persona);
+            eventoService.actualizarEvento(eventoActual);
+            cargarAsistentes(); // Recargar la vista
+            mostrarInfo("Éxito", "Asistente inscripto exitosamente");
+        } catch (Exception e) {
+            mostrarError("Error", "Error al inscribir asistente: " + e.getMessage());
+        }
+    }
+    
+    private void darDeBajaAsistente(Persona asistente) {
+        try {
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar baja");
+            confirmacion.setHeaderText(null);
+            confirmacion.setContentText("¿Está seguro de dar de baja a " + asistente.getNombre() + " " + asistente.getApellido() + "?");
+            
+            if (confirmacion.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                eventoActual.removerParticipacion(asistente);
+                eventoService.actualizarEvento(eventoActual);
+                cargarAsistentes(); // Recargar la vista
+                mostrarInfo("Éxito", "Asistente dado de baja exitosamente");
+            }
+        } catch (Exception e) {
+            mostrarError("Error", "Error al dar de baja asistente: " + e.getMessage());
         }
     }
 }
