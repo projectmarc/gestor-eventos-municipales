@@ -1,0 +1,6 @@
+#FileLock
+#Thu Aug 28 10:57:21 ART 2025
+hostName=archlinux
+id=198f0ddfec1f03359e464a2e10179dbf8232544b0fc
+method=file
+server=192.168.100.2\:37047
