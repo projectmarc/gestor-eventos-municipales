@@ -11,12 +11,10 @@ public class MainController {
 
     private Router router;
 
-    @FXML
-    private void initialize() {
-        router = new Router(contentStack);
-        if (navbarController != null) {
-            navbarController.setRouter(router);
-        }
-        router.goTo(Screen.INICIO);
-    }
+   @FXML
+   private void initialize() {
+       router = new Router(contentStack);
+       if (navbarController != null) navbarController.setRouter(router);
+       router.goTo(Screen.INICIO); // <- nada de lblPlanificacion acá
+   }
 }

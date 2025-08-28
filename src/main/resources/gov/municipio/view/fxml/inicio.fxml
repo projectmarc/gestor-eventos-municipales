@@ -9,9 +9,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
-           xmlns:fx="http://javafx.com/fxml/1">
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="gov.municipio.controller.InicioController">
            
     <!-- Sección Superior: Título y Subtítulo -->
     <top>
@@ -23,35 +27,110 @@
     
     <!-- Sección Central: Métricas y Calendario -->
     <center>
-        <VBox spacing="30">
-            
-            <!-- Fila de Métricas -->
-            <HBox alignment="CENTER" spacing="40">
-                <!-- Card Eventos -->
-                <StackPane fx:id="cardEventos">
-                    <VBox alignment="CENTER" spacing="5">
-                        <Label text="12" />
-                        <Label text="Eventos Totales" />
-                    </VBox>
-                </StackPane>
-                
-                <!-- Card Personas -->
-                <StackPane fx:id="cardPersonas">
-                    <VBox alignment="CENTER" spacing="5">
-                        <Label text="347" />
-                        <Label text="Personas Registradas" />
-                    </VBox>
-                </StackPane>
+        <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            spacing="18">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
-                <!-- Card Eventos de Hoy -->
-                <StackPane fx:id="cardEventosHoy">
-                    <VBox alignment="CENTER" spacing="5">
-                        <Label text="5" />
-                        <Label text="Eventos Hoy" />
-                    </VBox>
-                </StackPane>
-            </HBox>
+            <!-- Título -->
+            <VBox spacing="8">
+                <Label text="Inicio" style="-fx-font-size:28; -fx-font-weight:700;"/>
+                <Label text="Panel de control y métricas del sistema de eventos" style="-fx-text-fill:#6b7280;"/>
+                <Separator/>
+            </VBox>
 
+            <!-- Eventos por Estado -->
+            <VBox spacing="10">
+                <Label text="Eventos por Estado" style="-fx-font-size:16; -fx-font-weight:700;"/>
+                <FlowPane hgap="12" vgap="12">
+
+                    <!-- Planificación -->
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F1FBF3; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Planificación" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblPlanificacion" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Eventos en fase inicial" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <!-- Confirmado -->
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#FFFAEB; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Confirmado" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblConfirmado" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Listos para ejecutar" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <!-- En Ejecución -->
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#EEF6FF; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="En Ejecución" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblEjecucion" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Eventos activos" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <!-- Finalizado -->
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F1FBF3; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Finalizado" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblFinalizado" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Eventos completados" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                </FlowPane>
+            </VBox>
+
+            <!-- Eventos por Tipo -->
+            <VBox spacing="10">
+                <Label text="Eventos por Tipo" style="-fx-font-size:16; -fx-font-weight:700;"/>
+                <FlowPane hgap="12" vgap="12">
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Ferias" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblFerias" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Eventos comerciales" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Conciertos" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblConciertos" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Eventos musicales" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Exposiciones" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblExposiciones" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Muestras artísticas" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Talleres" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblTalleres" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Actividades formativas" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Ciclos de Cine" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblCiclosCine" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Proyecciones" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Conferencias" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblConferencias" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Charlas y ponencias" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Seminarios" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblSeminarios" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Capacitaciones" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                    <VBox spacing="4" style="-fx-padding:16; -fx-background-color:#F8FFF8; -fx-background-radius:16; -fx-border-color:#e5e7eb; -fx-border-radius:16; -fx-effect:dropshadow(gaussian, rgba(0,0,0,0.04), 10, 0.1, 0, 2); -fx-min-width:240; -fx-max-width:280; -fx-min-height:120;">
+                        <Label text="Obras de Teatro" style="-fx-text-fill:#111827; -fx-font-size:14; -fx-font-weight:700;"/>
+                        <Label fx:id="lblTeatro" text="0" style="-fx-text-fill:#111827; -fx-font-size:28; -fx-font-weight:800;"/>
+                        <Label text="Funciones" style="-fx-text-fill:#6b7280; -fx-font-size:12;"/>
+                    </VBox>
+
+                </FlowPane>
+            </VBox>
         </VBox>
     </center>
 </BorderPane>
