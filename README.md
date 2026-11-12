@@ -1,108 +1,106 @@
 # Gestor de Eventos Municipales
 
-Sistema integral para la gestión de eventos culturales municipales desarrollado con Java y JavaFX. Permite administrar ferias, conciertos, exposiciones, talleres y ciclos de cine con un modelo de dominio rico y una interfaz gráfica moderna.
+Aplicación de escritorio para administrar eventos culturales municipales, sus responsables y asistentes. Permite organizar ferias, conciertos, exposiciones, talleres y ciclos de cine, con reglas para las inscripciones, los cupos y el ciclo de vida de cada evento.
 
-## 📋 Características Principales
+Desarrollada íntegramente por [Marcos Daubermann](https://github.com/projectmarc), desde el modelo de dominio y la persistencia hasta la interfaz gráfica.
 
-- **Gestión Completa de Eventos**: Creación, edición y administración de eventos culturales
-- **Tipos de Eventos Soportados**:
-  - 🎪 Ferias
-  -   Conciertos  
-  - 🖼️ Exposiciones
-  - 📚 Talleres
-  - 🎬 Ciclos de cine
-- **Sistema de Participaciones**: Gestión de organizadores, instructores, curadores y asistentes
-- **Estados del Evento**: Flujo controlado (Planificación → Confirmado → En Ejecución → Finalizado)
-- **Validaciones de Negocio**: Cupos máximos, fechas, roles y transiciones de estado
-- **Interfaz Gráfica Moderna**: Implementada con JavaFX y CSS personalizado
-- **Persistencia de Datos**: Base de datos H2 embebida con JPA/Hibernate
+**Java 21 · JavaFX · JPA/Hibernate · H2 · Maven**
 
-## 🛠️ Stack Tecnológico
+![Panel principal del gestor de eventos municipales](docs/images/dashboard.png)
 
-- **Java 21** - Lenguaje de programación
-- **JavaFX 23.0.2** - Framework para la interfaz gráfica
-- **Maven** - Gestión de dependencias y construcción
-- **JPA/Hibernate 6.5.2** - Persistencia de datos
-- **H2 Database 2.2.224** - Base de datos embebida
-- **CSS** - Estilos personalizados para la interfaz
+<details>
+<summary>Ver más pantallas</summary>
 
-## 🏗️ Arquitectura
+### Gestión de eventos
 
-El proyecto sigue una arquitectura en capas con Domain Driven Design:
+![Pantalla de gestión y listado de eventos](docs/images/events.png)
 
-```
-src/main/java/gov/municipio/
-├── domain/          # Modelos de dominio y reglas de negocio
-├── application/     # Servicios de aplicación
-├── persistence/     # Repositorios y acceso a datos
-├── controller/      # Controladores de la interfaz
-├── ui/             # Navegación y utilidades de UI
-├── config/         # Configuración e inyección de dependencias
+### Calendario
 
-## 🚀 Instalación y Ejecución
+![Vista de calendario de eventos municipales](docs/images/calendar.png)
 
-### Prerrequisitos
+</details>
 
-- **Java 21** o superior
-- **Maven 3.6+**
+## Qué permite hacer
 
-### Ejecución
+- Crear y gestionar distintos tipos de eventos culturales.
+- Administrar personas, artistas y bandas, y películas.
+- Asignar responsables e inscribir asistentes con validación de roles y cupos.
+- Gestionar el paso de planificación a confirmación, ejecución y finalización.
+- Consultar los eventos desde una vista de calendario.
+- Guardar la información localmente en una base de datos H2.
 
-1. **Clonar el repositorio**:
+## Ejecutar localmente
+
+### Requisitos
+
+- JDK 21 y Maven instalados, con `JAVA_HOME` apuntando al JDK.
+- Un entorno de escritorio para abrir la interfaz JavaFX.
+- Acceso a Internet para descargar las dependencias en la primera ejecución.
+
+Comprobá el entorno con `java -version` y `mvn -version`. El proyecto configura la compilación para Java 21; las versiones de sus dependencias están en [`pom.xml`](pom.xml).
+
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/projectmarc/gestor-eventos-municipales.git
 cd gestor-eventos-municipales
-```
-
-2. **Compilar el proyecto**:
-```bash
 mvn clean compile
-```
-
-3. **Ejecutar la aplicación**:
-```bash
 mvn javafx:run
 ```
 
-### Base de Datos
+### Datos locales
 
-La aplicación utiliza una base de datos H2 embebida que se crea automáticamente en el directorio `data/`. No requiere configuración adicional.
+La conexión utiliza `jdbc:h2:file:./data/municipio-db` y Hibernate está configurado para actualizar el esquema al iniciar. No hace falta instalar un servidor de base de datos independiente.
 
-## 📱 Funcionalidades
+El repositorio incluye el archivo `data/municipio-db.mv.db`: al ejecutar desde la raíz del proyecto se utiliza esa base existente. La aplicación puede modificarla, por lo que conviene trabajar sobre una copia si querés conservar su contenido original. No se requiere borrar datos para ejecutar el proyecto.
 
-### Gestión de Eventos
+La configuración está en [`persistence.xml`](src/main/resources/META-INF/persistence.xml).
 
-- **Crear eventos** con validaciones específicas por tipo
-- **Editar eventos** en estado de planificación
-- **Confirmar eventos** con validación de responsables obligatorios
-- **Iniciar y finalizar eventos** siguiendo el flujo de estados
-- **Vista de calendario** para visualización temporal
+## Reglas de negocio
 
-### Gestión de Participaciones
+Las reglas comunes se encuentran en la clase [`Evento`](src/main/java/gov/municipio/domain/model/evento/Evento.java), y cada tipo de evento define los roles admitidos y los responsables necesarios para confirmarlo.
 
-- **Inscribir responsables** (organizadores, instructores, curadores)
-- **Registrar asistentes** con control de cupos
-- **Validaciones de roles** específicas por tipo de evento
-- **Gestión de bajas** según el estado del evento
+| Operación | Condiciones del modelo |
+| --- | --- |
+| Agregar o quitar responsables | El evento debe estar en planificación. |
+| Confirmar un evento | Debe contar con los roles responsables obligatorios para su tipo. |
+| Inscribir un asistente | El evento debe requerir inscripción y estar confirmado o en ejecución. |
+| Controlar el cupo | Se cuentan los asistentes, no los responsables. |
+| Evitar participaciones duplicadas | Una persona no puede participar dos veces en el mismo evento. |
+| Quitar un asistente | No se permite si el evento ya finalizó. |
 
-### Interfaz de Usuario
+El flujo principal es:
 
-- **Dashboard principal** con estadísticas
-- **Vista de calendario** interactiva
-- **Formularios dinámicos** para cada tipo de evento
-- **Diálogos de búsqueda** para personas y contenido
-- **Navegación fluida** entre secciones
+```text
+Planificación → Confirmado → En ejecución → Finalizado
+```
 
-## 🎯 Reglas de Negocio Implementadas
+El modelo también permite volver de **Confirmado** a **Planificación**. Valida nombres, fechas de inicio no anteriores al día actual, duración y cupos al asignar esos valores.
 
-### Estados de Eventos
-- **Planificación**: Permite agregar/quitar responsables
-- **Confirmado**: Permite inscripción de asistentes
-- **En Ejecución**: Evento activo, permite inscripcion de asistentes
-- **Finalizado**: Evento cerrado, no permite cambios
+## Organización del código
 
-### Validaciones
-- **Fechas**: No se permiten eventos en el pasado
-- **Cupos**: Control automático de lugares disponibles
-- **Roles**: Validación específica por tipo de evento
-- **Responsables**: Roles obligatorios antes de confirmar
+El proyecto separa el dominio, los servicios de aplicación, la persistencia y la interfaz:
+
+```text
+src/main/java/gov/municipio/
+├── domain/         # Entidades, reglas de negocio y excepciones
+├── application/    # Servicios de aplicación
+├── persistence/    # Repositorios y configuración de JPA
+├── controller/     # Controladores de las pantallas JavaFX
+├── ui/             # Navegación entre pantallas
+└── config/         # Contenedor de servicios
+```
+
+Las vistas FXML y los estilos CSS están en [`src/main/resources/gov/municipio/view/`](src/main/resources/gov/municipio/view/).
+
+### Aspectos técnicos para explorar
+
+- **Herencia y polimorfismo:** `Evento` reúne el comportamiento compartido; `Feria`, `Concierto`, `Exposicion`, `Taller` y `CicloDeCine` representan los distintos tipos de eventos.
+- **Reglas dentro del dominio:** las operaciones de participación y cambio de estado validan sus condiciones en el modelo, no solamente en los formularios.
+- **Mapeo relacional:** JPA utiliza la estrategia `JOINED` para persistir la jerarquía de eventos y relaciones entre eventos y participaciones.
+- **Interfaz separada en recursos:** JavaFX utiliza vistas FXML y estilos CSS para las pantallas de la aplicación.
+
+## Alcance actual
+
+Es una aplicación de escritorio con persistencia local, no una aplicación web ni una API REST. El repositorio no incluye actualmente una suite de pruebas automatizadas en `src/test`; compilar el proyecto no sustituye la verificación funcional de sus pantallas y reglas.
+
+El diseño visual tiene margen de mejora, especialmente en la distribución del espacio y el tamaño de las columnas de las tablas.
