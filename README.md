@@ -1,4 +1,4 @@
-# 🎭 Gestor de Eventos Municipales
+# Gestor de Eventos Municipales
 
 Sistema integral para la gestión de eventos culturales municipales desarrollado con Java y JavaFX. Permite administrar ferias, conciertos, exposiciones, talleres y ciclos de cine con un modelo de dominio rico y una interfaz gráfica moderna.
 
