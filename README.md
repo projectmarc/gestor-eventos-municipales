@@ -2,8 +2,6 @@
 
 Aplicación de escritorio para administrar eventos culturales municipales, sus responsables y asistentes. Permite organizar ferias, conciertos, exposiciones, talleres y ciclos de cine, con reglas para las inscripciones, los cupos y el ciclo de vida de cada evento.
 
-Desarrollada íntegramente por [Marcos Daubermann](https://github.com/projectmarc), desde el modelo de dominio y la persistencia hasta la interfaz gráfica.
-
 **Java 21 · JavaFX · JPA/Hibernate · H2 · Maven**
 
 ![Panel principal del gestor de eventos municipales](docs/images/dashboard.png)
